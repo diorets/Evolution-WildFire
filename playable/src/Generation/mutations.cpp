@@ -143,7 +143,7 @@ void addNode(gene * head, double nodeChance, double muscleChance, double boneCha
             // Function can be improved to make it more evenly random
             if (chance(muscleChance)) {
                 if (head->iData[mus] >= MAX_ELEMENTS) continue;
-                addAxons(head, head->iData[mus]);
+                //addAxons(head, head->iData[mus]);
                 addToBack(head, muscleGene(counter, head->iData[nod] - 1));
                 head->iData[tot]++;
                 head->iData[mus]++;
@@ -221,7 +221,7 @@ void addConnection(gene * head, double addChance) {
         conn connection = goodConnection(head);
         if (chance(50)) {
             if (head->iData[mus] >= MAX_ELEMENTS) return;
-            addAxons(head, head->iData[mus]);
+            //addAxons(head, head->iData[mus]);
             addToBack(head, muscleGene(connection.a, connection.b));
             head->iData[tot]++;
             head->iData[mus]++;

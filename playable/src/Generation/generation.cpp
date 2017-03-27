@@ -11,19 +11,34 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
+#include <fstream>
 gene * parseGenome(gene * head) {
+    static int trials = 0; // or 0?
+    static int counter = 0;
+    if (counter % genSize == 0) {
+        trials++;
+    }
+    counter++;
+    /* Get Genome String */
     std::string s = \
-"9:F:1.545586><i|5,3,3,0,12,<n|-1.000000,-16.000000,9.217658,2.947203,0.726508,<n|18.000000,-20.000000,15.475831,2.538743,0.687640,<n|-14.000000,-17.000000,17.605553,1.253548,0.127882,<n|-20.000000,-5.000000,8.606349,3.066713,0.697748,<n|-1.000000,15.000000,5.396271,2.001251,0.120215,<b|1,2,<b|0,4,<b|2,4,<m|1,0,<m|1,3,<m|3,0,<";
+    "250:F:0.209656><i|5,2,4,0,12,<n|-3.000000,12.000000,16.422843,1.769677,0.469469,<n|17.000000,2.000000,9.018583,2.536058,0.137867,<n|12.000000,17.000000,5.789256,4.326151,0.600992,<n|-17.000000,17.000000,6.885105,3.351024,0.853148,<n|-4.000000,-2.000000,10.278294,1.667623,0.119239,<m|1,4,<b|0,3,<b|0,4,<m|0,1,<m|2,0,<m|3,2,<";
+//    std::fstream myfile("../assets/genomes.txt");
+//    for (int i = 0; (i != trials) && getline(myfile, s); i++);
+//    myfile.close();
+
+    //std::cout << trials << std::endl;
+    /* Fill Genome */
     std::string geneDelim = "<";
     std::string dataDelim = ",";
-
-    size_t genePos = 0;
-
     std::string geneStr;
+    size_t genePos = 0;
     while ((genePos = s.find(geneDelim)) != std::string::npos) {
         geneStr = s.substr(0, genePos);
         s.erase(0, genePos + geneDelim.length());
         char geneType = geneStr[0];
+        if (isdigit(geneType)) { // ignores first entry
+            continue;
+        }
         geneStr = geneStr.substr(2, std::string::npos);
         size_t dataPos = 0;
         std::string dataStr;
@@ -32,7 +47,6 @@ gene * parseGenome(gene * head) {
         int i = 0;
         while ((dataPos = geneStr.find(dataDelim)) != std::string::npos) {
             dataStr = geneStr.substr(0, dataPos);
-
             if (geneType == 'n') {
                 datums[i].f = atof(dataStr.c_str());
             } else {
@@ -64,11 +78,8 @@ gene * parseGenome(gene * head) {
 }
 
 gene * createGenome(gene * head, int a, int b, int c, int d) {
-//    static int seed = 0;
-//    srand(seed);
-//    seed = (seed + 1) / genSize; // int div -> goes up by one every generation.
+    return parseGenome(head);
     if (b + c > comb(a)) quit(GENOME_ERROR);
-    //return parseGenome(head);
 
 
     /* Creating Genome */
@@ -86,7 +97,6 @@ gene * createGenome(gene * head, int a, int b, int c, int d) {
     }
     head = addToBack(head, NULL); // Can likely remove
     return head;
-
 }
 
 void createCreature(creature * newBorn) {

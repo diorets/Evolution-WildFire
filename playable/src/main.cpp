@@ -4,7 +4,6 @@ Evolution WildFire, A Unique 3D Evolution Simulator.
 Nawar Ismail
 July 2016
 ******************************************************************/
-//test
 #include <stdlib.h> // standard definitions
 #include <stdio.h>  // standard I/O
 #include "Glut/initialize.h"       // Initialize
@@ -65,7 +64,7 @@ void graphTest();
 
 int main(int argc, char **argv) {
     fclose(fopen("../assets/fitnesses.txt", "w")); // Clear File
-    fclose(fopen("../assets/genomes.txt", "w")); // Clear File
+    //fclose(fopen("../assets/genomes.txt", "w")); // Clear File
 
     environment = (double*) malloc(sizeof(double) * 2);
     if (environment == NULL) exit(34523);

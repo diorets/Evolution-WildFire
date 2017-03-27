@@ -15,6 +15,7 @@ gene* infoGene(int a, int b, int c, int d);
 
 gene* nodeGene(posi loc);
 gene* nodeGene(gene * head);
+gene* nodeGene(double x, double y, double z, double m, double f);
 
 gene* muscleGene(int a, int b);
 gene* muscleGene(gene * genome);
@@ -26,10 +27,11 @@ gene* boneGene(gene * genome);
 gene* addMuscle(int numNodes, int a);
 gene* addBone(int numNodes, int a);
 
-gene * addAxon(int a, int b, int layer);
+gene* addAxon(int a, int b, int layer);
 
 /* Printing */
-void saveGenome();
+void saveGenome(creature * population, int index, double fitness);
+void saveGenomes();
 void printGenome(int id, bool conn, bool loc);
 
 #endif // GENES_H_INCLUDED

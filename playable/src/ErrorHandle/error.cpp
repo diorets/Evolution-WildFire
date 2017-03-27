@@ -60,7 +60,6 @@ void quit_(int code, int line, const char * file) {
     drawText("Program will terminate shortly.", wx * 0.2, wy * 0.63, false);
 
     glutSwapBuffers();
-    while(true);
     sleep_ms(5000);
     exit(EXIT_FAILURE);
 }

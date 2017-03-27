@@ -19,6 +19,7 @@
 
 /* Macros */
 #define FOR_ALL(head, type) for (gene * current = head; current != NULL; current = current->next) if (current->start == type)
+#define FOR_ALL_GENES(head) for (gene * current = head; current != NULL; current = current->next)
 
 /* Enums */
 enum simMode {skipE, debugE, instructionsE, graphE, howToE, goThroughGenE,

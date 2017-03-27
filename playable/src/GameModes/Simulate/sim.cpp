@@ -16,7 +16,7 @@
 #include "GameModes/inputFunctions.h" //
 #include "GameModes/mice.h"           //
 #include "GameModes/Simulate/drawing.h"
-double selectionPower = 0.5;
+double selectionPower = 27.5;
 
 void newGenScreen();
 #include "Math/distribution.h"
@@ -39,7 +39,7 @@ double powerOfUniform(double power) {
 }
 
 double selectionDistribution() {
-    return getDistribution(box, genSize, selectionPower);
+    return getDistribution(skewedUnimodal, genSize, selectionPower);
 }
 
 
@@ -563,63 +563,31 @@ void recordGenFitness(creature * population) {
     return;
 }
 
-void newGeneration() {
-//    recordGenFitness(specimen);
+#include "Generation/genes.h"
+void recordEveryGenome(creature * population, int step) {
+    FILE * fptr = fopen("../assets/fitnesses.txt", "a");
+    for (int i = 0; i < genSize; i += step) {
+        saveGenome(population, i, population[i].distance);
+    }
+    fclose(fptr);
+    return;
+}
 
+void newGeneration() {
     int * ordered = orderedDist(specimen);
     pruneAndFill(ordered, specimen);
     if (ordered != NULL) {
         free(ordered);
     }
 
-//    /* Duplicate */
-//    int * toDup = orderDistances(specimen); // Problem
-//    duplicate(toDup, specimen);
-//    if (toDup != NULL) free(toDup);
-
-    if (dataCollection == 5) {
-        /* Each line in file represents the fitness after MAXGENERATIONS generations.
-            Each set of lines delimited by "=== New Point Data..." is NUMSAMEPLEPOINTS 'fitness after MAXGENERATIONS' trials.
-        */
-        int maxGenerations = 30; // MUST BE 30
-        int maxSamplePoints = 40; maxSamplePoints--; // correction, should be 40
-        if (gen >= maxGenerations) { // corresponds to a single entry in excel
-            static int numResets = 0;
-            int numPoints = numResets / maxSamplePoints;
-            int numSamplePoints = numResets % maxSamplePoints;
-            recordGenFitness(specimen);
-
-            if ((numResets > 0) && (numResets % maxSamplePoints == 0)) { // corresponds to a colum in excel
-                selectionPower -= 0.1;
-//                if (selectionPower < 15) {
-//                    selectionPower += 5;
-//                } else {
-//                    selectionPower += 1;
-//                }
-            }
-            printf("(Points, power, pointSampleNumber) = (%d, %.2f, %d)\n",
-                    numPoints,
-                    selectionPower,
-                    numSamplePoints
-            );
-            if ((numResets > 0) && (numResets % maxSamplePoints == 0)) { // corresponds to a colum in excel
-                FILE * fptr = fopen("../assets/fitnesses.txt", "a");
-                fprintf(fptr, "=== New Point Data (power = %.2f) ===========\n", selectionPower);
-                fclose(fptr);
-            }
-
-
-            newGameMode(simMode);
-            numResets++;
-        }
-    }
-
+    recordEveryGenome(specimen, 50);
     /* Create New Generation */
     for (int i = 0; i < genSize; i++) {
         specimen[i].distance = 0.0;
         mutateGenome(&specimen[i]);
         createCreature(&specimen[i]);
     }
+
     /* Go To Next Generation */
     id = 0;
     gen++;

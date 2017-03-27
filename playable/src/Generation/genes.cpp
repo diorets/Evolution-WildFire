@@ -151,14 +151,15 @@ gene* infoGene(int a, int b, int c, int d) {
     newInfo->iData[mus] = c;
     newInfo->iData[neu] = d;
 
-    newInfo->fData[0] = 2; //  mutation chances
-    newInfo->fData[1] = 2;
-    newInfo->fData[2] = 2;
-    newInfo->fData[3] = 2;
-    newInfo->fData[4] = 2;
-    newInfo->fData[5] = 2;
-    newInfo->fData[6] = 2;
-    newInfo->fData[7] = 2;
+    double mutationChance = 2.0;
+    newInfo->fData[0] = mutationChance;
+    newInfo->fData[1] = mutationChance;
+    newInfo->fData[2] = mutationChance;
+    newInfo->fData[3] = mutationChance;
+    newInfo->fData[4] = mutationChance;
+    newInfo->fData[5] = mutationChance;
+    newInfo->fData[6] = mutationChance;
+    newInfo->fData[7] = mutationChance;
 
     newInfo->iData[tot] = a + b + c + d + 1; // +1 for info gene
     newInfo->endof = '\0';
@@ -228,6 +229,21 @@ gene* boneGene(gene * genome) {
     return nodee;
 }
 
+gene * nodeGene(double x, double y, double z, double m, double f) {
+    gene * nod = (gene*) malloc(sizeof(gene));
+    if (nod == NULL) quit(MALLOC_ERROR);;
+    nod->start = 'n';
+
+    nod->fData[xposi] = x;
+    nod->fData[yposi] = y;
+    nod->fData[zposi] = z;
+    nod->fData[mass] =  m;
+    nod->fData[fric] =  f;
+
+    nod->endof = '\0';
+    nod->next = NULL;
+    return nod;
+}
 
 gene * nodeGene(posi loc) {
     gene * nod = (gene*) malloc(sizeof(gene));
@@ -365,8 +381,39 @@ void printGenome(int index, bool connection, bool location) {
 //    return;
 }
 
-void saveGenome() {
-    FILE * fptr = fopen("genomes.txt", "a");
+void saveGenome(creature * population, int index, double fitness) {
+    FILE * fptr = fopen("../assets/genomes.txt", "a");
+    fprintf(fptr, "%d:", gen);
+    fprintf(fptr, "F:%f>", fitness);
+    for (gene * current = population[index].genome; current != NULL; current = current->next) {
+        fprintf(fptr, "<%c|", current->start);
+        switch (current->start) {
+            case 'i':
+                for (int i = nod; i <= tot; i++) {
+                    fprintf(fptr, "%d,", current->iData[i]);
+                }
+                break;
+            case 'n':
+                for (int i = 0; i < 5; i++) {
+                    fprintf(fptr, "%f,", current->fData[i]);
+                }
+                break;
+            case 'm':
+                fprintf(fptr, "%d,%d,", current->iData[0], current->iData[1]);
+                break;
+            case 'b':
+                fprintf(fptr, "%d,%d,", current->iData[0], current->iData[1]);
+                break;
+            default: fprintf(fptr, "ERROR");
+        }
+    }
+    fprintf(fptr, "<\n");
+    fclose(fptr);
+    return;
+}
+
+void saveGenomes() {
+    FILE * fptr = fopen("../assets/genomes.txt", "a");
     fprintf(fptr, "Generation %d\n", gen);
     for (int j = 0; j < genSize; j++) {
         fprintf(fptr, "\t%d:", j);

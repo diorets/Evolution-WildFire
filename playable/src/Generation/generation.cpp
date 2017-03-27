@@ -7,19 +7,70 @@
 #include "Functional/list.h"   // Various Linked List Functions
 #include "ErrorHandle/error.h" // Quit
 
-gene* createGenome(gene * head, int a, int b, int c, int d) {
-    switch (dataCollection) {
-        case 1:
-        case 2:
-        case 3:
-            if (data[4] != -1) {
-                srand(data[4]);
+#include <string>
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+gene * parseGenome(gene * head) {
+    std::string s = \
+"9:F:1.545586><i|5,3,3,0,12,<n|-1.000000,-16.000000,9.217658,2.947203,0.726508,<n|18.000000,-20.000000,15.475831,2.538743,0.687640,<n|-14.000000,-17.000000,17.605553,1.253548,0.127882,<n|-20.000000,-5.000000,8.606349,3.066713,0.697748,<n|-1.000000,15.000000,5.396271,2.001251,0.120215,<b|1,2,<b|0,4,<b|2,4,<m|1,0,<m|1,3,<m|3,0,<";
+    std::string geneDelim = "<";
+    std::string dataDelim = ",";
+
+    size_t genePos = 0;
+
+    std::string geneStr;
+    while ((genePos = s.find(geneDelim)) != std::string::npos) {
+        geneStr = s.substr(0, genePos);
+        s.erase(0, genePos + geneDelim.length());
+        char geneType = geneStr[0];
+        geneStr = geneStr.substr(2, std::string::npos);
+        size_t dataPos = 0;
+        std::string dataStr;
+
+        generic datums[10];
+        int i = 0;
+        while ((dataPos = geneStr.find(dataDelim)) != std::string::npos) {
+            dataStr = geneStr.substr(0, dataPos);
+
+            if (geneType == 'n') {
+                datums[i].f = atof(dataStr.c_str());
+            } else {
+                datums[i].i = atoi(dataStr.c_str());
             }
-            break;
-        default:
-            break;
+            geneStr.erase(0, dataPos + dataDelim.length());
+            i++;
+        }
+
+        switch (geneType) {
+            case 'i':
+                head = infoGene(datums[0].i, datums[1].i, datums[2].i, datums[3].i);
+                break;
+            case 'n':
+                head = addToBack(head, nodeGene(datums[0].f, datums[1].f, datums[2].f, datums[3].f, datums[4].f));
+                break;
+            case 'b':
+                head = addToBack(head, boneGene(datums[0].i, datums[1].i));
+                break;
+            case 'm':
+                head = addToBack(head, muscleGene(datums[0].i, datums[1].i));
+                break;
+            default:
+                quit(GENOME_ERROR);
+        }
     }
+    head = addToBack(head, NULL); // Can likely remove
+    return head;
+}
+
+gene * createGenome(gene * head, int a, int b, int c, int d) {
+//    static int seed = 0;
+//    srand(seed);
+//    seed = (seed + 1) / genSize; // int div -> goes up by one every generation.
     if (b + c > comb(a)) quit(GENOME_ERROR);
+    //return parseGenome(head);
+
+
     /* Creating Genome */
     head = infoGene(a, b, c, d);
     int * sizes = head->iData;
@@ -33,22 +84,9 @@ gene* createGenome(gene * head, int a, int b, int c, int d) {
     for (int i = 0; i < sizes[mus]; i++) {
         head = addToBack(head, muscleGene(head));
     }
-
-//    int hiddenLayerSize = HIDDEN_LAYER_SIZE;
-//    for (int i = 0; i < sizes[mus]; i++) {
-//        for (int j = 0; j < hiddenLayerSize; j++) {
-//            head = addToBack(head, addAxon(i, j, 0));
-//        }
-//    }
-//    for (int i = 0; i < hiddenLayerSize; i++) {
-//        for (int j = 0; j < sizes[mus]; j++) {
-//            head = addToBack(head, addAxon(i, j, 1));
-//        }
-//    }
-
     head = addToBack(head, NULL); // Can likely remove
-
     return head;
+
 }
 
 void createCreature(creature * newBorn) {

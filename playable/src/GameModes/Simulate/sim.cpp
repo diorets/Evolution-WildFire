@@ -564,8 +564,8 @@ void recordGenFitness(creature * population) {
 }
 
 
-void recordGenImpact(creature * population) {
-    static int counter = 0;
+bool recordGenImpact(creature * population) {
+    //static bool reset = false;
     FILE * fptr = fopen("../assets/fitnesses.txt", "a");
 
     float avg = 0.0;
@@ -573,17 +573,19 @@ void recordGenImpact(creature * population) {
         avg += population[i].distance;
     }
     avg /= genSize;
-    if (counter % 2 == 0) {
+
+    if (gen % 2 == 0) {
         fprintf(fptr, "%f ", avg);
         fclose(fptr);
-        counter++;
+        //reset = true;
     } else {
         fprintf(fptr, "%f\n", avg);
         fclose(fptr);
-        counter++;
+        //reset = false;
         newGameMode(simMode);
+        return true;
     }
-    return;
+    return false;
 }
 
 #include "Generation/genes.h"
@@ -595,7 +597,10 @@ void recordEveryGenome(creature * population, int step) {
 }
 
 void newGeneration() {
-    recordGenImpact(specimen);
+    if (recordGenImpact(specimen)) {
+        return; // So that we dont continue to modify the new population
+    }
+    printf("Past recordGenImpact");
     int * ordered = orderedDist(specimen);
     pruneAndFill(ordered, specimen);
     if (ordered != NULL) {
@@ -604,7 +609,6 @@ void newGeneration() {
 
     /* Create New Generation */
     for (int i = 0; i < genSize; i++) {
-        printf("%f\n", specimen[i].distance);
         specimen[i].distance = 0.0;
         mutateGenome(&specimen[i]);
         createCreature(&specimen[i]);

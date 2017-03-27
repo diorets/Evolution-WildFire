@@ -574,13 +574,15 @@ void recordEveryGenome(creature * population, int step) {
 }
 
 void newGeneration() {
+    recordEveryGenome(specimen, 50);
+
     int * ordered = orderedDist(specimen);
     pruneAndFill(ordered, specimen);
     if (ordered != NULL) {
         free(ordered);
     }
 
-    recordEveryGenome(specimen, 50);
+
     /* Create New Generation */
     for (int i = 0; i < genSize; i++) {
         specimen[i].distance = 0.0;

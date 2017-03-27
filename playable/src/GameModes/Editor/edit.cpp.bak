@@ -1,0 +1,176 @@
+
+#include "Glut/myGlut.h"
+
+#include "GameModes/Editor/editor.h"
+#include "global.h"
+#include "color.h"
+#include <stdio.h>
+#include "physics.h"
+#include "Math/myMath.h"
+#include "Generation/duplicate.h"
+#include "Generation/generation.h"
+#include "Generation/genes.h"
+#include "Visual/drawBasic.h"
+#include "linkedList/list.h"
+#include "preproccessor.h"
+#include "global.h"
+
+void editorMode() {
+    static double dist = 10.0;
+    static int counter = 0;
+
+    counter++;
+    dist += editorLength;
+
+    posi targetLoc;
+    targetLoc.x = cx + dist*lx;
+    targetLoc.y = cy + dist*ly;
+    targetLoc.z = cz + dist*lz;
+
+    if (counter % 3 == 0) {
+        glutDrawing();
+        drawGround();
+        drawSight(dist);
+        addShape(targetLoc);
+        glutSwapBuffers();
+    }
+}
+
+static bool detectToggle(int previous) {
+    // Detect toggle
+    if (previous != 0) {
+        return true;
+    }
+    return false;
+
+}
+
+static void newConnection(int * toConnect, int * fromConnect, int numSpheres) {
+    *toConnect = rand() % numSpheres;
+    *fromConnect = rand() % numSpheres;
+    for (int i = 0; i < 20; i++) {
+        if (*toConnect == *fromConnect) {
+            *fromConnect = rand() % numSpheres;
+            break;
+        }
+        if (i == 19) { // Error case
+            exit(15);
+        }
+    }
+}
+
+static void handleAddType(int * addType) {
+    for (int i = '0'; i <= '2'; i++) {
+        if (keyStates[i]) {
+            *addType = i - 48;
+        }
+    }
+}
+
+static void newShape(int addType, posi * spheres, conn * muscles, int * numSpheres, int * numMuscles,
+              posi loc, int toConnect, int fromConnect){
+    switch(addType) {
+        case 0:
+            spheres[*numSpheres].x = loc.x;
+            spheres[*numSpheres].y = loc.y;
+            spheres[*numSpheres].z = loc.z;
+            (*numSpheres)++;
+            break;
+        case 1:
+            spheres[*numSpheres].x = loc.x;
+            spheres[*numSpheres].y = loc.y;
+            spheres[*numSpheres].z = loc.z;
+
+            muscles[*numMuscles].a = toConnect;
+            muscles[*numMuscles].b = *numSpheres;
+            (*numSpheres)++;
+            (*numMuscles)++;
+            break;
+        case 2:
+            muscles[*numMuscles].a = toConnect;
+            muscles[*numMuscles].b = fromConnect;
+            (*numMuscles)++;
+        default : return;
+    }
+    return;
+}
+
+static void drawConnLine(int addType, posi * spheres, posi loc, int toConnect, int fromConnect) {
+    // Draw Muscle Line
+    posi to = spheres[toConnect];
+    posi from = spheres[fromConnect];
+    switch (addType) {
+        case 0:
+            break;
+        case 1:
+            glColor3f(RED);
+            drawLine(loc.x, loc.y, loc.z,
+                      to.x,  to.y,  to.z);
+            break;
+        case 2:
+            glColor3f(RED);
+            drawLine(from.x, from.y, from.z,
+                      to.x,  to.y,  to.z);
+            break;
+        default : return;
+    }
+    return;
+}
+
+static void drawStructure(posi * spheres, conn * muscles, int numSpheres, int numMuscles) {
+    glColor3f(GREEN);
+    for (int i = 0; i < numSpheres; i++) {
+        drawSphere(spheres[i].x, spheres[i].y, spheres[i].z, 0.3);
+    }
+    for (int i = 0; i < numMuscles; i++) {
+        int a = muscles[i].a;
+        int b = muscles[i].b;
+        drawLine(spheres[a].x, spheres[a].y, spheres[a].z,
+                 spheres[b].x, spheres[b].y, spheres[b].z);
+    }
+}
+
+static void transferToGen(posi * spheres, conn * muscles, int numSpheres, int numMuscles) {
+    for (int i = 0; i < genSize; i++) {
+        gene * head = specimen[i].genome = infoGene(numSpheres, 0, numMuscles, 0);
+        for (int j = 0; j < numSpheres; j++) {
+            head = addToBack(head, nodeGene(spheres[j]));
+        }
+        for (int j = 0; j < numMuscles; j++) {
+            head = addToBack(head, muscleGene(muscles[j].a, muscles[j].b));
+        }
+        specimen[i].distance = 0.0;
+        createCreature(&specimen[i]);
+        printGenome(i, false, false);
+    }
+    display = true;
+    gameMode = 0;
+}
+
+void addShape(posi loc) {
+    static int previous = 0;
+    static int addType = 0;
+    bool toggled = detectToggle(previous);;
+
+    static posi spheres[100];
+    static conn muscles[100];
+    static int numSpheres = 0;
+    static int numMuscles = 0;
+
+    static int toConnect = numSpheres - 1;
+    static int fromConnect = numSpheres - 1;
+
+    if (keyStates['b']) newConnection(&toConnect, &fromConnect, numSpheres);
+    handleAddType(&addType);
+    if (toggled) newShape(addType, spheres, muscles, &numSpheres, &numMuscles, loc, toConnect, fromConnect);
+    drawConnLine(addType, spheres, loc, toConnect, fromConnect);
+    drawStructure(spheres, muscles, numSpheres, numMuscles);
+    if (keyStates[13]) transferToGen(spheres, muscles, numSpheres, numMuscles);
+
+    previous = keyStates[32];
+    keyStates[32] = false;
+
+    return;
+}
+
+

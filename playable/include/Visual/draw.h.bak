@@ -1,0 +1,13 @@
+#ifndef DRAW_H_INCLUDED
+#define DRAW_H_INCLUDED
+#include <stdio.h>
+
+/*
+void drawSphere(float x, float y, float z, float radius);
+void drawLine(float x, float y, float z, float X, float Y, float Z);
+void drawCreature(creature individual);
+void drawGround();
+void glutDrawing();
+*/
+void drawSight(float dist);
+#endif // DRAW_H_INCLUDED

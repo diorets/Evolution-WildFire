@@ -1,0 +1,6 @@
+#define MALLOC_ERROR 000
+
+void quit(int code, int) {
+
+
+}

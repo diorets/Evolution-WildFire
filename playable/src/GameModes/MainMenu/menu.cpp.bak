@@ -1,0 +1,103 @@
+#include "GameModes/MainMenu/menu.h"
+#include "Glut/myGlut.h"
+#include "global.h"
+#include "Visual/drawBasic.h"
+#include "Glut/basic.h"
+#include <math.h>
+#include "Math/myMath.h"
+#include "physics.h"
+#include "Glut/initialize.h"
+void startUpMode() {
+    static int i = 0;
+    i++;
+
+    if (keyStates['b']) {
+        gameMode = simMode;
+        // Free everything
+        keyPressed('o', 0, 0);
+        id = 0;
+        initiatePopulation(3, 2, 1, 0, false); // This would cause a mem leak
+        return;
+    }
+    /* Dynamic Camera */
+    double SPEED = 3.0;
+    double speed = SPEED * 1 / 700.0;
+    double scale = SPEED * 0.06;
+    static int arr[3] = {1, 2, 3};
+    if (chance(0.1)) {
+        int shift = rand() % 3;
+        arr[0] = arr[(shift + 0) % 3];
+        arr[1] = arr[(shift + 1) % 3];
+        arr[2] = arr[(shift + 2) % 3];
+    }
+    cx += 1.0 * scale * cosf(i * speed * arr[0]);
+    cy += 1.0 * scale * sinf(i * speed * arr[1]);
+    cz += 0.8 * scale * sinf(i * speed * arr[2]);
+    lx = -cx + 5 * sinf(i * speed);
+    ly = -cy + 5 * sinf(i * speed);
+    lz = -cz + 5 * sinf(i * speed) + 3;
+    glutDrawing();
+
+    /* Simulate Creatures in Background */
+    reenable3D();
+    glLineWidth(3);
+    drawGround();
+    if (i % 250 == 0) {
+        id++;
+        id %= genSize;
+    }
+    drawCreature(specimen[id]);
+    updateCreature(&specimen[id], i);
+
+    /* Information and Menus Text */ // Replace with Real Menu
+    enable2D();
+
+    glColor3f(BLUE);
+    drawSquare(WINDOW_X * 0.17, WINDOW_Y * 0.17,
+               WINDOW_X * 0.35, WINDOW_Y * 0.205);
+    glColor3f(BROWN);
+    drawSquare(WINDOW_X * 0.17, WINDOW_Y * 0.205,
+               WINDOW_X * 0.35, WINDOW_Y * (0.19 + 9 * 0.03));
+    glColor3f(RED);
+    drawHeader("EVOLUTION WILDFIRE!", WINDOW_X * 0.5 - 100, WINDOW_Y * 0.88);
+    glColor3f(ORANGE);
+    drawText("What can you evolve, given the hand of God?", WINDOW_X * 0.5 - 50, WINDOW_Y * 0.15);
+    glColor3f(BLACK);
+
+    drawText("*Creatures are 2D only for display (faster evolution)", WINDOW_X * 0.7, WINDOW_Y * 0.05);
+    glColor3f(BLACK);
+    drawText("What would you like to do? ", WINDOW_X * 0.18, WINDOW_Y * 0.20);
+    drawText("Enter Simulation Mode ( B )", WINDOW_X * 0.2, WINDOW_Y * (0.20 + 1 * 0.03));
+    drawText("Enter Editor Mode        (     )", WINDOW_X * 0.2, WINDOW_Y * (0.20 + 2 * 0.03));
+    drawText("Enter Mutation Mode   (     )", WINDOW_X * 0.2, WINDOW_Y * (0.20 + 3 * 0.03));
+    drawText("-------------------------  ", WINDOW_X * 0.174, WINDOW_Y * (0.20 + 4 * 0.03));
+    drawText("Credits       (     )", WINDOW_X * 0.2, WINDOW_Y * (0.20 + 5 * 0.03));
+    drawText("Settings     (     )", WINDOW_X * 0.2, WINDOW_Y * (0.20 + 6 * 0.03));
+    drawText("FeedBack  (     )", WINDOW_X * 0.2, WINDOW_Y * (0.20 + 7 * 0.03));
+    drawText("Quit           (Esc)", WINDOW_X * 0.2, WINDOW_Y * (0.20 + 8 * 0.03));
+
+
+    drawHeader("THE CONTROLS", WINDOW_X * 0.65, WINDOW_Y * 0.7);
+    drawText("WASD,EQ(Z) | Camera Position            ", WINDOW_X * 0.7, WINDOW_Y * (0.3 +  1 * 0.03));
+    drawText("Arrows     | Camera Direction           ", WINDOW_X * 0.7, WINDOW_Y * (0.3 +  2 * 0.03));
+
+    drawText("SPACE      | Skip Creature (Use this!)   ", WINDOW_X * 0.7, WINDOW_Y * (0.3 +  5 * 0.03));
+
+    drawText("F          | Toggle FullScreen           ", WINDOW_X * 0.7, WINDOW_Y * (0.3 +  4 * 0.03));
+    drawText("I          | Toggle Display (For Speed) ", WINDOW_X * 0.7, WINDOW_Y * (0.3 +  6 * 0.03));
+    drawText("L          | Toggle Lights               ", WINDOW_X * 0.7, WINDOW_Y * (0.3 +  7 * 0.03));
+    drawText("P          | Toggle Person  (No Flying)  ", WINDOW_X * 0.7, WINDOW_Y * (0.3 +  8 * 0.03));
+
+    drawText("O          | Reset Camera               ", WINDOW_X * 0.7, WINDOW_Y * (0.3 + 10 * 0.03));
+    drawText("ESC        | Exit Simulator             ", WINDOW_X * 0.7, WINDOW_Y * (0.3 + 11 * 0.03));
+glColor3f(BLACK);
+    char str[20];
+    sprintf(str, "Time: %d", i);
+    drawText(str, 10,10);
+
+    drawHeader("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Nawar Ismail 2016 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", 60, WINDOW_Y * 0.05);
+
+    glutSwapBuffers();
+    return;
+}
+

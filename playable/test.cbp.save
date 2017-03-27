@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="test" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/test" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/test" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+		</Build>
+		<Linker>
+			<Add library="freeglut" />
+			<Add library="opengl32" />
+			<Add library="glu32" />
+			<Add library="winmm" />
+			<Add library="gdi32" />
+		</Linker>
+		<Unit filename="assets/README.txt" />
+		<Unit filename="assets/config.txt" />
+		<Unit filename="assets/errors.txt" />
+		<Unit filename="assets/fitnesses.txt" />
+		<Unit filename="assets/genomes.txt" />
+		<Unit filename="assets/impactText.txt" />
+		<Unit filename="assets/initialPopTest.txt" />
+		<Unit filename="assets/parameterText.txt" />
+		<Unit filename="bin/Debug/freeglut/include/GL/freeglut.h" />
+		<Unit filename="bin/Debug/freeglut/include/GL/freeglut_ext.h" />
+		<Unit filename="bin/Debug/freeglut/include/GL/freeglut_std.h" />
+		<Unit filename="bin/Debug/freeglut/include/GL/glut.h" />
+		<Unit filename="bin/freeglut/include/GL/freeglut.h" />
+		<Unit filename="bin/freeglut/include/GL/freeglut_ext.h" />
+		<Unit filename="bin/freeglut/include/GL/freeglut_std.h" />
+		<Unit filename="bin/freeglut/include/GL/glut.h" />
+		<Unit filename="include/ErrorHandle/error.h" />
+		<Unit filename="include/Functional/list.h" />
+		<Unit filename="include/Functional/music.h" />
+		<Unit filename="include/Functional/neuralNet.h" />
+		<Unit filename="include/Functional/sleep.h" />
+		<Unit filename="include/GameModes/Editor/editor.h" />
+		<Unit filename="include/GameModes/MainMenu/menu.h" />
+		<Unit filename="include/GameModes/MainMenu/menuInputFuncts.h" />
+		<Unit filename="include/GameModes/Mutation/mut.h" />
+		<Unit filename="include/GameModes/Simulate/all.h" />
+		<Unit filename="include/GameModes/Simulate/drawing.h" />
+		<Unit filename="include/GameModes/Simulate/sim.h" />
+		<Unit filename="include/GameModes/Simulate/simInputFuncts.h" />
+		<Unit filename="include/GameModes/gameModes.h" />
+		<Unit filename="include/GameModes/inputFunctions.h" />
+		<Unit filename="include/GameModes/keyboards.h" />
+		<Unit filename="include/GameModes/mice.h" />
+		<Unit filename="include/Generation/duplicate.h" />
+		<Unit filename="include/Generation/generation.h" />
+		<Unit filename="include/Generation/genes.h" />
+		<Unit filename="include/Generation/mutations.h" />
+		<Unit filename="include/Glut/basic.h" />
+		<Unit filename="include/Glut/initialize.h" />
+		<Unit filename="include/Glut/mouseFunctions.h" />
+		<Unit filename="include/Glut/myGlut.h" />
+		<Unit filename="include/Math/distribution.h" />
+		<Unit filename="include/Math/myMath.h" />
+		<Unit filename="include/Visual/basic.h" />
+		<Unit filename="include/Visual/objects.h" />
+		<Unit filename="include/Visual/text.h" />
+		<Unit filename="include/global.h" />
+		<Unit filename="include/physics.h" />
+		<Unit filename="include/preproccessor.h" />
+		<Unit filename="src/ErrorHandle/error.cpp" />
+		<Unit filename="src/Functional/list.cpp" />
+		<Unit filename="src/Functional/music.cpp" />
+		<Unit filename="src/Functional/neuralNet.cpp" />
+		<Unit filename="src/Functional/sleep.cpp" />
+		<Unit filename="src/GameModes/Editor/edit.cpp" />
+		<Unit filename="src/GameModes/MainMenu/menu.cpp" />
+		<Unit filename="src/GameModes/MainMenu/menuInputFuncts.cpp" />
+		<Unit filename="src/GameModes/Mutation/mut.cpp" />
+		<Unit filename="src/GameModes/Simulate/drawing.cpp" />
+		<Unit filename="src/GameModes/Simulate/sim.cpp" />
+		<Unit filename="src/GameModes/Simulate/simInputFuncts.cpp" />
+		<Unit filename="src/GameModes/gameModes.cpp" />
+		<Unit filename="src/GameModes/inputFunctions.cpp" />
+		<Unit filename="src/GameModes/keyboards.cpp" />
+		<Unit filename="src/GameModes/mice.cpp" />
+		<Unit filename="src/Generation/duplicate.cpp" />
+		<Unit filename="src/Generation/generation.cpp" />
+		<Unit filename="src/Generation/genes.cpp" />
+		<Unit filename="src/Generation/mutations.cpp" />
+		<Unit filename="src/Glut/basic.cpp" />
+		<Unit filename="src/Glut/initialize.cpp" />
+		<Unit filename="src/Math/distribution.cpp" />
+		<Unit filename="src/Math/myMath.cpp" />
+		<Unit filename="src/Visual/basic.cpp" />
+		<Unit filename="src/Visual/objects.cpp" />
+		<Unit filename="src/Visual/text.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/physics.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

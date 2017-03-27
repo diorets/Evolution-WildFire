@@ -1,0 +1,43 @@
+#ifndef MUTATIONS_H_INCLUDED
+#define MUTATIONS_H_INCLUDED
+
+// This looks terrible... Find a better style
+
+/** Applies a set of mutations to a genome **/
+void mutateGenome(creature * toMutate);
+
+/** Validation / Retrival Functions
+        //* indicates the function assumes a valid and "likely" result **/
+/* Returns a random location that is atleast MIN_NODE_DISTANCE apart from all nodes */
+posi getValidPosition(gene * head); //*
+
+/* Returns a location "near" to the parameters.
+    if no valid location exists returns the original values */
+posi getValidShift(gene * head, const double cx, const double cy, const double cz, double amount);
+
+/* Returns a random value connection */
+conn goodConnection(gene * head); //*
+
+/* Checks if the type connection exists */
+bool typeConnectionExists(gene * head, char type, int a, int b);
+
+/* Checks if the conntion exists (any type)*/
+bool connectionExists(gene * head, int a, int b);
+
+/** Possible Mutations **/
+/* New valid random locations are assigned to random nodes */
+void relocateNodes(gene * head, double shiftChance); //* Multiple
+
+/* Slightly shifted locations are assigned to random nodes */
+void shiftNodes(gene * head, double shiftChance, double amount); // Multiple
+void addNode(gene * head, double nodeChance, double muscleChance, double boneChance); //*
+void removeNode(gene * head, double removeChance);
+
+void addConnection(gene * head, double addChance);
+void removeConnection(gene * head, double addChance);
+void swapConnection(gene * head, double swapChance);
+
+void varifyGenome(gene * head);
+
+
+#endif // MUTATIONS_H_INCLUDED

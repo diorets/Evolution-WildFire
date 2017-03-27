@@ -1,0 +1,21 @@
+#include "ErrorHandle/error.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+#define write(a) printf(a)
+// Exit failure is default
+void quit(int code, int line, const char * file) {
+    switch(code) {
+        case NORMAL_EXIT:
+            exit(EXIT_SUCCESS);
+        case MALLOC_ERROR:
+            //write(("MEMORY ALLOCATION FAILURE: %d, %s", line, file));
+            break;
+        default:
+            //write(("UNKNOWN FAILURE: %d, %s", line, file));
+            break;
+
+    }
+    exit(EXIT_FAILURE);
+
+}

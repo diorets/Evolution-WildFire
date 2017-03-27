@@ -588,11 +588,9 @@ void recordGenImpact(creature * population) {
 
 #include "Generation/genes.h"
 void recordEveryGenome(creature * population, int step) {
-    FILE * fptr = fopen("../assets/fitnesses.txt", "a");
     for (int i = 0; i < genSize; i += step) {
         saveGenome(population, i, population[i].distance);
     }
-    fclose(fptr);
     return;
 }
 

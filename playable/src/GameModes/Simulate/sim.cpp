@@ -574,7 +574,7 @@ void recordEveryGenome(creature * population, int step) {
 }
 
 void newGeneration() {
-    recordEveryGenome(specimen, 50);
+    recordEveryGenome(specimen, 10);
 
     int * ordered = orderedDist(specimen);
     pruneAndFill(ordered, specimen);

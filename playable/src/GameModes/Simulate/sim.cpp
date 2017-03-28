@@ -563,29 +563,73 @@ void recordGenFitness(creature * population) {
     return;
 }
 
+void printStats(FILE * fptr, creature * samples, double avg, int len) {
+    double plusSD = 0.0;
+    double minusSD = 0.0;
+
+    /* Mean */
+    double meanImpact = 0.0;
+    for (int i = 0; i < len; i++) {
+        double impact = samples[i].distance - avg;
+        meanImpact += impact;
+    }
+    meanImpact /= len;
+
+    /* +SD */
+    double standardDeviation = 0.0;
+    int counter = 0;
+    for (int i = 0; i < len; i++) {
+        if (samples[i].distance > avg) { // If increased
+            double impact = samples[i].distance - avg;
+            standardDeviation += pow(impact - meanImpact, 2);
+            counter++;
+        }
+    }
+    if (counter <= 1) plusSD = -1.0;
+    plusSD =  sqrt(standardDeviation/(counter - 1));
+
+
+    /* -SD */
+    standardDeviation = 0.0;
+    counter = 0;
+    for (int i = 0; i < len; i++) {
+        if (samples[i].distance < avg) {
+            double impact = samples[i].distance - avg;
+            standardDeviation += pow(impact - meanImpact, 2);
+            counter++;
+        }
+    }
+    if (counter <= 1) minusSD = -1.0;
+    minusSD =  sqrt(standardDeviation/(counter - 1));
+
+    fprintf(fptr, "%f %f %f\n", meanImpact, plusSD, minusSD);
+    return;
+}
 
 bool recordGenImpact(creature * population) {
-    //static bool reset = false;
     FILE * fptr = fopen("../assets/fitnesses.txt", "a");
-
-    float avg = 0.0;
-    for (int i = 0; i < genSize; i++) {
-        avg += population[i].distance;
-    }
-    avg /= genSize;
-
+    static float avg = 0.0;
     if (gen % 2 == 0) {
+        for (int i = 0; i < genSize; i++) {
+            avg += population[i].distance;
+        }
+        avg /= genSize;
+
         fprintf(fptr, "%f ", avg);
         fclose(fptr);
-        //reset = true;
+        return false;
     } else {
-        fprintf(fptr, "%f\n", avg);
+        printStats(fptr, population, avg, genSize);
+//        for (int i = 0; i < genSize; i++) {
+//            if (fabs(avg - population[i].distance) > 0.000001 ) { // Creature had mutation that affected fitness. I assume this means all mutations.
+//                fprintf(fptr, "%f ", population[i].distance);
+//            }
+//        }
+        //fprintf(fptr, "\n");
         fclose(fptr);
-        //reset = false;
-        newGameMode(simMode);
         return true;
     }
-    return false;
+
 }
 
 #include "Generation/genes.h"
@@ -598,9 +642,9 @@ void recordEveryGenome(creature * population, int step) {
 
 void newGeneration() {
     if (recordGenImpact(specimen)) {
+        newGameMode(simMode);
         return; // So that we dont continue to modify the new population
     }
-    printf("Past recordGenImpact");
     int * ordered = orderedDist(specimen);
     pruneAndFill(ordered, specimen);
     if (ordered != NULL) {

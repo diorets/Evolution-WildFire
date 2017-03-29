@@ -570,6 +570,8 @@ void printStats(FILE * fptr, creature * samples, double avg, int len) {
     /* Mean */
     double meanImpact = 0.0;
     for (int i = 0; i < len; i++) {
+        if (samples[i].distance > 2000) continue; // Must be error
+        if (samples[i].distance <    0) continue; // Is error
         double impact = samples[i].distance - avg;
         meanImpact += impact;
     }
@@ -580,6 +582,8 @@ void printStats(FILE * fptr, creature * samples, double avg, int len) {
     int counter = 0;
     for (int i = 0; i < len; i++) {
         if (samples[i].distance > avg) { // If increased
+            if (samples[i].distance > 2000) continue; // Must be error
+            if (samples[i].distance <    0) continue; // Is error
             double impact = samples[i].distance - avg;
             standardDeviation += pow(impact - meanImpact, 2);
             counter++;
@@ -594,6 +598,8 @@ void printStats(FILE * fptr, creature * samples, double avg, int len) {
     counter = 0;
     for (int i = 0; i < len; i++) {
         if (samples[i].distance < avg) {
+            if (samples[i].distance > 2000) continue; // Must be error
+            if (samples[i].distance <    0) continue; // Is error
             double impact = samples[i].distance - avg;
             standardDeviation += pow(impact - meanImpact, 2);
             counter++;
@@ -611,6 +617,8 @@ bool recordGenImpact(creature * population) {
     static float avg = 0.0;
     if (gen % 2 == 0) {
         for (int i = 0; i < genSize; i++) {
+            if (samples[i].distance > 2000) continue; // Must be error
+            if (samples[i].distance <    0) continue; // Is error
             avg += population[i].distance;
         }
         avg /= genSize;

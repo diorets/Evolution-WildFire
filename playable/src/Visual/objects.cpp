@@ -68,7 +68,10 @@ void drawCreature(creature individual, bool skin) {
     for (int i = 0; i < sizes[bon]; i++) {
         int a = individual.bones[i].a;
         int b = individual.bones[i].b;
-        if (a == b) quit(GENOME_ERROR); // Do I need this check?
+        if (a == b) {
+                printf("%d, %d\n", a, b);
+                quit(GENOME_ERROR); // Do I need this check?
+        }
         posi locA = individual.nodes[a].loc;
         posi locB = individual.nodes[b].loc;
         drawCylinder(locA.x, locA.y, locA.z,
@@ -81,7 +84,10 @@ void drawCreature(creature individual, bool skin) {
     for (int i = 0; i < sizes[mus]; i++) {
         int a = individual.muscles[i].a;
         int b = individual.muscles[i].b;
-        if (a == b) quit(GENOME_ERROR);
+        if (a == b) {
+                printf("%d, %d\n", a, b);
+                quit(GENOME_ERROR); // Do I need this check?
+        }
         posi locA = individual.nodes[a].loc;
         posi locB = individual.nodes[b].loc;
         float expansivity = individual.muscles[i].origLength / euc(locA, locB);

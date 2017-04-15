@@ -22,12 +22,7 @@ void menuOptions() {
         if (bound(mousePos.x, mousePos.y, x1, y1, x2, y2)) {
             switch(j) {
                 case 0: newGameMode(simMode);break;
-                case 1: break;
-                case 2: break;
-                case 3: break;
-                case 4: break;
-                case 5: break;
-                case 6: quit(NORMAL_EXIT); break;
+                case 1: quit(NORMAL_EXIT); break;
                 default: break;
             }
             break;

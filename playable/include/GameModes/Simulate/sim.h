@@ -1,8 +1,6 @@
 #ifndef SIM_H_INCLUDED
 #define SIM_H_INCLUDED
 
-// MUST BE 9000
-#define MAX_TIME 9000
 #define FRAME_SLEEP 10
 
 void simulationMode();

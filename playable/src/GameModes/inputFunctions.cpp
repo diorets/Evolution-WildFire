@@ -16,16 +16,16 @@ void newGameMode(int mode) {
         case simMode:
             endSong("menuSong");
             keyPressed('o', 0, 0);
+            keyStates['o'] = false;
 //            playBackSpeed = 2;
-            simTime = 0;
-            gen = 0;
-            id = 0;
-            initiatePopulation(data[0], data[1], data[2], data[3], false);
-//          initiatePopulation(5, 5, 5, 5 * HIDDEN_LAYER_SIZE * 2, false);
+            //simTime = 0;
+            //gen = 0;
+            //id = 0;
+            //initiatePopulation(data[0], data[1], data[2], data[3], false);
             break;
         case startMode:
             break;
-        default: return;
+        default: break;
     }
     return;
 }

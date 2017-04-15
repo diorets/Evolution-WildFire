@@ -46,10 +46,9 @@ posi writeParagraph1(const char * str1, int x, int y, double letterHeight) {
 }
 
 
-void drawMenu(const char * str, const char * keys, int numOptions, int ox, int oy) {
+void drawMenu(const char * str, const char * keys, int ox, int oy) {
     int letterHeight = 30;
     posi last = writeParagraph1(str, ox, oy, letterHeight);
-//    write("%d, %f", 100, 100, last.x);
     glColor3f(BROWN);
     drawSquare(ox - last.x / 2 - 20,     oy - letterHeight ,
                ox + last.x / 2 + 55    , last.y - letterHeight / 2,
@@ -61,6 +60,13 @@ void drawMenu(const char * str, const char * keys, int numOptions, int ox, int o
     writeParagraph(keys, ox + last.x / 2 + 12 * 2.7, oy, letterHeight);
 
     glColor4f(BLUE, 0.5);
+    int numOptions = 0;
+    for (unsigned int i = 0; i < strlen(str); i++) {
+        if (str[i] == '\n') {
+            numOptions++;
+        }
+    }
+
     for (int j = 0; j < numOptions; j++) {
         int x1 = ox - last.x / 2  - 20;
         int y1 = (oy - letterHeight + (j + 1) * letterHeight - letterHeight) * 1.015;

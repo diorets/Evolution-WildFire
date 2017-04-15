@@ -19,75 +19,53 @@
 double selectionPower = 0.5;
 
 void newGenScreen();
-#include "Math/distribution.h"
-#define PI 3.141592653589793
-
-double box(double x) {
-    return x <= selectionPower ? 1 : 0;
-}
-
-double bimodal(double x) {
-    return pow(1 - x, 27.5) * sin(PI* x) + 0.01 * exp(-500 * (x-selectionPower) * (x-selectionPower));
-}
-
-double skewedUnimodal(double x) {
-    return pow(1 - x, selectionPower) * sin(PI* x);
-}
-
-double powerOfUniform(double power) {
-    return (genSize * pow(randf(1.0), power)); // number from random distribution
-}
-
-double selectionDistribution() {
-    return getDistribution(box, genSize, selectionPower);
-}
 
 
 void simulationMode() {
-    static bool initializing = true;
-    if (initializing) {
-        globalData = (generic*) malloc(sizeof(generic) * 10); // Increment me!
-        if (globalData == NULL) quit(MALLOC_ERROR);
-        globalData[skipE].b          = false;
-        globalData[debugE].b         = false;
-        globalData[instructionsE].b  = false; // Controls
-        globalData[graphE].b         = false;
-        globalData[howToE].i         = 0; //1 for intro
-        globalData[goThroughGenE].b  = false;
-        globalData[simPositionE].i   = 0; // 0 Sim, 1 Mut
-        globalData[timeGenScreenE].b = false;
-        globalData[displaySkinE].b   = false;
-        globalData[quickGenE].i      = 0;
-        initializing = false;
-    }
-
-    if (simTime % 1000 == 0) {
-        sleep_ms(processSlowDown);
-    }
-
-    if (globalData[simPositionE].i == 0) {
-        if (display && !globalData[skipE].b && !globalData[quickGenE].i) draw();
-        if (!simulate())         newCreature(true);
-        if (simTime == MAX_TIME) newCreature(false);
-        if (id      == genSize)  newGeneration();
-    } else {
-        globalData[simPositionE].i = 0;
-        if (dataCollection == 0) {
-            newGenScreen();
-        }
-    }
-
-    if (globalData[quickGenE].i > 0) {
-        if (simTime == 8000) {
-            glutDrawing();
-            enable2D();
-            glColor3f(BLACK);
-            write("Generation: %d, (%%%.2f) of current, %d Generations remaining", 500, 500, gen,100 * (id) / ((double) genSize), globalData[quickGenE].i);
-            reenable3D();
-            glutSwapBuffers();
-        }
-    }
-    return;
+//    static bool initializing = true;
+//    if (initializing) {
+//        globalData = (generic*) malloc(sizeof(generic) * 10); // Increment me!
+//        if (globalData == NULL) quit(MALLOC_ERROR);
+//        globalData[skipE].b          = false;
+//        globalData[debugE].b         = false;
+//        globalData[instructionsE].b  = false; // Controls
+//        globalData[graphE].b         = false;
+//        globalData[howToE].i         = 0; //1 for intro
+//        globalData[goThroughGenE].b  = false;
+//        globalData[simPositionE].i   = 0; // 0 Sim, 1 Mut
+//        globalData[timeGenScreenE].b = false;
+//        globalData[displaySkinE].b   = false;
+//        globalData[quickGenE].i      = 0;
+//        initializing = false;
+//    }
+//
+//    if (simTime % 1000 == 0) {
+//        sleep_ms(processSlowDown);
+//    }
+//
+//    if (globalData[simPositionE].i == 0) {
+//        if (display && !globalData[skipE].b && !globalData[quickGenE].i) draw();
+//        if (!simulate())         newCreature(true);
+//        if (simTime == MAX_TIME) newCreature(false);
+//        if (id      == genSize)  newGeneration();
+//    } else {
+//        globalData[simPositionE].i = 0;
+//        if (dataCollection == 0) {
+//            newGenScreen();
+//        }
+//    }
+//
+//    if (globalData[quickGenE].i > 0) {
+//        if (simTime == 8000) {
+//            glutDrawing();
+//            enable2D();
+//            glColor3f(BLACK);
+//            write("Generation: %d, (%%%.2f) of current, %d Generations remaining", 500, 500, gen,100 * (id) / ((double) genSize), globalData[quickGenE].i);
+//            reenable3D();
+//            glutSwapBuffers();
+//        }
+//    }
+//    return;
 }
 
 
@@ -120,20 +98,20 @@ void newGenScreen() {
     double avgNodes   = 0.0;
     double avgMuscles = 0.0;
     double avgBones   = 0.0;
-    for (int i = 0; i < genSize; i++) {
-        FOR_ALL(specimen[i].genome, 'n') {
-            avgNodes++;
-        }
-        FOR_ALL(specimen[i].genome, 'm') {
-            avgMuscles++;
-        }
-        FOR_ALL(specimen[i].genome, 'b') {
-            avgBones++;
-        }
-    }
-    avgNodes   /= (double) genSize;
-    avgMuscles /= (double) genSize;
-    avgBones   /= (double) genSize;
+//    for (int i = 0; i < genSize; i++) {
+//        FOR_ALL(specimen[i].genome, 'n') {
+//            avgNodes++;
+//        }
+//        FOR_ALL(specimen[i].genome, 'm') {
+//            avgMuscles++;
+//        }
+//        FOR_ALL(specimen[i].genome, 'b') {
+//            avgBones++;
+//        }
+//    }
+//    avgNodes   /= (double) genSize;
+//    avgMuscles /= (double) genSize;
+//    avgBones   /= (double) genSize;
     write(" Average Number of Parts    : %.2f", wx * 0.55, last1 + 50 + 24 * 1, avgNodes + avgMuscles + avgBones);
     write("Average Number of Nodes   : %.2f",   wx * 0.55, last1 + 50 + 24 * 2, avgNodes);
     write(" Average Number of Muscles : %.2f",  wx * 0.55, last1 + 50 + 24 * 3, avgMuscles);
@@ -307,61 +285,52 @@ void newGenScreen() {
 
 
 void lowerCreature() { // This can be made faster (find lowest, calc dis, sub all)
-    bool rightPlace = false; // needs to account for world rotation
-    int len = specimen[id].genome->iData[nod];
-    while (true) {
-        for (int i = 0; i < len; i++) {
-            specimen[id].nodes[i].loc.z -= 0.01;
-            if (specimen[id].nodes[i].loc.z <= 0.75 + 0.1) {
-                rightPlace = true;
-            }
-        }
-        if (rightPlace) break;
-    }
+//    bool rightPlace = false; // needs to account for world rotation
+//    int len = specimen[id].genome->iData[nod];
+//    while (true) {
+//        for (int i = 0; i < len; i++) {
+//            specimen[id].nodes[i].loc.z -= 0.01;
+//            if (specimen[id].nodes[i].loc.z <= 0.75 + 0.1) {
+//                rightPlace = true;
+//            }
+//        }
+//        if (rightPlace) break;
+//    }
     return;
 }
 
 bool simulate() {
-    if (simTime == 0) {
-//        lowerCreature(); // doesnt account for world rotation
-	}
-    if (updateCreature(&specimen[id + 0], simTime)) return false; // Error
-//    if (simTime == (int)(MAX_TIME * 0.2)) { // Give a few seconds to fall over
-//        specimen[id].origin = getCom(specimen[id]);
-//    }
-    simTime++;
+//    if (simTime == 0) {
+////        lowerCreature(); // doesnt account for world rotation
+//	}
+//    if (updateCreature(&specimen[id + 0], simTime)) return false; // Error
+////    if (simTime == (int)(MAX_TIME * 0.2)) { // Give a few seconds to fall over
+////        specimen[id].origin = getCom(specimen[id]);
+////    }
+//    simTime++;
     return true;
 }
 
 
-double getFitness(posi com) {
-    enum {planeDistance, upHill, downHill};
-    int measure = environment[1];
-    switch (measure) {
-        case planeDistance : return euc2D(com, specimen[id].origin);
-        case upHill        : return -sgn(environment[0]) * (com.x - specimen[id].origin.x);
-        case downHill      : return sgn(environment[0]) * (com.x - specimen[id].origin.x);
-        default : return euc2D(com, specimen[id].origin);
-    }
-}
+
 
 void newCreature(bool error) {
-
-    /* Get Distances */
-    if (!error) specimen[id].distance = getFitness(getCom(specimen[id]));
-    else {
-        static int numErrors = 0; numErrors++;
-        specimen[id].distance = -0.0;
-        printf("Error %d\n", numErrors);
-    }
-
-    /* Go To Next Creature */
-    simTime = 0;
-    id++;
-
-    if (globalData[skipE].b) {
-        globalData[skipE].b = false;
-    }
+if (error) return;
+//    /* Get Distances */
+//    if (!error) specimen[id].fitness = getFitness(getCom(specimen[id]));
+//    else {
+//        static int numErrors = 0; numErrors++;
+//        specimen[id].fitness = -0.0;
+//        printf("Error %d\n", numErrors);
+//    }
+//
+//    /* Go To Next Creature */
+//    simTime = 0;
+//    id++;
+//
+//    if (globalData[skipE].b) {
+//        globalData[skipE].b = false;
+//    }
     return;
 }
 
@@ -389,7 +358,7 @@ void newCreature(bool error) {
 
 
 #include <float.h>
-int * orderedDist(creature * group) {
+int * orderedDist(creature * group, int genSize) {
     ord * dist    = (ord*) malloc(sizeof(ord) * genSize);
     int * orderedIDs = (int*) malloc(sizeof(int) * genSize);
 
@@ -402,7 +371,7 @@ int * orderedDist(creature * group) {
 
 /* Use Dummy so as to not overwrite */
     for (int i = 0; i < genSize; i++) {
-        dist[i].unord = group[i].distance;
+        dist[i].unord = group[i].fitness;
     }
 
 /* Get the Organized Array */
@@ -423,7 +392,7 @@ int * orderedDist(creature * group) {
 
 /* Use Dummy so as to not overwrite */
     for (int i = 0; i < genSize; i++) {
-        dist[i].unord = group[i].distance;
+        dist[i].unord = group[i].fitness;
     }
 
 /* Record id.copie in order of highest distance */
@@ -472,171 +441,6 @@ int * orderedDist(creature * group) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-#include "Functional/list.h"
-
-int getRandomID(int * orderedPop) {
-    int genomeID = (int) selectionDistribution();
-    genomeID = genomeID >= genSize ? genSize - 1: genomeID;
-    genomeID = genomeID  < 0       ?           0: genomeID;
-    return orderedPop[genomeID];
-}
-
-gene * getGenome(int genomeID, creature * population) {
-    gene * genome = (gene*) malloc(sizeof(gene) * population[genomeID].genome->iData[tot]);
-    gene * head = genome;
-    if (genome == NULL) quit(MALLOC_ERROR);
-
-    gene * curr = population[genomeID].genome;
-
-    while (curr) {
-        copyGene(genome, curr);
-
-        curr  = curr->next;
-        genome = genome->next;
-    }
-    return head;
-}
-
-void pruneAndFill(int * orderedPop, creature * population) {
-    gene ** temp = (gene**) malloc(sizeof(gene*) * genSize);
-
-    // Fill temp with random genomes
-    for (int i = 0; i < genSize; i++) {
-        temp[i] = getGenome(getRandomID(orderedPop), population);
-    }
-
-    // Clear Population
-    for (int i = 0; i < genSize; i++) {
-        population[i].genome = clearGenome(population[i].genome);
-    }
-
-    // Populate Population
-    for (int i = 0; i < genSize; i++) {
-        population[i].genome = (gene*) malloc(sizeof(gene));
-        if (population[i].genome == NULL) quit(MALLOC_ERROR);
-        gene * replaceGene  = population[i].genome;
-        gene * fillWithGene = temp[i];
-
-        if (fillWithGene == NULL) quit(MALLOC_ERROR);
-
-        /* Copy the Genome */
-        while (fillWithGene) {
-            copyGene(replaceGene, fillWithGene);
-
-            replaceGene  = replaceGene->next;
-            fillWithGene = fillWithGene->next;
-        }
-    }
-
-    /* Free Temp */
-    for (int i = 0; i < genSize; i++) {
-        if (temp[i] != NULL) {
-            temp[i] = clearGenome(temp[i]);
-        }
-    }
-    free(temp);
-    return;
-}
-
-void recordGenFitness(creature * population) {
-    FILE * fptr = fopen("../assets/fitnesses.txt", "a");
-
-    float avg = 0.0;
-    for (int i = 0; i < genSize; i++) {
-        avg += population[i].distance;
-    }
-    avg /= genSize;
-    fprintf(fptr, "%f\n", avg);
-    fclose(fptr);
-    return;
-}
-
-void newGeneration() {
-//    recordGenFitness(specimen);
-
-    int * ordered = orderedDist(specimen);
-    pruneAndFill(ordered, specimen);
-    if (ordered != NULL) {
-        free(ordered);
-    }
-
-//    /* Duplicate */
-//    int * toDup = orderDistances(specimen); // Problem
-//    duplicate(toDup, specimen);
-//    if (toDup != NULL) free(toDup);
-
-    if (dataCollection == 5) {
-        /* Each line in file represents the fitness after MAXGENERATIONS generations.
-            Each set of lines delimited by "=== New Point Data..." is NUMSAMEPLEPOINTS 'fitness after MAXGENERATIONS' trials.
-        */
-        int maxGenerations = 30; // MUST BE 30
-        int maxSamplePoints = 40; maxSamplePoints--; // correction, should be 40
-        if (gen >= maxGenerations) { // corresponds to a single entry in excel
-            static int numResets = 0;
-            int numPoints = numResets / maxSamplePoints;
-            int numSamplePoints = numResets % maxSamplePoints;
-            recordGenFitness(specimen);
-
-            if ((numResets > 0) && (numResets % maxSamplePoints == 0)) { // corresponds to a colum in excel
-                selectionPower -= 0.1;
-//                if (selectionPower < 15) {
-//                    selectionPower += 5;
-//                } else {
-//                    selectionPower += 1;
-//                }
-            }
-            printf("(Points, power, pointSampleNumber) = (%d, %.2f, %d)\n",
-                    numPoints,
-                    selectionPower,
-                    numSamplePoints
-            );
-            if ((numResets > 0) && (numResets % maxSamplePoints == 0)) { // corresponds to a colum in excel
-                FILE * fptr = fopen("../assets/fitnesses.txt", "a");
-                fprintf(fptr, "=== New Point Data (power = %.2f) ===========\n", selectionPower);
-                fclose(fptr);
-            }
-
-
-            newGameMode(simMode);
-            numResets++;
-        }
-    }
-
-    /* Create New Generation */
-    for (int i = 0; i < genSize; i++) {
-        specimen[i].distance = 0.0;
-        mutateGenome(&specimen[i]);
-        createCreature(&specimen[i]);
-    }
-    /* Go To Next Generation */
-    id = 0;
-    gen++;
-    if (globalData[goThroughGenE].b) {
-        globalData[goThroughGenE].b = false;
-        setPlayBackSpeed(2);
-    }
-    if (globalData[simPositionE].i == 0) {
-        globalData[simPositionE].i = 1;
-    }
-    if (globalData[quickGenE].i > 0) {
-        globalData[quickGenE].i --;
-        globalData[simPositionE].i = 0;
-    }
-    if (globalData[quickGenE].i == 0) glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
-    return;
-}
 
 
 

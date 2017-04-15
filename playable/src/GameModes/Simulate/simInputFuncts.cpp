@@ -16,40 +16,40 @@ void nextIntroMessage() {
 }
 
 void mutateChange() {
-    /* Modify Mutation Rates */
-    for (int i = 0; i < 9; i++) {
-        /* Handle Spaces Between Text */
-        if ((i == 2) || (i == 5)) continue;
-        int shift = i > 2;
-        shift += i > 5;
-
-        /* Get Starting Position of Options */
-        double last1 = writeParagraph("Now, you must decide how to pick the next generation\n"
-                   "How would you like to mutate them? Can you evolve a fast creature with 6 nodes?"
-                   "", wx / 2, wy * 0.13, 24);
-        last1 *= 1.2;
-        int x1 = wx * 0.17;
-        int x2 = wx * 0.23;
-        int y =  last1 + 24 * (i + 4) - 5;
-        int r = 11;
-
-
-        /* Check and Apply Clicks */
-        if (bound(mousePos.x, mousePos.y, x1-r, y-r, x1+r, y+r)) { // Inc value
-            for (int j = 0; j < genSize; j++) {
-                if (specimen[j].genome->fData[i - shift] > 0.01) {
-                    specimen[j].genome->fData[i - shift] *= 0.7;
-                }
-            }
-        }
-        if (bound(mousePos.x, mousePos.y, x2-r, y-r, x2+r, y+r)) { // Dec value
-            for (int j = 0; j < genSize; j++) {
-                if (specimen[j].genome->fData[i - shift] < 100) {
-                    specimen[j].genome->fData[i - shift] *= 1.3;
-                }
-            }
-        }
-    }
+//    /* Modify Mutation Rates */
+//    for (int i = 0; i < 9; i++) {
+//        /* Handle Spaces Between Text */
+//        if ((i == 2) || (i == 5)) continue;
+//        int shift = i > 2;
+//        shift += i > 5;
+//
+//        /* Get Starting Position of Options */
+//        double last1 = writeParagraph("Now, you must decide how to pick the next generation\n"
+//                   "How would you like to mutate them? Can you evolve a fast creature with 6 nodes?"
+//                   "", wx / 2, wy * 0.13, 24);
+//        last1 *= 1.2;
+//        int x1 = wx * 0.17;
+//        int x2 = wx * 0.23;
+//        int y =  last1 + 24 * (i + 4) - 5;
+//        int r = 11;
+//
+//
+//        /* Check and Apply Clicks */
+//        if (bound(mousePos.x, mousePos.y, x1-r, y-r, x1+r, y+r)) { // Inc value
+//            for (int j = 0; j < genSize; j++) {
+//                if (specimen[j].genome->fData[i - shift] > 0.01) {
+//                    specimen[j].genome->fData[i - shift] *= 0.7;
+//                }
+//            }
+//        }
+//        if (bound(mousePos.x, mousePos.y, x2-r, y-r, x2+r, y+r)) { // Dec value
+//            for (int j = 0; j < genSize; j++) {
+//                if (specimen[j].genome->fData[i - shift] < 100) {
+//                    specimen[j].genome->fData[i - shift] *= 1.3;
+//                }
+//            }
+//        }
+//    }
     return;
 }
 

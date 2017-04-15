@@ -35,6 +35,9 @@ conn goodConnection(gene * head) {
 
         /* Valid Connection Found */
         if (validConn) {
+            if (a == b) {
+                quit(GENOME_ERROR);
+            }
             conn validCon;
             validCon.a = a;
             validCon.b = b;
@@ -366,40 +369,40 @@ void printGenome(int index, bool connection, bool location) {
 }
 
 void saveGenome() {
-    FILE * fptr = fopen("genomes.txt", "a");
-    fprintf(fptr, "Generation %d\n", gen);
-    for (int j = 0; j < genSize; j++) {
-        fprintf(fptr, "\t%d:", j);
-        for (gene * current = specimen[j].genome; current != NULL; current = current->next) {
-            fprintf(fptr, "|%c|", current->start);
-            switch (current->start) {
-                case 'i':
-                    for (int i = 1; i < 6; i++) {
-                        fprintf(fptr, "%d", current->iData[i]);
-                        if (i != 5) {
-                            fprintf(fptr, ",");
-                        }
-                    }
-                case 'n':
-                    for (int i = 0; i < 5; i++) {
-                        fprintf(fptr, "%f", current->fData[i]);
-                        if (i != 4) {
-                            fprintf(fptr, ",");
-                        }
-                    }
-                    break;
-                case 'm':
-                    fprintf(fptr, "(%d, %d)", current->iData[0], current->iData[1]);
-                    break;
-                case 'b':
-                    fprintf(fptr, "(%d, %d)", current->iData[0], current->iData[1]);
-                    break;
-                default: fprintf(fptr, "ERROR");
-            }
-        }
-        fprintf(fptr, "\n");
-    }
-    fclose(fptr);
+//    FILE * fptr = fopen("genomes.txt", "a");
+//    fprintf(fptr, "Generation %d\n", gen);
+//    for (int j = 0; j < genSize; j++) {
+//        fprintf(fptr, "\t%d:", j);
+//        for (gene * current = specimen[j].genome; current != NULL; current = current->next) {
+//            fprintf(fptr, "|%c|", current->start);
+//            switch (current->start) {
+//                case 'i':
+//                    for (int i = 1; i < 6; i++) {
+//                        fprintf(fptr, "%d", current->iData[i]);
+//                        if (i != 5) {
+//                            fprintf(fptr, ",");
+//                        }
+//                    }
+//                case 'n':
+//                    for (int i = 0; i < 5; i++) {
+//                        fprintf(fptr, "%f", current->fData[i]);
+//                        if (i != 4) {
+//                            fprintf(fptr, ",");
+//                        }
+//                    }
+//                    break;
+//                case 'm':
+//                    fprintf(fptr, "(%d, %d)", current->iData[0], current->iData[1]);
+//                    break;
+//                case 'b':
+//                    fprintf(fptr, "(%d, %d)", current->iData[0], current->iData[1]);
+//                    break;
+//                default: fprintf(fptr, "ERROR");
+//            }
+//        }
+//        fprintf(fptr, "\n");
+//    }
+//    fclose(fptr);
     return;
 }
 

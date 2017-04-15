@@ -66,10 +66,8 @@
 		<Unit filename="include/Functional/music.h" />
 		<Unit filename="include/Functional/neuralNet.h" />
 		<Unit filename="include/Functional/sleep.h" />
-		<Unit filename="include/GameModes/Editor/editor.h" />
 		<Unit filename="include/GameModes/MainMenu/menu.h" />
 		<Unit filename="include/GameModes/MainMenu/menuInputFuncts.h" />
-		<Unit filename="include/GameModes/Mutation/mut.h" />
 		<Unit filename="include/GameModes/Simulate/all.h" />
 		<Unit filename="include/GameModes/Simulate/drawing.h" />
 		<Unit filename="include/GameModes/Simulate/sim.h" />
@@ -99,10 +97,8 @@
 		<Unit filename="src/Functional/music.cpp" />
 		<Unit filename="src/Functional/neuralNet.cpp" />
 		<Unit filename="src/Functional/sleep.cpp" />
-		<Unit filename="src/GameModes/Editor/edit.cpp" />
 		<Unit filename="src/GameModes/MainMenu/menu.cpp" />
 		<Unit filename="src/GameModes/MainMenu/menuInputFuncts.cpp" />
-		<Unit filename="src/GameModes/Mutation/mut.cpp" />
 		<Unit filename="src/GameModes/Simulate/drawing.cpp" />
 		<Unit filename="src/GameModes/Simulate/sim.cpp" />
 		<Unit filename="src/GameModes/Simulate/simInputFuncts.cpp" />

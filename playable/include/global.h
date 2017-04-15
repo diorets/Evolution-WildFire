@@ -11,7 +11,6 @@ extern bool person;
 extern bool lights;
 extern bool display;
 extern int  gameMode;
-extern int  genSize;
 extern int  wx;
 extern int  wy;
 
@@ -38,9 +37,6 @@ extern bool* keyStates;
 
 // Simulator Variables
 extern double * environment;
-extern int simTime;
-extern int gen;
-extern int id;
 
 extern creature * specimen;
 extern generic * globalData;

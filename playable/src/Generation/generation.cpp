@@ -8,17 +8,17 @@
 #include "ErrorHandle/error.h" // Quit
 
 gene* createGenome(gene * head, int a, int b, int c, int d) {
-    switch (dataCollection) {
-        case 1:
-        case 2:
-        case 3:
-            if (data[4] != -1) {
-                srand(data[4]);
-            }
-            break;
-        default:
-            break;
-    }
+//    switch (dataCollection) {
+//        case 1:
+//        case 2:
+//        case 3:
+//            if (data[4] != -1) {
+//                srand(data[4]);
+//            }
+//            break;
+//        default:
+//            break;
+//    }
     if (b + c > comb(a)) quit(GENOME_ERROR);
     /* Creating Genome */
     head = infoGene(a, b, c, d);
@@ -107,6 +107,7 @@ void createCreature(creature * newBorn) {
         currentGenome = currentGenome->next;
     }
     newBorn->origin = getCom(*newBorn);
+    newBorn->fitness= 0.0;
     // Add a check here for valid creature
     return;
 }

@@ -13,6 +13,7 @@
 #include "Functional/list.h"
 #include <stdio.h>
 void initiatePopulation(int a, int b, int c, int d, bool print) {
+    int genSize = 1000;
     /* Allocate Specimen if not yet allocated */
     if (specimen == NULL) {
         specimen = (creature*) malloc(sizeof(creature) * genSize);
@@ -30,7 +31,7 @@ void initiatePopulation(int a, int b, int c, int d, bool print) {
             quit(GENOME_ERROR);
         }
         specimen[i].genome = createGenome(specimen[i].genome, a, b, c, d);
-        specimen[i].distance = 0.0;
+        specimen[i].fitness = 0.0;
         createCreature(&specimen[i]);
     }
 

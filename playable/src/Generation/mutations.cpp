@@ -17,24 +17,24 @@ void modifyWeights(gene * head, double modifyChance) {
 #include "global.h"
 #include <stdio.h>
 void mutateGenome(creature * toMutate) {
-    switch (dataCollection) {
-        case 1:
-            static int i = 0;
-            if (gen == (int) ceil(log(genSize)/log(2))) { // When we establish the best of 10,000. gen == ceil(ln(genSize)/ln(2))
-                FOR_ALL(toMutate->genome, 'n') {
-                    current->fData[xposi] =  -CAGESIZE + (2 * CAGESIZE * i /(double) genSize);
-                    break;
-                }
-                i++;
-            }
-            return;
-        case 2:
-            addNode      (toMutate->genome, 100, 15,  15);
-            varifyGenome    (toMutate->genome);
-            return;
-        default:
-            break;
-    }
+//    switch (dataCollection) {
+//        case 1:
+//            static int i = 0;
+//            if (gen == (int) ceil(log(genSize)/log(2))) { // When we establish the best of 10,000. gen == ceil(ln(genSize)/ln(2))
+//                FOR_ALL(toMutate->genome, 'n') {
+//                    current->fData[xposi] =  -CAGESIZE + (2 * CAGESIZE * i /(double) genSize);
+//                    break;
+//                }
+//                i++;
+//            }
+//            return;
+//        case 2:
+//            addNode      (toMutate->genome, 100, 15,  15);
+//            varifyGenome    (toMutate->genome);
+//            return;
+//        default:
+//            break;
+//    }
 
 
 
@@ -221,7 +221,7 @@ void addConnection(gene * head, double addChance) {
         conn connection = goodConnection(head);
         if (chance(50)) {
             if (head->iData[mus] >= MAX_ELEMENTS) return;
-            addAxons(head, head->iData[mus]);
+            //addAxons(head, head->iData[mus]);
             addToBack(head, muscleGene(connection.a, connection.b));
             head->iData[tot]++;
             head->iData[mus]++;
@@ -265,7 +265,7 @@ void removeConnection(gene * head, double addChance) {
             int muscleNum = 0;
             FOR_ALL(head, 'm') {
                 if (muscleNum == toRemove) {
-                    reduceAxons(head, muscleNum--);
+                    //reduceAxons(head, muscleNum--);
                     removeItem(head, current);
                     head->iData[tot]--;
                     head->iData[mus]--;
@@ -305,6 +305,30 @@ void removeConnection(gene * head, double addChance) {
                 i++;
             }
         }
+    }
+
+    int numNodes = head->iData[nod];
+    int needed[numNodes];
+    for (int i = 0; i < numNodes; i++) {
+        needed[i] = i;
+    }
+    FOR_ALL_GENES(head) if (current->start == 'm' || current->start == 'b') {
+        needed[current->iData[0]] = -1;
+        needed[current->iData[1]] = -1;
+    }
+
+
+    /* Remove Node */
+    int nodeNum = 0;
+    FOR_ALL(head, 'n') {
+        if (needed[i] == -1) continue;
+        if (nodeNum == needed[i]) {
+            removeItem(head, current);
+            head->iData[tot]--;
+            head->iData[nod]--;
+            break;
+        }
+        nodeNum++;
     }
     return;
 }

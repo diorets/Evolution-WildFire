@@ -11,6 +11,7 @@
 #include "Functional/sleep.h"
 
 void genDisGraph(double avg, bool adding) {
+    int gen = 500; // TEMPORARY
     /* Initialize */
     static double *dis = NULL;
     static double maxDis = 0.0;
@@ -82,167 +83,167 @@ void normalRecord(float avg) {
     return;
 }
 
-void initialPopTest(ord * dist) {
-    FILE * fptr = fopen("../assets/fitnesses.txt", "a");
-    for (int i = 0; i < genSize; i++) {
-        fprintf(fptr, "%f\n", dist[i].unord);
-    }
-    fclose(fptr);
-    quit_(0000, __LINE__, __FILE__);
-    return;
-}
+//void initialPopTest(ord * dist) {
+//    FILE * fptr = fopen("../assets/fitnesses.txt", "a");
+//    for (int i = 0; i < genSize; i++) {
+//        fprintf(fptr, "%f\n", dist[i].unord);
+//    }
+//    fclose(fptr);
+//    quit_(0000, __LINE__, __FILE__);
+//    return;
+//}
 
-void parameterTest(ord * dist) {
-    /* Record fitness' of all creatures */
-    FILE * fptr = fopen("../assets/fitnesses.txt", "a");
+//void parameterTest(ord * dist) {
+//    /* Record fitness' of all creatures */
+////    FILE * fptr = fopen("../assets/fitnesses.txt", "a");
+////
+////    if (gen == (int) (ceil(log(genSize)/log(2)) + 1)) {
+////        fprintf(fptr, "Generation %d\n", gen);
+////        for (int i = 0; i < genSize; i++) {
+////            //fprintf(fptr, "%f\n", dist[i].order);
+////
+////            fprintf(fptr, "%f\n", dist[i].unord);
+////            if (gen == 0) { // Only print first creature in gen 0 (cause all the same)
+////                break;
+////            }
+////        }
+////    }
+////    fclose(fptr);
+////    if (gen == (int) (ceil(log(genSize)/log(2)) + 1)) {
+////        quit_(0000, __LINE__, __FILE__);
+////    }
+//    return;
+//}
 
-    if (gen == (int) (ceil(log(genSize)/log(2)) + 1)) {
-        fprintf(fptr, "Generation %d\n", gen);
-        for (int i = 0; i < genSize; i++) {
-            //fprintf(fptr, "%f\n", dist[i].order);
-
-            fprintf(fptr, "%f\n", dist[i].unord);
-            if (gen == 0) { // Only print first creature in gen 0 (cause all the same)
-                break;
-            }
-        }
-    }
-    fclose(fptr);
-    if (gen == (int) (ceil(log(genSize)/log(2)) + 1)) {
-        quit_(0000, __LINE__, __FILE__);
-    }
-    return;
-}
-
-void impactTest(ord * dist) {
-    /* Record fitness' of all creatures */
-    FILE * fptr = fopen("../assets/fitnesses.txt", "a");
-    fprintf(fptr, "New Generation\n");
-    for (int i = 0; i < genSize; i++) {
-        fprintf(fptr, "%f\n", dist[i].order);
-        if (gen == 0) {
-            break;
-        }
-    }
-    fclose(fptr);
-    if (gen == 1) {
-        quit_(0000, __LINE__, __FILE__);
-    }
-}
+//void impactTest(ord * dist) {
+//    /* Record fitness' of all creatures */
+////    FILE * fptr = fopen("../assets/fitnesses.txt", "a");
+////    fprintf(fptr, "New Generation\n");
+////    for (int i = 0; i < genSize; i++) {
+////        fprintf(fptr, "%f\n", dist[i].order);
+////        if (gen == 0) {
+////            break;
+////        }
+////    }
+////    fclose(fptr);
+////    if (gen == 1) {
+////        quit_(0000, __LINE__, __FILE__);
+////    }
+//}
 
 #include <math.h>
 int * orderDistances(creature * group) {
-    ord * dist    = (ord*) malloc(sizeof(ord) * genSize);
-    int * topHalf = (int*) malloc(sizeof(int) * genSize);
-
-    for (int i = 0; i < genSize; i++) {
-        topHalf[i] = rand() % genSize; // BAND-AID for accidental non-initialization
-    }
-
-    if (dist    == NULL) quit(MALLOC_ERROR);
-    if (topHalf == NULL) quit(MALLOC_ERROR);
-
-/* Use Dummy so as to not overwrite */
-    for (int i = 0; i < genSize; i++) {
-        dist[i].unord = group[i].distance;
-    }
-    if (dataCollection == 1) {
-        parameterTest(dist);
-    }
-
-
-/* Get the Organized Array */
-    for (int i = 0; i < genSize; i++) {
-        for (int j = i + 1; j < genSize; j++) {
-            if (dist[i].unord < dist[j].unord) {
-                double a =  dist[i].unord;
-                dist[i].unord = dist[j].unord;
-                dist[j].unord = a;
-            }
-        }
-    }
-
-/* Write into ordered array */
-    for (int i = 0; i < genSize; i++) {
-        dist[i].order = dist[i].unord;
-    }
-
-/* Use Dummy so as to not overwrite */
-    for (int i = 0; i < genSize; i++)
-        dist[i].unord = group[i].distance;
-
-
-
-/* Record id.copie in order of highest distance */
-    bool * beenRecorded = (bool*) malloc(sizeof(bool) * genSize);
-    if (beenRecorded == NULL) quit(MALLOC_ERROR);
-
-    for (int i = 0; i < genSize; i++) {
-        beenRecorded[i] = false;
-    }
-
-/* Record Top Half Distances into Array */
-    double avg = 0.0;
-    for (int i = 0; i < genSize; i++) {
-        for (int j = 0; j < genSize; j++) {
-            // These values are duplicates in different orders, they should be ==, but 1e-100 for some tolerance. (does precision even work?)
-            if ((fabs(dist[i].order - dist[j].unord) <= 1e-10)) { // 1-e4 caused error
-                /* Determind if already recorded */
-                if (beenRecorded[j]) continue;
-                else beenRecorded[j] = true;
-
-                avg += dist[i].order;
-
-                if (i < genSize / 2)
-                    topHalf[i] = j;
-
-                /* Break */
-                j = genSize;
-            }
-        }
-    }
-    for (int i = 0; i < genSize / 2; i++) {
-        if (topHalf[i] > genSize) {
-            quit(topHalf[i]);
-        }
-        if (topHalf[i] < 0) {
-            quit(topHalf[i]);
-        }
-    }
-    avg /= genSize;
-
-    genDisGraph(avg, true); // Gen Graph
-
-/* Modify Array to let Slower Creatures Through*/
+//    ord * dist    = (ord*) malloc(sizeof(ord) * genSize);
+    int * topHalf = (int*) malloc(sizeof(int) * 500); // TEMP
+    if (group) return topHalf;
 //    for (int i = 0; i < genSize; i++) {
-//        if (chance(20)) {
-//            topHalf[i] = rand() % genSize;
+//        topHalf[i] = rand() % genSize; // BAND-AID for accidental non-initialization
+//    }
+//
+//    if (dist    == NULL) quit(MALLOC_ERROR);
+//    if (topHalf == NULL) quit(MALLOC_ERROR);
+//
+///* Use Dummy so as to not overwrite */
+//    for (int i = 0; i < genSize; i++) {
+//        dist[i].unord = group[i].fitness;
+//    }
+////    if (dataCollection == 1) {
+////        parameterTest(dist);
+////    }
+//
+//
+///* Get the Organized Array */
+//    for (int i = 0; i < genSize; i++) {
+//        for (int j = i + 1; j < genSize; j++) {
+//            if (dist[i].unord < dist[j].unord) {
+//                double a =  dist[i].unord;
+//                dist[i].unord = dist[j].unord;
+//                dist[j].unord = a;
+//            }
 //        }
 //    }
-
-/* Record Averages */
-//    FILE * fptr = fopen("test.txt", "a");
-//    fprintf(fptr, "%.2f\n", avg);
-//    fclose(fptr);
-
-    if (dataCollection == 2) {
-        impactTest(dist);
-    }
-
-    if (dataCollection == 3) {
-        initialPopTest(dist);
-    }
-
-    if (dataCollection == 4) {
-        normalRecord(avg);
-    }
-
-    if (dist != NULL) {
-        free(dist);
-    }
-    if (beenRecorded != NULL) {
-        free(beenRecorded);
-    }
+//
+///* Write into ordered array */
+//    for (int i = 0; i < genSize; i++) {
+//        dist[i].order = dist[i].unord;
+//    }
+//
+///* Use Dummy so as to not overwrite */
+//    for (int i = 0; i < genSize; i++)
+//        dist[i].unord = group[i].fitness;
+//
+//
+//
+///* Record id.copie in order of highest distance */
+//    bool * beenRecorded = (bool*) malloc(sizeof(bool) * genSize);
+//    if (beenRecorded == NULL) quit(MALLOC_ERROR);
+//
+//    for (int i = 0; i < genSize; i++) {
+//        beenRecorded[i] = false;
+//    }
+//
+///* Record Top Half Distances into Array */
+//    double avg = 0.0;
+//    for (int i = 0; i < genSize; i++) {
+//        for (int j = 0; j < genSize; j++) {
+//            // These values are duplicates in different orders, they should be ==, but 1e-100 for some tolerance. (does precision even work?)
+//            if ((fabs(dist[i].order - dist[j].unord) <= 1e-10)) { // 1-e4 caused error
+//                /* Determind if already recorded */
+//                if (beenRecorded[j]) continue;
+//                else beenRecorded[j] = true;
+//
+//                avg += dist[i].order;
+//
+//                if (i < genSize / 2)
+//                    topHalf[i] = j;
+//
+//                /* Break */
+//                j = genSize;
+//            }
+//        }
+//    }
+//    for (int i = 0; i < genSize / 2; i++) {
+//        if (topHalf[i] > genSize) {
+//            quit(topHalf[i]);
+//        }
+//        if (topHalf[i] < 0) {
+//            quit(topHalf[i]);
+//        }
+//    }
+//    avg /= genSize;
+//
+//    genDisGraph(avg, true); // Gen Graph
+//
+///* Modify Array to let Slower Creatures Through*/
+////    for (int i = 0; i < genSize; i++) {
+////        if (chance(20)) {
+////            topHalf[i] = rand() % genSize;
+////        }
+////    }
+//
+///* Record Averages */
+////    FILE * fptr = fopen("test.txt", "a");
+////    fprintf(fptr, "%.2f\n", avg);
+////    fclose(fptr);
+//
+////    if (dataCollection == 2) {
+////        impactTest(dist);
+////    }
+//
+////    if (dataCollection == 3) {
+////        initialPopTest(dist);
+////    }
+//
+//    if (dataCollection == 4) {
+//        normalRecord(avg);
+//    }
+//
+//    if (dist != NULL) {
+//        free(dist);
+//    }
+//    if (beenRecorded != NULL) {
+//        free(beenRecorded);
+//    }
     return topHalf;
 }
 
@@ -278,47 +279,82 @@ void copyGene(gene * copyInto, gene * copyFrom) {
     return;
 }
 
-void duplicate(int * toDup, creature * population) {
-    /* Get the Organized Array */
-    for (int i = 0; i < genSize / 2; i++) {
-        for (int j = i + 1; j < genSize / 2; j++) {
-            if (toDup[i] > toDup[j]) {
-                int a    = toDup[i];
-                toDup[i] = toDup[j];
-                toDup[j] = a;
-            }
-        }
+#include "Math/distribution.h"
+#define PI 3.141592653589793
+#include "Functional/list.h"
+double skewedUnimodal(double x) {
+    return pow(1 - x, 27) * sin(PI* x);
+}
+
+double selectionDistribution(int genSize) {
+    return getDistribution(skewedUnimodal, genSize, 27);
+}
+
+
+int getRandomID(int * orderedPop, int genSize) {
+    int genomeID = (int) selectionDistribution(genSize);
+    genomeID = genomeID >= genSize ? genSize - 1: genomeID;
+    genomeID = genomeID  < 0       ?           0: genomeID;
+    return orderedPop[genomeID];
+}
+
+gene * getGenome(int genomeID, creature * population) {
+    gene * genome = (gene*) malloc(sizeof(gene) * population[genomeID].genome->iData[tot]);
+    gene * head = genome;
+    if (genome == NULL) quit(MALLOC_ERROR);
+
+    gene * curr = population[genomeID].genome;
+
+    while (curr) {
+        copyGene(genome, curr);
+
+        curr  = curr->next;
+        genome = genome->next;
     }
-    /* Clear Genomes of Creatures that wont be Duplicated */
+    return head;
+}
+
+void pruneAndFill(int * orderedPop, creature * population, int genSize) {
+    gene ** temp = (gene**) malloc(sizeof(gene*) * genSize);
+
+    // Fill temp with random genomes
     for (int i = 0; i < genSize; i++) {
-        if (!isInArray(toDup, genSize / 2, i)) {
-            population[i].genome = clearGenome(population[i].genome);
+        temp[i] = getGenome(getRandomID(orderedPop, genSize), population);
+    }
+
+    // Clear Population
+    for (int i = 0; i < genSize; i++) {
+        population[i].genome = clearGenome(population[i].genome);
+    }
+
+    // Populate Population
+    for (int i = 0; i < genSize; i++) {
+        population[i].genome = (gene*) malloc(sizeof(gene));
+        if (population[i].genome == NULL) quit(MALLOC_ERROR);
+        gene * replaceGene  = population[i].genome;
+        gene * fillWithGene = temp[i];
+
+        if (fillWithGene == NULL) quit(MALLOC_ERROR);
+
+        /* Copy the Genome */
+        while (fillWithGene) {
+            copyGene(replaceGene, fillWithGene);
+
+            replaceGene  = replaceGene->next;
+            fillWithGene = fillWithGene->next;
         }
     }
 
-    /* Copy Genomes From Copy list into cleared genomes */
-    int dupPos = 0;
-    for (int popPos = 0; popPos < genSize; popPos++) {
-        if (!isInArray(toDup, genSize / 2, popPos)) {
-            /* Duplicate the Genome */
-            population[popPos].genome = (gene*) malloc(sizeof(gene));
-            if (population[popPos].genome == NULL) quit(MALLOC_ERROR);
-            gene * popCurr = population[popPos].genome;
-            gene * dupCurr = population[toDup[dupPos]].genome;
-            if (dupCurr == NULL) quit(MALLOC_ERROR);
-
-            /* Copy the Genome */
-            while (dupCurr) {
-                copyGene(popCurr, dupCurr);
-
-                popCurr = popCurr->next;
-                dupCurr = dupCurr->next;
-            }
-            dupPos++;
+    /* Free Temp */
+    for (int i = 0; i < genSize; i++) {
+        if (temp[i] != NULL) {
+            temp[i] = clearGenome(temp[i]);
         }
     }
+    free(temp);
     return;
 }
+
 
 
 

@@ -15,25 +15,25 @@
 
 
 void draw() {
-    if ((simTime % 5 == 0) && !globalData[skipE].b && globalData[graphE].b) drawDisGraph(simTime == 0, true);
-    if (!(simTime % playBackSpeed)) {
-        /* Clear, Reset, Camera */
-        glutDrawing();
-
-        /* 3D Drawing */
-        reenable3D();
-        drawGround();
-        drawSun();
-        if (globalData == NULL) exit(6);
-        drawCreature(specimen[id + 0], globalData[displaySkinE].b);
-
-        /* 2D drawing */
-        enable2D();
-        drawStats();
-        drawDisGraph(false, false);
-        glutSwapBuffers(); // Make it all visible
-        sleep_ms(FRAME_SLEEP); // Why do this?
-    }
+//    if ((simTime % 5 == 0) && !globalData[skipE].b && globalData[graphE].b) drawDisGraph(simTime == 0, true);
+//    if (!(simTime % playBackSpeed)) {
+//        /* Clear, Reset, Camera */
+//        glutDrawing();
+//
+//        /* 3D Drawing */
+//        reenable3D();
+//        drawGround();
+//        drawSun();
+//        if (globalData == NULL) exit(6);
+//        drawCreature(specimen[id + 0], globalData[displaySkinE].b);
+//
+//        /* 2D drawing */
+//        enable2D();
+//        drawStats();
+//        drawDisGraph(false, false);
+//        glutSwapBuffers(); // Make it all visible
+//        sleep_ms(FRAME_SLEEP); // Why do this?
+//    }
     return;
 }
 
@@ -117,19 +117,19 @@ void drawStats() {
             default: break;
         }
     } else {
-        char str[20];
+        //char str[20];
         glColor3f(RED);
         /* General Stats */
-        drawText("Press: 1 -> Toggle Help, 2 -> Toggle Creature Data, 3-> Toggle Graph",0,20,false);
-        sprintf(str, "Generation:  %d", gen);
-        int height = 20;
-        drawText(str, 2, height += 20, false);
-        sprintf(str, "Specimen ID: %d / %d (%.2f%%)", id, genSize, 100 * id / (double) genSize);
-        drawText(str, 5, height += 20, false);
-        sprintf(str, "Time: %d / %d (%.2f%%)", simTime, MAX_TIME, 100 * simTime / (double) MAX_TIME);
-        drawText(str, 5, height += 20, false);
-        sprintf(str, "Playback Speed: %dx", playBackSpeed);
-        drawText(str, 5, height += 20, false);
+//        drawText("Press: 1 -> Toggle Help, 2 -> Toggle Creature Data, 3-> Toggle Graph",0,20,false);
+//        sprintf(str, "Generation:  %d", gen);
+//        int height = 20;
+//        drawText(str, 2, height += 20, false);
+//        sprintf(str, "Specimen ID: %d / %d (%.2f%%)", id, genSize, 100 * id / (double) genSize);
+//        drawText(str, 5, height += 20, false);
+//        sprintf(str, "Time: %d / %d (%.2f%%)", simTime, MAX_TIME, 100 * simTime / (double) MAX_TIME);
+//        drawText(str, 5, height += 20, false);
+//        sprintf(str, "Playback Speed: %dx", playBackSpeed);
+//        drawText(str, 5, height += 20, false);
 
         glColor3f(RED);
         double y = wy * 0.75;
@@ -235,8 +235,8 @@ void drawStats() {
 //            }
 
 
-            int * sizes = specimen[id].genome->iData;
-            write("Genes:%d, Nodes:%d Muscles:%d, Bones:%d, Neurons:%d", wx * 0.2, wy * 0.28, sizes[tot] - 1, sizes[nod], sizes[mus], sizes[bon], sizes[neu]);
+//            int * sizes = specimen[id].genome->iData;
+//            write("Genes:%d, Nodes:%d Muscles:%d, Bones:%d, Neurons:%d", wx * 0.2, wy * 0.28, sizes[tot] - 1, sizes[nod], sizes[mus], sizes[bon], sizes[neu]);
 
 //            drawSquare(wx * 0.5, wy * 0.1, wx * 0.8, wy * 0.9);
 //            glColor3f(WHITE);
@@ -278,26 +278,26 @@ void drawStats() {
 
 
 
-            glColor3f(GREEN);
-            for (int i = 0; i < sizes[nod]; i++) {
-                posi loc = specimen[id].nodes[i].loc;
-                sprintf(str, "(%+5.2f, %+5.2f, %+5.2f)", loc.x, loc.y, loc.z);
-                drawText(str, wx * 0.01, wy * 0.3 + 24 * i, false);
-            }
-            glColor3f(RED);
-            for (int i = 0; i < sizes[mus]; i++) {
-                int a = specimen[id].muscles[i].a;
-                int b = specimen[id].muscles[i].b;
-                sprintf(str, "(%d, %d)", a, b);
-                drawText(str, wx * 0.13, wy * 0.3  + 24 * i, false);
-            }
-            glColor3f(WHITE);
-            for (int i = 0; i < sizes[bon]; i++) {
-                int a = specimen[id].bones[i].a;
-                int b = specimen[id].bones[i].b;
-                sprintf(str, "(%d, %d)", a, b);
-                drawText(str, wx * 0.18, wy * 0.3  + 24 * i, false);
-            }
+//            glColor3f(GREEN);
+//            for (int i = 0; i < sizes[nod]; i++) {
+//                posi loc = specimen[id].nodes[i].loc;
+//                sprintf(str, "(%+5.2f, %+5.2f, %+5.2f)", loc.x, loc.y, loc.z);
+//                drawText(str, wx * 0.01, wy * 0.3 + 24 * i, false);
+//            }
+//            glColor3f(RED);
+//            for (int i = 0; i < sizes[mus]; i++) {
+//                int a = specimen[id].muscles[i].a;
+//                int b = specimen[id].muscles[i].b;
+//                sprintf(str, "(%d, %d)", a, b);
+//                drawText(str, wx * 0.13, wy * 0.3  + 24 * i, false);
+//            }
+//            glColor3f(WHITE);
+//            for (int i = 0; i < sizes[bon]; i++) {
+//                int a = specimen[id].bones[i].a;
+//                int b = specimen[id].bones[i].b;
+//                sprintf(str, "(%d, %d)", a, b);
+//                drawText(str, wx * 0.18, wy * 0.3  + 24 * i, false);
+//            }
         }
     }
     return;
@@ -361,9 +361,9 @@ void drawDisGraph(bool reset, bool adding) {
 
 
         /* Get Averages per Node */
-        dis[num] = euc2D(       getCom(specimen[id]), specimen[id].origin);
-        vel[num] = euc2D(getAvgNodeVel(specimen[id]), specimen[id].origin);
-        acc[num] = euc2D(getAvgNodeVel(specimen[id]), specimen[id].origin); // Fix ME
+//        dis[num] = euc2D(       getCom(specimen[id]), specimen[id].origin);
+//        vel[num] = euc2D(getAvgNodeVel(specimen[id]), specimen[id].origin);
+//        acc[num] = euc2D(getAvgNodeVel(specimen[id]), specimen[id].origin); // Fix ME
 
         /* Get Maximums (for scaling) */
         if (fabs(dis[num]) > maxDis) maxDis = fabs(dis[num]);
@@ -395,7 +395,7 @@ void drawDisGraph(bool reset, bool adding) {
             char str[20];
             int numDiv = 8;
             for (int i = 0; i <= numDiv; i++) {
-                sprintf(str, "%d(%d%%)", simTime * i / numDiv, 100 *  i / numDiv);
+//                sprintf(str, "%d(%d%%)", simTime * i / numDiv, 100 *  i / numDiv);
                 drawText(str, 0.95 * wx * i / numDiv, wy * 0.92, false);
             }
             sprintf(str, "Max Dis: %0.2f-", maxDis);

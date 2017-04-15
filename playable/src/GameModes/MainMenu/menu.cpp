@@ -18,6 +18,8 @@ static void initMenu();
 
 void startUpMode() {
     static int i = 0;
+    static int id = 0;
+    const int genSize = 1000;
     if (i == 0) initMenu();
     cinematicCamera(++i);
 
@@ -80,20 +82,10 @@ static void startText() {
     /* Draw Menu */
     posi o = vec(wx * 0.15, wy * 0.25, 0.0);
     drawMenu("Enter Simulation Mode\n"
-                    "Enter Editor Mode\n"
-                    "Enter Mutation Mode\n"
-                    "Credits\n"
-                    "Achievements\n"
-                    "FeedBack\n"
                     "Quit\n",
 
                     "( B )\n"
-                    "(   )\n"
-                    "(   )\n"
-                    "(   )\n"
-                    "(   )\n"
-                    "(   )\n"
-                    "(ESC)\n", 7, o.x, o.y);
+                    "(ESC)\n", o.x, o.y);
     glColor3f(BLACK);
     drawHeader("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ WildFire Co 2016 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", wx * 0.5, wy * 0.95);
     return;

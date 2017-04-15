@@ -23,7 +23,7 @@ bool lights     = true;
 bool display    = true;
 bool fullscreen = true;
 int  gameMode   = startMode; //startMode
-int  genSize    = data[5];
+//int  genSize    = data[5];
 
 // window size (obtained updated during runtime)
 int  wx         = 0;
@@ -52,9 +52,6 @@ bool* keyStates = new bool[256];
 
 // Variables
 double * environment = NULL;
-int simTime = 0;
-int gen     = 0;
-int id      = 0;
 
 creature * specimen  = NULL;
 generic  * globalData = NULL;

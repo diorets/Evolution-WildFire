@@ -13,7 +13,6 @@ static void drawMessage(int code) {
             drawText("The Program Has Exited Normally.", wx * 0.2, wy * 0.5, false);
             glutSwapBuffers();
             sleep_ms(1000);
-//            while(true);
             exit(EXIT_SUCCESS);
         case MALLOC_ERROR:
             drawText("MEMORY ALLOCATION FAILURE.", wx * 0.2, wy * 0.5, false);
@@ -46,6 +45,8 @@ void quit_(int code, int line, const char * file) {
     glutDrawing();
     glutSwapBuffers();
     enable2D();
+    glColor3f(WHITE);
+    drawSquare(0, 0, 2 * WINDOW_X, 2 * WINDOW_Y);
     drawMessage(code);
 
     if (code == 0) sprintf(str, "Error Code 000");

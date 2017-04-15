@@ -49,25 +49,20 @@ void drawDetails(int genSize, int gen, int id, int simTime, int maxTime) {
 
 #include "Functional/sleep.h"
 void drawSystem(creature input, int genSize, int gen, int id, int simTime, int maxTime) {
-    //if ((simTime % 5 == 0) && !globalData[skipE].b && globalData[graphE].b) drawDisGraph(simTime == 0, true);
-    if (display && !globalData[skipE].b) {
-        if (!(simTime % playBackSpeed)) {
-            /* Clear, Reset, Camera */
-            glutDrawing();
+    /* Clear, Reset, Camera */
+    glutDrawing();
 
-            /* 3D Drawing */
-            reenable3D();
-            drawGround();
-            drawSun();
-            drawCreature(input, false);
+    /* 3D Drawing */
+    reenable3D();
+    drawGround();
+    drawSun();
+    drawCreature(input, false);
 
-            /* 2D drawing */
-            enable2D();
-            drawDetails(genSize, gen, id, simTime, maxTime);
-            //drawDisGraph(false, false);
-            glutSwapBuffers(); // Make it all visible
-        }
-    }
+    /* 2D drawing */
+    enable2D();
+    drawDetails(genSize, gen, id, simTime, maxTime);
+    //drawDisGraph(false, false);
+    glutSwapBuffers(); // Make it all visible
     return;
 }
 
@@ -180,7 +175,22 @@ void SIMULATION_MODE() {
     population = initPop(population, genSize, gen, id, simTime, sizeof(stickball)); /**/
 
     /* Graphics */
-    drawSystem(population[id], genSize, gen, id, simTime, maxTime);
+    if (playBackSpeed <= 0) {
+        if (playBackSpeed-- == -10) {
+            playBackSpeed = 0;
+            drawSystem(population[id], genSize, gen, id, simTime, maxTime);
+        }
+        return;
+    }
+    //if ((simTime % 5 == 0) && !globalData[skipE].b && globalData[graphE].b) drawDisGraph(simTime == 0, true);
+    if (display && !globalData[skipE].b) {
+        if (!(simTime % playBackSpeed)) {
+            drawSystem(population[id], genSize, gen, id, simTime, maxTime);
+        }
+    }
+
+
+
     simTime++;
     /* Evalute Fitness Function & Handle Creature Iteration */
     bool error = updateCreature(&population[id], simTime++);

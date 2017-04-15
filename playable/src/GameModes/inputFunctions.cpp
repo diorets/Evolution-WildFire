@@ -46,15 +46,28 @@ void setPlayBackSpeed(int number) {
 }
 
 void changePlayBack(bool inc) {
+    double changeRate = 1.8;
     if (inc && (playBackSpeed < MAX_PLAY_BACK)) {
+        if (playBackSpeed <= 0) {
+            playBackSpeed = 1;
+            playerSpeed   *= 2;
+            cameraSpeed   *= 8;
+            return;
+        }
         playBackSpeed *= 2;
-        playerSpeed   /= 2;
-        cameraSpeed   /= 2;
+        playerSpeed   /= changeRate;
+        cameraSpeed   /= changeRate;
     }
-    else if (!inc && (playBackSpeed > 1)) {
+    else if (!inc) {
+        if (playBackSpeed == 1) {
+            playBackSpeed = 0;
+            playerSpeed   /= 2;
+            cameraSpeed   /= 8;
+            return;
+        }
         playBackSpeed /= 2;
-        playerSpeed   *= 2;
-        cameraSpeed   *= 2;
+        playerSpeed   *= changeRate;
+        cameraSpeed   *= changeRate;
     }
     return;
 }

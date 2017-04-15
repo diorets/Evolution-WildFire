@@ -112,30 +112,30 @@ void newGenScreen() {
 //    avgNodes   /= (double) genSize;
 //    avgMuscles /= (double) genSize;
 //    avgBones   /= (double) genSize;
-    write(" Average Number of Parts    : %.2f", wx * 0.55, last1 + 50 + 24 * 1, avgNodes + avgMuscles + avgBones);
-    write("Average Number of Nodes   : %.2f",   wx * 0.55, last1 + 50 + 24 * 2, avgNodes);
-    write(" Average Number of Muscles : %.2f",  wx * 0.55, last1 + 50 + 24 * 3, avgMuscles);
-    write("Average Number of Bones   : %.2f",   wx * 0.55, last1 + 50 + 24 * 4, avgBones);
+//    write(" Average Number of Parts    : %.2f", wx * 0.55, last1 + 50 + 24 * 1, avgNodes + avgMuscles + avgBones);
+//    write("Average Number of Nodes   : %.2f",   wx * 0.55, last1 + 50 + 24 * 2, avgNodes);
+//    write(" Average Number of Muscles : %.2f",  wx * 0.55, last1 + 50 + 24 * 3, avgMuscles);
+//    write("Average Number of Bones   : %.2f",   wx * 0.55, last1 + 50 + 24 * 4, avgBones);
 
 //    double last2 =
-    writeParagraph(
-                   "Shuffle Nodes\n"
-                   "Relocate Nodes\n"
-                   " \n"
-                   "Add Nodes\n"
-                   "Remove Nodes\n"
-                   " \n"
-                   "Add Connections\n"
-                   "Remove Connections\n"
-                   "Swap Connections\n"
-                   "", wx * 0.1, last1 + 24 * 4, 24);
-    write("%%%5.2f", wx * 0.2, last1 + 24 *  4, specimen[0].genome->fData[0]);
-    write("%%%5.2f", wx * 0.2, last1 + 24 *  5, specimen[0].genome->fData[1]);
-    write("%%%5.2f", wx * 0.2, last1 + 24 *  7, specimen[0].genome->fData[2]);
-    write("%%%5.2f", wx * 0.2, last1 + 24 *  8, specimen[0].genome->fData[3]);
-    write("%%%5.2f", wx * 0.2, last1 + 24 * 10, specimen[0].genome->fData[4]);
-    write("%%%5.2f", wx * 0.2, last1 + 24 * 11, specimen[0].genome->fData[5]);
-    write("%%%5.2f", wx * 0.2, last1 + 24 * 12, specimen[0].genome->fData[6]);
+//    writeParagraph(
+//                   "Shuffle Nodes\n"
+//                   "Relocate Nodes\n"
+//                   " \n"
+//                   "Add Nodes\n"
+//                   "Remove Nodes\n"
+//                   " \n"
+//                   "Add Connections\n"
+//                   "Remove Connections\n"
+//                   "Swap Connections\n"
+//                   "", wx * 0.1, last1 + 24 * 4, 24);
+//    write("%%%5.2f", wx * 0.2, last1 + 24 *  4, specimen[0].genome->fData[0]);
+//    write("%%%5.2f", wx * 0.2, last1 + 24 *  5, specimen[0].genome->fData[1]);
+//    write("%%%5.2f", wx * 0.2, last1 + 24 *  7, specimen[0].genome->fData[2]);
+//    write("%%%5.2f", wx * 0.2, last1 + 24 *  8, specimen[0].genome->fData[3]);
+//    write("%%%5.2f", wx * 0.2, last1 + 24 * 10, specimen[0].genome->fData[4]);
+//    write("%%%5.2f", wx * 0.2, last1 + 24 * 11, specimen[0].genome->fData[5]);
+//    write("%%%5.2f", wx * 0.2, last1 + 24 * 12, specimen[0].genome->fData[6]);
 
     for (int i = 0; i < 9; i++) {
         if ((i == 2) || (i == 5)) continue;

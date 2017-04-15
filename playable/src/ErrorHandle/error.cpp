@@ -46,7 +46,7 @@ void quit_(int code, int line, const char * file) {
     glutSwapBuffers();
     enable2D();
     glColor3f(WHITE);
-    drawSquare(0, 0, 2 * WINDOW_X, 2 * WINDOW_Y);
+    drawSquare(0, 0, wx, wy);
     drawMessage(code);
 
     if (code == 0) sprintf(str, "Error Code 000");

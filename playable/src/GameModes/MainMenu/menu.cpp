@@ -17,24 +17,24 @@ static void initMenu();
 
 
 void startUpMode() {
-    static int i = 0;
-    static int id = 0;
-    const int genSize = 1000;
-    if (i == 0) initMenu();
-    cinematicCamera(++i);
-
-    /* Simulate Creatures in Background */
-    glutDrawing();
-    drawGround();
-    drawCreature(specimen[id], true);
-    updateCreature(&specimen[id], i);
-    if (i % 250 == 0) id = (id + 1) % genSize; // Cycle through creatures
-
-    /* Display Information and Menus Text */
-    enable2D();
-    startText();
-    reenable3D();
-    glutSwapBuffers();
+//    static int i = 0;
+//    static int id = 0;
+//    const int genSize = 1000;
+//    if (i == 0) initMenu();
+//    cinematicCamera(++i);
+//
+//    /* Simulate Creatures in Background */
+//    glutDrawing();
+//    drawGround();
+//    drawCreature(specimen[id], true);
+//    updateCreature(&specimen[id], i);
+//    if (i % 250 == 0) id = (id + 1) % genSize; // Cycle through creatures
+//
+//    /* Display Information and Menus Text */
+//    enable2D();
+//    startText();
+//    reenable3D();
+//    glutSwapBuffers();
     return;
 }
 

@@ -107,6 +107,10 @@ typedef struct stickball_struct {
     axon   axons[MAX_ELEMENTS];
 } stickball;
 
+typedef struct turbine_struct {
+    posi blocks[MAX_ELEMENTS];
+} turbine;
+
 #endif // PREPROCCESSOR_H_INCLUDED
 
 

@@ -22,7 +22,7 @@ bool person     = false;
 bool lights     = true;
 bool display    = true;
 bool fullscreen = true;
-int  gameMode   = startMode; //startMode
+int  gameMode   = simMode; //startMode
 //int  genSize    = data[5];
 
 // window size (obtained updated during runtime)
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
     environment[1] = 0;
 
     initiateSimulator(&argc, argv, "Evolution WildFire v6.0");
-    initiatePopulation(6, 10, 5, 0, false);
+    //initiatePopulation(6, 10, 5, 0, false);
 	glutMainLoop();
 	return 0;
 }

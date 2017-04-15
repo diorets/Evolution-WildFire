@@ -80,6 +80,7 @@ void drawSystem(creature input, int genSize, int gen, int id, int simTime, int m
 #include "ErrorHandle/error.h"
 
 #include <stdlib.h>
+#include "Generation/mutations.h"
 creature * initGenome(int a, int b, int c, int d) {
     creature * sample = (creature*) malloc(sizeof(creature));
     if (sample == NULL) {
@@ -100,11 +101,12 @@ double getFitness(creature individual) {
     enum {planeDistance, upHill, downHill};
     int measure = environment[1];
     posi com = getCom(individual);
+    posi origin = ((stickball*) individual.components)->origin;
     switch (measure) {
-        case planeDistance : return euc2D(com, individual.origin);
-        case upHill        : return -sgn(environment[0]) * (com.x - individual.origin.x);
-        case downHill      : return sgn(environment[0]) * (com.x - individual.origin.x);
-        default : return euc2D(com, individual.origin);
+        case planeDistance : return euc2D(com, origin);
+        case upHill        : return -sgn(environment[0]) * (com.x - origin.x);
+        case downHill      : return sgn(environment[0]) * (com.x - origin.x);
+        default : return euc2D(com, origin);
     }
 }
 
@@ -128,11 +130,21 @@ void initPsuedoGlobal() {
     return;
 }
 
-creature * initPop(creature * population, int genSize, int gen, int id, int simTime) {
+creature * initPop(creature * population, int genSize, int gen, int id, int simTime, int allocationSize) {
     if (population == NULL || ((gen == 0) && (id == 0) && (simTime == 0))) {
         if (population == NULL) {
             population = (creature*) malloc(sizeof(creature) * genSize);
             if (population == NULL) quit(MALLOC_ERROR);
+
+            for (int i = 0; i < genSize; i++) {
+                population[i].fitness = 0.0;
+                population[i].genome = NULL;
+
+                population[i].components = (void*) malloc(allocationSize);
+                if (population[i].components == NULL) {
+                    quit(MALLOC_ERROR);
+                }
+            }
         }
 
         /* Clear Genomes from potentially previous runs */
@@ -165,11 +177,11 @@ void SIMULATION_MODE() {
 
     /* One-Time Initializations */
     initPsuedoGlobal();
-    population = initPop(population, genSize, gen, id, simTime);
+    population = initPop(population, genSize, gen, id, simTime, sizeof(stickball)); /**/
 
     /* Graphics */
     drawSystem(population[id], genSize, gen, id, simTime, maxTime);
-
+    simTime++;
     /* Evalute Fitness Function & Handle Creature Iteration */
     bool error = updateCreature(&population[id], simTime++);
     if (error) {

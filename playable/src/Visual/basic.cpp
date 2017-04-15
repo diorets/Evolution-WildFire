@@ -117,7 +117,7 @@ void glutDrawing() {
             cameraPos.x + cameraDir.x, cameraPos.y + cameraDir.y, cameraPos.z + cameraDir.z,
             0.0,    0.0,    1.0);
     glLineWidth(3);
-
+    return;
 }
 
 /* 2D Drawing Functions */

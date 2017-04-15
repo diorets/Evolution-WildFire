@@ -35,7 +35,7 @@ gene * clearGenome(gene * head) {
         free(curr);
         curr = temp;
     }
-   return NULL;
+    return NULL;
 }
 
 void removeItem(gene * head, gene * toRemove) {

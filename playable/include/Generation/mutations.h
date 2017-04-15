@@ -29,5 +29,7 @@ void swapConnection(gene * head, double swapChance);
 
 void varifyGenome(gene * head);
 
+void removeStrandedNodes(gene * head);
+
 
 #endif // MUTATIONS_H_INCLUDED

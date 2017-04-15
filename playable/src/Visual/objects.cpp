@@ -32,26 +32,25 @@ void drawSight(double dist) {
 #include <stdio.h>
 void drawCreature(creature individual, bool skin) {
     int * sizes = individual.genome->iData;
+    stickball * components = ((stickball*) individual.components);
     posi com = getCom(individual);
 
     /* Nodes */
-    glColor3f(RED);
+    glColor3f(BLACK);
     for (int i = 0; i < sizes[nod]; i++) {
-        posi loc = individual.nodes[i].loc;
-        if (loc.z < 0.01 + 0.75) glColor3f(WHITE);
-        else glColor3f(i / 5.0, i / 5.0, i / 5.0);
+        posi loc = components->nodes[i].loc;
         drawSphere(loc.x, loc.y, loc.z, RADIUS);
     }
 
     /* Skin */
     if (skin) {
-        glColor4f(BLACK, 1);
+        glColor4f(BLACK, 1); // Used to be pink but it was too 'weird'
         for (int i = 0; i < sizes[nod]; i++) {
-            posi locA = individual.nodes[i].loc;
+            posi locA = components->nodes[i].loc;
             for (int j = i + 1; j < sizes[nod]; j++) {
-                posi locB = individual.nodes[j].loc;
+                posi locB = components->nodes[j].loc;
                 for (int k = j + 1; k < sizes[nod];k++) {
-                    posi locC = individual.nodes[k].loc;
+                    posi locC = components->nodes[k].loc;
                     glBegin(GL_TRIANGLE_FAN);
                         glVertex3f(locA.x, locA.y, locA.z);
                         glVertex3f(locB.x, locB.y, locB.z);
@@ -62,18 +61,15 @@ void drawCreature(creature individual, bool skin) {
         }
     }
 
-    /* Bone */
     double thickness = RADIUS * 0.5;
     glColor3f(WHITE);
     for (int i = 0; i < sizes[bon]; i++) {
-        int a = individual.bones[i].a;
-        int b = individual.bones[i].b;
-        if (a == b) {
-                printf("%d, %d\n", a, b);
-                quit(GENOME_ERROR); // Do I need this check?
-        }
-        posi locA = individual.nodes[a].loc;
-        posi locB = individual.nodes[b].loc;
+        int a = components->bones[i].a;
+        int b = components->bones[i].b;
+        if (a == b) quit(GENOME_ERROR); // Do I need this check?
+        //printf("%d, %d\n", a, b);
+        posi locA = components->nodes[a].loc;
+        posi locB = components->nodes[b].loc;
         drawCylinder(locA.x, locA.y, locA.z,
                       locB.x, locB.y - 0.1, locB.z,
                         thickness ,     5);
@@ -82,20 +78,16 @@ void drawCreature(creature individual, bool skin) {
     /* Muscle */
     glColor3f(RED);
     for (int i = 0; i < sizes[mus]; i++) {
-        int a = individual.muscles[i].a;
-        int b = individual.muscles[i].b;
-        if (a == b) {
-                printf("%d, %d\n", a, b);
-                quit(GENOME_ERROR); // Do I need this check?
-        }
-        posi locA = individual.nodes[a].loc;
-        posi locB = individual.nodes[b].loc;
-        float expansivity = individual.muscles[i].origLength / euc(locA, locB);
+        int a = components->muscles[i].a;
+        int b = components->muscles[i].b;
+        if (a == b) quit(GENOME_ERROR); // Do I need this check?
+
+        posi locA = components->nodes[a].loc;
+        posi locB = components->nodes[b].loc;
+        float expansivity = components->muscles[i].origLength / euc(locA, locB);
         expansivity -= 1;
         expansivity *= 5;
 
-        // Range from [0.3 * RADIUS, RADIUS]
-        //printf("%f\n", expansivity);
         drawCylinder(locA.x, locA.y, locA.z,
                       locB.x, locB.y + 0.1, locB.z,
                        thickness * (1 + expansivity),     5);
@@ -105,10 +97,10 @@ void drawCreature(creature individual, bool skin) {
     glColor3f(WHITE);
     drawSphere(com.x, com.y, com.z, 0.1); // COM
     drawSphere(com.x, com.y,     0, 0.1); // Ground COM
-    drawSphere(individual.origin.x, individual.origin.y, individual.origin.z, 0.1); // Origin
+    drawSphere(components->origin.x, components->origin.y, components->origin.z, 0.1); // Origin
     glColor3f(RED);
     drawLine(com.x, com.y, 0.1, // Distance
-             individual.origin.x, individual.origin.y, 0.1);
+             components->origin.x, components->origin.y, 0.1);
     return;
 }
 
@@ -160,7 +152,10 @@ void drawGround() {
     // Grid
     int sep = 3;
     int len, corner;
-    len = corner = 40;
+
+    int fieldSize = 40;
+    // Round to near multiple of sep (eg: 10 -> 12)
+    len = corner = (fieldSize % sep) > (sep / 2) ? fieldSize - (fieldSize % sep) + sep : fieldSize - (fieldSize % sep);
     len *= sep;
 
     glColor3f(0.4, 0.4, 0.4);
@@ -174,22 +169,6 @@ void drawGround() {
                       len,  -temp * cosf(O), -len* tanf(O),
                        0.06, 10);
     }
-
-//    // Pole
-//    int height = 10.0;
-//    glColor3f(0.4, 1.0, 1.0);
-//    drawCylinder(0.0, 0.0,  0.0,
-//                 0.0, 0.0, height,
-//                 0.1, 10);
-//    double length = 0.3;
-//    for (double i = 0.01; i < height + 1; i++) {
-//        glBegin(GL_QUADS);
-//            glVertex3f(-length, -length, i);
-//            glVertex3f(-length,  length, i);
-//            glVertex3f( length,  length, i);
-//            glVertex3f( length, -length, i);
-//        glEnd();
-//    }
 
     // Rocks
     double greyness = 0.5;

@@ -126,17 +126,17 @@ int sgn(double x) {
 
 /* Other */
     /* Averages */
-posi getCom(creature current) {
-    int num = current.genome->iData[nod];
-    node * nodes = current.nodes;
+posi getCom(creature individual) {
+    node * masses = ((stickball*) individual.components)->nodes;
+    int numMasses = individual.genome->iData[nod];
     double totMass = 0.0;
     posi com;
     com.x = 0.0;
     com.y = 0.0;
     com.z = 0.0;
 
-    for (int i = 0; i < num; i++) {
-        node toAdd = nodes[i];
+    for (int i = 0; i < numMasses; i++) {
+        node toAdd = masses[i];
         com.x += toAdd.loc.x * toAdd.mass;
         com.y += toAdd.loc.y * toAdd.mass;
         com.z += toAdd.loc.z * toAdd.mass;
@@ -150,7 +150,7 @@ posi getCom(creature current) {
 
 posi getAvgNodeVel(creature current) {
     int num = current.genome->iData[nod];
-    node * nodes = current.nodes;
+    node * nodes = ((stickball*) current.components)->nodes;
     posi vel;
     vel.x = 0.0;
     vel.y = 0.0;

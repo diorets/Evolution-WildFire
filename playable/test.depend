@@ -1559,7 +1559,7 @@
 	"Functional/sleep.h"
 	"global.h"
 
-1488068246 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\functional\list.cpp
+1492270751 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\functional\list.cpp
 	"Functional/list.h"
 	<stdlib.h>
 	"ErrorHandle/error.h"
@@ -1691,7 +1691,7 @@
 	"Math/distribution.h"
 	"Functional/list.h"
 
-1492182830 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\generation\generation.cpp
+1492274255 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\generation\generation.cpp
 	"Generation/generation.h"
 	<stdlib.h>
 	"Math/myMath.h"
@@ -1699,6 +1699,8 @@
 	"Generation/genes.h"
 	"Functional/list.h"
 	"ErrorHandle/error.h"
+	"Generation/mutations.h"
+	<stdio.h>
 
 1492186933 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\generation\genes.cpp
 	"Generation/genes.h"
@@ -1709,7 +1711,7 @@
 	"global.h"
 	"ErrorHandle/error.h"
 
-1492195292 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\generation\mutations.cpp
+1492268017 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\generation\mutations.cpp
 	"Generation/mutations.h"
 	<math.h>
 	"Math/myMath.h"
@@ -1733,11 +1735,11 @@
 	<math.h>
 	<stdlib.h>
 
-1490828145 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\math\mymath.cpp
+1492274781 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\math\mymath.cpp
 	<math.h>
 	"Math/myMath.h"
 
-1492134983 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\physics.cpp
+1492274354 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\physics.cpp
 	"physics.h"
 	<math.h>
 	"Math/myMath.h"
@@ -1753,7 +1755,7 @@
 	"preproccessor.h"
 	"Math/myMath.h"
 
-1492181175 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\visual\objects.cpp
+1492274426 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\visual\objects.cpp
 	"Visual/basic.h"
 	"Glut/myGlut.h"
 	"global.h"
@@ -1774,7 +1776,7 @@
 	"global.h"
 	"GameModes/mice.h"
 
-1492195263 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\gamemodes.cpp
+1492274638 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\gamemodes.cpp
 	"GameModes/gameModes.h"
 	"Glut/basic.h"
 	"global.h"
@@ -1790,6 +1792,7 @@
 	"Functional/list.h"
 	"ErrorHandle/error.h"
 	<stdlib.h>
+	"Generation/mutations.h"
 	"Math/myMath.h"
 	"physics.h"
 	"Generation/mutations.h"
@@ -1812,7 +1815,7 @@
 	"GameModes/inputFunctions.h"
 	"ErrorHandle/error.h"
 
-1492191294 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\glut\initialize.cpp
+1492274722 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\glut\initialize.cpp
 	"Glut/initialize.h"
 	<time.h>
 	"preproccessor.h"
@@ -1823,10 +1826,8 @@
 	"Generation/genes.h"
 	"GameModes/gameModes.h"
 	"ErrorHandle/error.h"
-	"Functional/list.h"
-	<stdio.h>
 
-1492187663 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\main.cpp
+1492271186 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\main.cpp
 	<stdlib.h>
 	<stdio.h>
 	"Glut/initialize.h"

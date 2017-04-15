@@ -14,30 +14,10 @@ void modifyWeights(gene * head, double modifyChance) {
     return;
 }
 
+
 #include "global.h"
 #include <stdio.h>
 void mutateGenome(creature * toMutate) {
-//    switch (dataCollection) {
-//        case 1:
-//            static int i = 0;
-//            if (gen == (int) ceil(log(genSize)/log(2))) { // When we establish the best of 10,000. gen == ceil(ln(genSize)/ln(2))
-//                FOR_ALL(toMutate->genome, 'n') {
-//                    current->fData[xposi] =  -CAGESIZE + (2 * CAGESIZE * i /(double) genSize);
-//                    break;
-//                }
-//                i++;
-//            }
-//            return;
-//        case 2:
-//            addNode      (toMutate->genome, 100, 15,  15);
-//            varifyGenome    (toMutate->genome);
-//            return;
-//        default:
-//            break;
-//    }
-
-
-
     /* Nodes Mods */
     relocateNodes(toMutate->genome, toMutate->genome->fData[0]); // These assume a valid location exists
     shiftNodes   (toMutate->genome, toMutate->genome->fData[1], 0.1);
@@ -54,7 +34,7 @@ void mutateGenome(creature * toMutate) {
     /* Neural Network */
     // modifyWeights(toMutate->genome, toMutate->genome->fData[6]);
 
-
+    removeStrandedNodes(toMutate->genome);
     /* Varification */
     varifyGenome    (toMutate->genome);
     return;
@@ -165,46 +145,53 @@ void removeNode(gene * head, double removeChance) {
 
     if (chance(removeChance)) {
         int toRemove = rand() % head->iData[nod];
+        removeNode(head, toRemove);
+    }
+    return;
+}
 
-        /* Remove Node */
-        int nodeNum = 0;
-        FOR_ALL(head, 'n') {
-            if (nodeNum == toRemove) {
-                removeItem(head, current);
-                head->iData[tot]--;
-                head->iData[nod]--;
-                break;
-            }
-            nodeNum++;
+void removeNodeByIndex(gene * head, int toRemove) {
+    if (head->iData[nod] <= 1) return;
+    if (toRemove < 0) return;
+
+    /* Remove Node */
+    int nodeNum = 0;
+    FOR_ALL(head, 'n') {
+        if (nodeNum == toRemove) {
+            removeItem(head, current);
+            head->iData[tot]--;
+            head->iData[nod]--;
+            break;
         }
+        nodeNum++;
+    }
 
-        /* Remove Connected Muscles */
-        int muscleNum = 0;
-        FOR_ALL(head, 'm') {
-            if (current->iData[0] == toRemove || current->iData[1] == toRemove) {
-                reduceAxons(head, muscleNum--);
-                removeItem(head, current);
-                head->iData[tot]--;
-                head->iData[mus]--;
-            }
-            muscleNum++;
+    /* Remove Connected Muscles */
+    int muscleNum = 0;
+    FOR_ALL(head, 'm') {
+        if (current->iData[0] == toRemove || current->iData[1] == toRemove) {
+            reduceAxons(head, muscleNum--);
+            removeItem(head, current);
+            head->iData[tot]--;
+            head->iData[mus]--;
         }
+        muscleNum++;
+    }
 
-        /* Remove Connected Bones */
-        FOR_ALL(head, 'b') {
-            if (current->iData[0] == toRemove || current->iData[1] == toRemove) {
-                removeItem(head, current);
-                head->iData[tot]--;
-                head->iData[bon]--;
-            }
+    /* Remove Connected Bones */
+    FOR_ALL(head, 'b') {
+        if (current->iData[0] == toRemove || current->iData[1] == toRemove) {
+            removeItem(head, current);
+            head->iData[tot]--;
+            head->iData[bon]--;
         }
+    }
 
-        /* Adjust Connections */ // Removing node 3, means conn > 3 need to be decremented
-        for (gene * current = head; current != NULL; current = current->next) {
-            if (current->start == 'm' || current->start == 'b') {
-                if (current->iData[0] >= toRemove) current->iData[0]--; // should never be ==
-                if (current->iData[1] >= toRemove) current->iData[1]--;
-            }
+    /* Adjust Connections */ // Removing node 3, means conn > 3 need to be decremented
+    for (gene * current = head; current != NULL; current = current->next) {
+        if (current->start == 'm' || current->start == 'b') {
+            if (current->iData[0] >= toRemove) current->iData[0]--; // should never be ==
+            if (current->iData[1] >= toRemove) current->iData[1]--;
         }
     }
     return;
@@ -306,7 +293,10 @@ void removeConnection(gene * head, double addChance) {
             }
         }
     }
+    return;
+}
 
+void removeStrandedNodes(gene * head) { // should be used any time connections are removed
     int numNodes = head->iData[nod];
     int needed[numNodes];
     for (int i = 0; i < numNodes; i++) {
@@ -317,18 +307,13 @@ void removeConnection(gene * head, double addChance) {
         needed[current->iData[1]] = -1;
     }
 
-
     /* Remove Node */
-    int nodeNum = 0;
-    FOR_ALL(head, 'n') {
-        if (needed[i] == -1) continue;
-        if (nodeNum == needed[i]) {
-            removeItem(head, current);
-            head->iData[tot]--;
-            head->iData[nod]--;
-            break;
-        }
-        nodeNum++;
+    int numRemoved = 0;
+    for (int i = 0; i < numNodes; i++) {
+        int toRemove = needed[i];
+        if (toRemove == -1) continue;
+        removeNodeByIndex(head, toRemove - numRemoved);
+        numRemoved++;
     }
     return;
 }
@@ -386,6 +371,22 @@ void varifyGenome(gene * head) {
     if (numNodes + numMuscles + numBones + numAxons + 1 != numGenes) quit(GENOME_ERROR);
 
     if (numMuscles + numBones > comb(numNodes)) quit(GENOME_ERROR);
+
+    /* Stranded Nodes */
+    int needed[numNodes];
+    for (int i = 0; i < numNodes; i++) {
+        needed[i] = i;
+    }
+    FOR_ALL_GENES(head) if (current->start == 'm' || current->start == 'b') {
+        needed[current->iData[0]] = -1;
+        needed[current->iData[1]] = -1;
+    }
+    for (int i = 0; i < numNodes; i++) {
+        if (needed[i] != -1) {
+            quit(GENOME_ERROR);
+        }
+    }
+
 
     /* Connection Errors */
     for (gene * i = head; i != NULL; i = i->next) {

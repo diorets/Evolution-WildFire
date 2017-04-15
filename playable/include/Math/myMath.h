@@ -23,7 +23,7 @@ posi cross(posi a, posi b);
 
 double dot(posi a, posi b);
 
-posi getCom(creature current);
+posi getCom(creature individual);
 posi getAvgNodeVel(creature current);
 
 int fact(int n);

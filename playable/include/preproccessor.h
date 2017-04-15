@@ -95,12 +95,41 @@ typedef struct gene_struct {
 
 typedef struct creature_struct {
     double fitness;
+    gene *genome;
+    void * components;
+} creature;
+
+typedef struct stickball_struct {
     posi   origin;
-    gene   *genome;
-    node   nodes[MAX_ELEMENTS]; // Replace with malloc
+    node   nodes[MAX_ELEMENTS];
     bone   bones[MAX_ELEMENTS];
     muscle muscles[MAX_ELEMENTS];
     axon   axons[MAX_ELEMENTS];
-} creature;
+} stickball;
 
 #endif // PREPROCCESSOR_H_INCLUDED
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

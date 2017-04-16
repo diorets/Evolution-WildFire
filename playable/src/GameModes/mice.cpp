@@ -3,7 +3,7 @@
 #include "global.h"                 // Globals
 #include "Glut/MyGlut.h"                 // Globals
 #include "GameModes/inputFunctions.h" // Various keyboard functions
-#include "Generation/mutations.h"   // Mutation
+#include "GameModes/Simulate/SpGenetics/stickBallMutations.h"   // Mutation
 #include "ErrorHandle/error.h"      // quit
 #include "GameModes/MainMenu/menuInputFuncts.h"
 #include "GameModes/Simulate/simInputFuncts.h"

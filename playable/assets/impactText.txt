@@ -13,7 +13,7 @@ Under int main();
 
 Under void mutateGenome(creature * toMutate);
     mutationToTest(100%);
-    varifyGenome    (toMutate->genome);
+    verifyGenome    (toMutate->genome);
     return;
 
     should be placed at the top of the function.

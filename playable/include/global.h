@@ -37,7 +37,6 @@ extern bool* keyStates;
 
 // Simulator Variables
 extern double * environment;
-
 extern generic * globalData;
 
 #endif // GLOBAL_H_INCLUDED

@@ -7,7 +7,7 @@
 #include "global.h"           // Globals
 #include "Visual/basic.h"     // 2D,3D, Shapes & Text
 #include "Math/myMath.h"      // Chance
-#include "physics.h"          // UpdateCreature
+#include "GameModes/Simulate/SpPhysics/stickBallPhysics.h"          // UpdateCreature
 #include "Visual/objects.h"   // Draw Creature
 #include "Functional/music.h" // Music
 

@@ -5,8 +5,6 @@
 #include "Glut/basic.h"            // Various Glut Functions
 #include "Glut/myGlut.h"           // Glut functions and definitions
 #include "global.h"                // Globals
-#include "Generation/generation.h" // createGenome, createCreature
-#include "Generation/genes.h"      // PrintGenome
 #include "GameModes/gameModes.h"   // renderScene
 #include "ErrorHandle/error.h"     // Quit
 

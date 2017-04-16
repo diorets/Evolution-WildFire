@@ -68,9 +68,8 @@
 		<Unit filename="include/Functional/sleep.h" />
 		<Unit filename="include/GameModes/MainMenu/menu.h" />
 		<Unit filename="include/GameModes/MainMenu/menuInputFuncts.h" />
-		<Unit filename="include/GameModes/Simulate/all.h" />
+		<Unit filename="include/GameModes/Simulate/General/drawing.h" />
 		<Unit filename="include/GameModes/Simulate/drawing.h" />
-		<Unit filename="include/GameModes/Simulate/sim.h" />
 		<Unit filename="include/GameModes/Simulate/simInputFuncts.h" />
 		<Unit filename="include/GameModes/gameModes.h" />
 		<Unit filename="include/GameModes/inputFunctions.h" />
@@ -99,8 +98,10 @@
 		<Unit filename="src/Functional/sleep.cpp" />
 		<Unit filename="src/GameModes/MainMenu/menu.cpp" />
 		<Unit filename="src/GameModes/MainMenu/menuInputFuncts.cpp" />
+		<Unit filename="src/GameModes/Simulate/General/drawing.cpp" />
+		<Unit filename="src/GameModes/Simulate/General/genetics.cpp" />
+		<Unit filename="src/GameModes/Simulate/General/initialize.cpp" />
 		<Unit filename="src/GameModes/Simulate/drawing.cpp" />
-		<Unit filename="src/GameModes/Simulate/sim.cpp" />
 		<Unit filename="src/GameModes/Simulate/simInputFuncts.cpp" />
 		<Unit filename="src/GameModes/gameModes.cpp" />
 		<Unit filename="src/GameModes/inputFunctions.cpp" />

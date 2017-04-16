@@ -53,7 +53,6 @@ bool* keyStates = new bool[256];
 // Variables
 double * environment = NULL;
 
-creature * specimen  = NULL;
 generic  * globalData = NULL;
 
 void graphTest();

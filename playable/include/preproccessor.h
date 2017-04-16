@@ -25,6 +25,7 @@
 enum simMode {skipE, debugE, instructionsE, graphE, howToE, goThroughGenE,
  simPositionE, timeGenScreenE, displaySkinE, quickGenE, selectionPowerE};
 
+enum creatureTypes {stickballE, turbine};
 enum {inf, nod, bon, mus, neu, tot};
 enum {xposi, yposi, zposi, mass, fric};
 enum {connectionA, connectionB, layerE, weightE = 0};

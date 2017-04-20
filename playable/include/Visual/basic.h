@@ -13,6 +13,7 @@
 void reenable3D();
 void enable2D();
 
+void drawCube(double x, double y, double z, double radius, double theta);
 void drawSphere(double x, double y, double z, double radius);
 void drawSphere(double x, double y, double z, double radius, int qualityA, int qualityB);
 void drawLine(double x, double y, double z, double X, double Y, double Z);

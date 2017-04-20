@@ -26,7 +26,7 @@ static void drawMessage(int code) {
         case CREATURE_ERROR:
             drawText("CREATURE FAILURE.", wx * 0.2, wy * 0.5, false);
             break;
-        case UNSPECIFC_ERROR:
+        case UNSPECIFIC_ERROR:
             drawText("UNSPECIFIC FAILURE.", wx * 0.2, wy * 0.5, false);
             break;
         default:
@@ -51,12 +51,15 @@ void quit_(int code, int line, const char * file) {
 
     if (code == 0) sprintf(str, "Error Code 000");
     else           sprintf(str, "Error Code %d", code);
+    puts(str);
     drawText(str, wx * 0.2, wy * 0.54, false);
     sprintf(str, "Occured at line %d", line);
 
+    puts(str);
     drawText(str, wx * 0.2, wy * 0.57, false);
     sprintf(str, "In File: %s", file);
 
+    puts(str);
     drawText(str, wx * 0.2, wy * 0.60, false);
     drawText("Program will terminate shortly.", wx * 0.2, wy * 0.63, false);
 
@@ -64,6 +67,15 @@ void quit_(int code, int line, const char * file) {
     while(true);
     sleep_ms(5000);
     exit(EXIT_FAILURE);
+}
+
+
+void * Emalloc_(int bytes, int line, const char * file) {
+    void * toMalloc = malloc(bytes);
+    if (toMalloc == NULL) {
+        quit_(MALLOC_ERROR, line, file);
+    }
+    return toMalloc;
 }
 
 

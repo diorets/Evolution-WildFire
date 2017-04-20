@@ -6,20 +6,21 @@
 #include "Visual/text.h" // drawText
 
 #include "GameModes/Simulate/General/drawing.h"
-#include "GameModes/Simulate/SpDrawing/stickBallDrawing.h"
+#include "GameModes/Simulate/StickBall/stickBallDrawing.h"
+#include "GameModes/Simulate/Turbine/turbineDrawing.h"
+#include "GameModes/Simulate/Cannon/cannonDrawing.h"
 
 #include "Visual/basic.h"          // 2D, 3D, Various Shapes & Text
 #include "Visual/objects.h"        // Drawing Objects
-#include "GameModes/Simulate/drawing.h"        // Drawing Objects
+//#include "GameModes/Simulate/drawing.h"        // Drawing Objects
 #include "GameModes/Simulate/General/drawing.h"
-
+#include "ErrorHandle/error.h"
 void drawSystem(int system, creature input, int genSize, int gen, int id, int simTime, int maxTime) {
     switch(system) {
-        case stickballE:
-            stickBallSystem(input, genSize, gen, id, simTime, maxTime);
-            break;
-        default:
-            break;
+        case stickballE: stickBallSystem(input, genSize, gen, id, simTime, maxTime); break;
+        case turbineE: turbineSystem(input, genSize, gen, id, simTime, maxTime); break;
+        case cannonE: cannonSystem(input, genSize, gen, id, simTime, maxTime); break;
+        default: quit(INPUT_ERROR);
     }
     return;
 }

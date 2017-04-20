@@ -25,9 +25,10 @@
 enum simMode {skipE, debugE, instructionsE, graphE, howToE, goThroughGenE,
  simPositionE, timeGenScreenE, displaySkinE, quickGenE, selectionPowerE};
 
-enum creatureTypes {stickballE, turbine};
-enum {inf, nod, bon, mus, neu, tot};
+enum {tot, nod, bon, mus, neu};
+
 enum {xposi, yposi, zposi, mass, fric};
+
 enum {connectionA, connectionB, layerE, weightE = 0};
 enum {startMode, simMode, editMode, mutMode};
 enum {black, darkBlue, darkGreen, darkAqua, darkRed, darkPurple, darkYellow, grey, darkGrey, blue, green, aqua, red, purple, yellow, white};
@@ -108,9 +109,45 @@ typedef struct stickball_struct {
     axon   axons[MAX_ELEMENTS];
 } stickball;
 
+
+typedef struct block_struct {
+    double torque;
+    double angSpeed;
+    double angle;
+    posi loc;
+    double intertia;
+    double friction;
+} block;
+
 typedef struct turbine_struct {
-    posi blocks[MAX_ELEMENTS];
+    block * blocks;
+    node * particles;
 } turbine;
+
+typedef struct cannon_struct {
+    double coeff[10];
+    double target[1000];
+    int targetNum;
+    double vInit;
+    double angle;
+    node ball; // it would be better to launch all balls
+} cannon;
+
+class TE{ // Turbine Enums
+    public: enum{xlow = -6, xhigh = 6, ylow = -6, yhigh = 6, zlow = 15, zhigh = 25};
+    public: enum{numGenes, numBlocks, numParticles}; // iData
+    public: enum{x, y, z, theta, vx, vy, vz};
+    public: enum{radius, mass}; // fData
+};
+
+class CE { // Cannon Enums
+    public: enum{numGenes, numCannons, numPara};
+    public: enum{h = 0};
+};
+
+enum creatureTypes {stickballE, turbineE, cannonE};
+
+
 
 #endif // PREPROCCESSOR_H_INCLUDED
 

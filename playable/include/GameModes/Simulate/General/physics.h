@@ -3,7 +3,7 @@
 
 #include "preproccessor.h"
 
-bool updateSystem(int system, creature * individual, int time);
+bool updateSystem(int system, creature * individual, int * time);
 double getFitness(int system, creature individual);
 
 #endif // PHYSICS_H_INCLUDED

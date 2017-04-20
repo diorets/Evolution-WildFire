@@ -8,6 +8,7 @@
 #include <GL/glut.h>
 #endif
 
+#define PURPLE 0.5, 0.0, 0.5
 #define BLACK 0,0,0
 #define GREY 0.5,0.5,0.5
 #define WHITE 1,1,1

@@ -54,13 +54,8 @@
 			<Add library="gdi32" />
 		</Linker>
 		<Unit filename="assets/README.txt" />
-		<Unit filename="assets/config.txt" />
-		<Unit filename="assets/errors.txt" />
 		<Unit filename="assets/fitnesses.txt" />
 		<Unit filename="assets/genomes.txt" />
-		<Unit filename="assets/impactText.txt" />
-		<Unit filename="assets/initialPopTest.txt" />
-		<Unit filename="assets/parameterText.txt" />
 		<Unit filename="include/ErrorHandle/error.h" />
 		<Unit filename="include/Functional/list.h" />
 		<Unit filename="include/Functional/music.h" />
@@ -68,17 +63,27 @@
 		<Unit filename="include/Functional/sleep.h" />
 		<Unit filename="include/GameModes/MainMenu/menu.h" />
 		<Unit filename="include/GameModes/MainMenu/menuInputFuncts.h" />
+		<Unit filename="include/GameModes/Simulate/Cannon/cannonDrawing.h" />
+		<Unit filename="include/GameModes/Simulate/Cannon/cannonGenes.h" />
+		<Unit filename="include/GameModes/Simulate/Cannon/cannonMutations.h" />
+		<Unit filename="include/GameModes/Simulate/Cannon/cannonPhysics.h" />
 		<Unit filename="include/GameModes/Simulate/General/drawing.h" />
-		<Unit filename="include/GameModes/Simulate/drawing.h" />
+		<Unit filename="include/GameModes/Simulate/General/genetics.h" />
+		<Unit filename="include/GameModes/Simulate/General/initialize.h" />
+		<Unit filename="include/GameModes/Simulate/General/physics.h" />
+		<Unit filename="include/GameModes/Simulate/StickBall/stickBallDrawing.h" />
+		<Unit filename="include/GameModes/Simulate/StickBall/stickBallGenes.h" />
+		<Unit filename="include/GameModes/Simulate/StickBall/stickBallMutations.h" />
+		<Unit filename="include/GameModes/Simulate/StickBall/stickBallPhysics.h" />
+		<Unit filename="include/GameModes/Simulate/Turbine/turbineDrawing.h" />
+		<Unit filename="include/GameModes/Simulate/Turbine/turbineGenes.h" />
+		<Unit filename="include/GameModes/Simulate/Turbine/turbineMutations.h" />
+		<Unit filename="include/GameModes/Simulate/Turbine/turbinePhysics.h" />
 		<Unit filename="include/GameModes/Simulate/simInputFuncts.h" />
 		<Unit filename="include/GameModes/gameModes.h" />
 		<Unit filename="include/GameModes/inputFunctions.h" />
 		<Unit filename="include/GameModes/keyboards.h" />
 		<Unit filename="include/GameModes/mice.h" />
-		<Unit filename="include/Generation/duplicate.h" />
-		<Unit filename="include/Generation/generation.h" />
-		<Unit filename="include/Generation/genes.h" />
-		<Unit filename="include/Generation/mutations.h" />
 		<Unit filename="include/Glut/basic.h" />
 		<Unit filename="include/Glut/initialize.h" />
 		<Unit filename="include/Glut/mouseFunctions.h" />
@@ -89,7 +94,6 @@
 		<Unit filename="include/Visual/objects.h" />
 		<Unit filename="include/Visual/text.h" />
 		<Unit filename="include/global.h" />
-		<Unit filename="include/physics.h" />
 		<Unit filename="include/preproccessor.h" />
 		<Unit filename="src/ErrorHandle/error.cpp" />
 		<Unit filename="src/Functional/list.cpp" />
@@ -98,19 +102,27 @@
 		<Unit filename="src/Functional/sleep.cpp" />
 		<Unit filename="src/GameModes/MainMenu/menu.cpp" />
 		<Unit filename="src/GameModes/MainMenu/menuInputFuncts.cpp" />
+		<Unit filename="src/GameModes/Simulate/Cannon/cannonDrawing.cpp" />
+		<Unit filename="src/GameModes/Simulate/Cannon/cannonGenes.cpp" />
+		<Unit filename="src/GameModes/Simulate/Cannon/cannonMutations.cpp" />
+		<Unit filename="src/GameModes/Simulate/Cannon/cannonPhysics.cpp" />
 		<Unit filename="src/GameModes/Simulate/General/drawing.cpp" />
 		<Unit filename="src/GameModes/Simulate/General/genetics.cpp" />
 		<Unit filename="src/GameModes/Simulate/General/initialize.cpp" />
-		<Unit filename="src/GameModes/Simulate/drawing.cpp" />
+		<Unit filename="src/GameModes/Simulate/General/physics.cpp" />
+		<Unit filename="src/GameModes/Simulate/StickBall/stickBallDrawing.cpp" />
+		<Unit filename="src/GameModes/Simulate/StickBall/stickBallGenes.cpp" />
+		<Unit filename="src/GameModes/Simulate/StickBall/stickBallMutations.cpp" />
+		<Unit filename="src/GameModes/Simulate/StickBall/stickBallPhysics.cpp" />
+		<Unit filename="src/GameModes/Simulate/Turbine/turbineDrawing.cpp" />
+		<Unit filename="src/GameModes/Simulate/Turbine/turbineGenes.cpp" />
+		<Unit filename="src/GameModes/Simulate/Turbine/turbineMutations.cpp" />
+		<Unit filename="src/GameModes/Simulate/Turbine/turbinePhysics.cpp" />
 		<Unit filename="src/GameModes/Simulate/simInputFuncts.cpp" />
 		<Unit filename="src/GameModes/gameModes.cpp" />
 		<Unit filename="src/GameModes/inputFunctions.cpp" />
 		<Unit filename="src/GameModes/keyboards.cpp" />
 		<Unit filename="src/GameModes/mice.cpp" />
-		<Unit filename="src/Generation/duplicate.cpp" />
-		<Unit filename="src/Generation/generation.cpp" />
-		<Unit filename="src/Generation/genes.cpp" />
-		<Unit filename="src/Generation/mutations.cpp" />
 		<Unit filename="src/Glut/basic.cpp" />
 		<Unit filename="src/Glut/initialize.cpp" />
 		<Unit filename="src/Math/distribution.cpp" />
@@ -119,7 +131,6 @@
 		<Unit filename="src/Visual/objects.cpp" />
 		<Unit filename="src/Visual/text.cpp" />
 		<Unit filename="src/main.cpp" />
-		<Unit filename="src/physics.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-double power = -1;
+double power = -1; // is overwritten, shouldnt this be a static variable?
 
 double uniform() { // [0, 1]
     return (double)rand()/(double)(RAND_MAX);

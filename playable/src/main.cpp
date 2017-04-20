@@ -31,8 +31,8 @@ int  wy         = 0;
 
 // Speeds
 int    playBackSpeed = 1; // 1
-double playerSpeed   = 0.3 / playBackSpeed; // Should scale with overhead
-double cameraSpeed   = 0.02 / playBackSpeed;
+double playerSpeed   = 0.1 / playBackSpeed; // Should scale with overhead
+double cameraSpeed   = 0.01 / playBackSpeed;
 int processSlowDown = 0;
 
 // Camera position

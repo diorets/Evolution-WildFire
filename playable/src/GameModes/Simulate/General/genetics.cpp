@@ -1,5 +1,11 @@
 #include "GameModes/Simulate/General/genetics.h"
-#include "GameModes/Simulate/SpGenetics/stickBallGenes.h"
+#include "GameModes/Simulate/StickBall/stickBallGenes.h"
+#include "GameModes/Simulate/Turbine/turbineGenes.h"
+#include "GameModes/Simulate/Cannon/cannonGenes.h"
+
+#include "GameModes/Simulate/StickBall/stickBallMutations.h"
+#include "GameModes/Simulate/Turbine/turbineMutations.h"
+#include "GameModes/Simulate/Cannon/cannonMutations.h"
 
 #include <math.h>  // Fabs
 #include <stdio.h> // Sprintf
@@ -17,16 +23,34 @@
 gene * createSystemGenome(int system, gene * genome) {
     switch(system) {
         case stickballE: return createStickBallGenome(genome);
-        default: return NULL;
+        case turbineE  : return createTurbineGenome(genome);
+        case cannonE   : return createCannonGenome(genome);
+        default: quit(GENOME_ERROR); return NULL;
     }
 }
 
 void createSystemCreature(int system, creature * individual) {
     switch(system) {
-        case stickballE: createStickBallCreature(individual); break;
-        default: break;
+        case stickballE: createStickBallCreature(individual); return;
+        case turbineE  : createTurbineCreature(individual); return;
+        case cannonE   : createCannonCreature(individual); return;
+        default: quit(CREATURE_ERROR); return;
     }
 }
+
+void mutateGenome(int system, creature * toMutate) {
+    switch(system) {
+        case stickballE: mutateStickball(toMutate); return;
+        case turbineE  : mutateTurbine(toMutate); return;
+        case cannonE   : mutateCannon(toMutate); return;
+        default: quit(CREATURE_ERROR); return;
+    }
+}
+
+
+
+
+
 
 double skewedUnimodal(double x) {
     return pow(1 - x, 27) * sin(PI* x);
@@ -45,7 +69,7 @@ int getRandomID(int * orderedPop, int genSize) {
 }
 
 gene * getGenome(int genomeID, creature * population) {
-    gene * genome = (gene*) malloc(sizeof(gene) * population[genomeID].genome->iData[tot]);
+    gene * genome = (gene*) malloc(sizeof(gene) * population[genomeID].genome->iData[0]);
     gene * head = genome;
     if (genome == NULL) quit(MALLOC_ERROR);
 
@@ -65,6 +89,7 @@ void pruneAndFill(int * orderedPop, creature * population, int genSize) {
 
     // Fill temp with random genomes
     for (int i = 0; i < genSize; i++) {
+        temp[i] = NULL;
         temp[i] = getGenome(getRandomID(orderedPop, genSize), population);
     }
 
@@ -73,8 +98,13 @@ void pruneAndFill(int * orderedPop, creature * population, int genSize) {
         population[i].genome = clearGenome(population[i].genome);
     }
 
+
+
     // Populate Population
     for (int i = 0; i < genSize; i++) {
+        if (population[i].genome != NULL) quit(GENOME_ERROR);
+        if (temp[i]              == NULL) quit(GENOME_ERROR);
+
         population[i].genome = (gene*) malloc(sizeof(gene));
         if (population[i].genome == NULL) quit(MALLOC_ERROR);
         gene * replaceGene  = population[i].genome;
@@ -84,6 +114,7 @@ void pruneAndFill(int * orderedPop, creature * population, int genSize) {
 
         /* Copy the Genome */
         while (fillWithGene) {
+
             copyGene(replaceGene, fillWithGene);
 
             replaceGene  = replaceGene->next;

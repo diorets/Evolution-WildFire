@@ -2,7 +2,6 @@
 #include "ErrorHandle/error.h"
 #include "Functional/list.h"
 #include "global.h"
-#include "GameModes/Simulate/SpGenetics/stickBallGenes.h"
 
 creature * initPop(creature * population, int genSize, int allocationSize) {
     if (population == NULL) {
@@ -13,8 +12,7 @@ creature * initPop(creature * population, int genSize, int allocationSize) {
             population[i].fitness = 0.0;
             population[i].genome = NULL;
 
-            population[i].components = (void*) malloc(allocationSize);
-            if (population[i].components == NULL) quit(MALLOC_ERROR);
+            population[i].components = (void*) eMalloc(allocationSize);
 
             /* Clear Genomes from potentially previous runs */
             population[i].genome = clearGenome(population[i].genome);

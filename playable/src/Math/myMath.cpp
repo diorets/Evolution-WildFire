@@ -65,6 +65,10 @@ posi scale(posi a, double scale) {
     return a;
 }
 
+bool equals(posi a, posi b, double eps) {
+    return euc(a, b) < eps;
+}
+
 double mag(posi a) {
     double square = (a.x * a.x) + (a.y * a.y) + (a.z * a.z);
     return sqrtf(square);
@@ -82,7 +86,7 @@ posi cross(posi a, posi b) { // This has not been verified
 }
 
 double dot(posi a, posi b) { // This has not been verified
-    return a.x * b.x + a.y * b.y+ a.z * b.z;
+    return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
 
@@ -95,6 +99,20 @@ bool chance(int x) {
 bool chance(double x) {
     if (randf(100) < x) return true;
     return false;
+}
+
+double randf2(double a, double b) {
+    double random = ((double) rand()) / (double) RAND_MAX;
+    double diff = b - a;
+    double r = random * diff;
+    return a + r;
+}
+
+double randf2(int a, int b) {
+    double random = ((double) rand()) / (double) RAND_MAX;
+    double diff = b - a;
+    double r = random * diff;
+    return a + r;
 }
 
 // Random float [0, number]

@@ -4,6 +4,8 @@
 #include "preproccessor.h"
 #include <stdlib.h>
 
+double randf2(double a, double b);
+double randf2(int a, int b);
 bool chance(double x);
 bool chance(int x);
 double randf(double number);
@@ -14,6 +16,7 @@ double euc2D(posi a, posi b);
 posi sub(posi a, posi b);
 posi add(posi a, posi b);
 posi add(posi a, double k);
+bool equals(posi a, posi b, double eps);
 posi radForce(posi a, posi b, double force);
 double mag(posi a);
 posi scale(posi a, double scale);

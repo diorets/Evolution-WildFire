@@ -34,8 +34,8 @@ void (*getMouseFunct(bool hold))(int, int, int, int) {
 }
 
 #include "Visual/basic.h"
-static void simMouseClick(int button, int state, int mx, int my) {
-    if (button == GLUT_LEFT_BUTTON) {
+static void simMouseClick(int buttonPressed, int state, int mx, int my) {
+    if (buttonPressed == GLUT_LEFT_BUTTON) {
 		if (state == GLUT_DOWN) {
             if (globalData[simPositionE].i == 0) { // Simulation Screen
                 nextIntroMessage();
@@ -57,8 +57,8 @@ static void simMouseClick(int button, int state, int mx, int my) {
     if (mx||my||true) return;
 }
 
-static void menuMouseClick(int button, int state, int mx, int my) {
-    if (button == GLUT_LEFT_BUTTON) {
+static void menuMouseClick(int buttonPressed, int state, int mx, int my) {
+    if (buttonPressed == GLUT_LEFT_BUTTON) {
 		if (state == GLUT_DOWN) {
             menuOptions();
 		}

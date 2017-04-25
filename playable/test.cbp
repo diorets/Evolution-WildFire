@@ -57,6 +57,7 @@
 		<Unit filename="assets/fitnesses.txt" />
 		<Unit filename="assets/genomes.txt" />
 		<Unit filename="include/ErrorHandle/error.h" />
+		<Unit filename="include/Functional/buttons.h" />
 		<Unit filename="include/Functional/list.h" />
 		<Unit filename="include/Functional/music.h" />
 		<Unit filename="include/Functional/neuralNet.h" />
@@ -96,6 +97,7 @@
 		<Unit filename="include/global.h" />
 		<Unit filename="include/preproccessor.h" />
 		<Unit filename="src/ErrorHandle/error.cpp" />
+		<Unit filename="src/Functional/buttons.cpp" />
 		<Unit filename="src/Functional/list.cpp" />
 		<Unit filename="src/Functional/music.cpp" />
 		<Unit filename="src/Functional/neuralNet.cpp" />

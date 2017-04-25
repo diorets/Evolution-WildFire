@@ -14,7 +14,7 @@ void drawTree(double x, double y, double height, double scale) {
                  scale * 0.5, 20);
     glColor3f(GREEN);
     drawSphere(x, y, scale * height - 0.01 + ground,
-               scale * 2, 4,4);
+               scale * 2, 4, 4);
 }
 
 void drawSight(double dist) {

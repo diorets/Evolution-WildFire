@@ -31,8 +31,8 @@ int  wy         = 0;
 
 // Speeds
 int    playBackSpeed = 1; // 1
-double playerSpeed   = 0.1 / playBackSpeed; // Should scale with overhead
-double cameraSpeed   = 0.01 / playBackSpeed;
+double playerSpeed   = 0.8;// / playBackSpeed; // Should scale with overhead
+double cameraSpeed   = 0.04;// / playBackSpeed;
 int processSlowDown = 0;
 
 // Camera position
@@ -52,8 +52,9 @@ bool* keyStates = new bool[256];
 
 // Variables
 double * environment = NULL;
-
 generic  * globalData = NULL;
+button * buttons = NULL;
+
 
 void graphTest();
 

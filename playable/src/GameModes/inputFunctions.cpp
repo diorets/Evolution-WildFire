@@ -34,43 +34,45 @@ void setPlayBackSpeed(int number) {
     if (playBackSpeed == number) return;
     if (playBackSpeed < number) { // Speed Up
         for (;playBackSpeed < number; playBackSpeed *= 2) {
-            playerSpeed   /= 2;
-            cameraSpeed   /= 2;
+//            playerSpeed   /= 2;
+//            cameraSpeed   /= 2;
         }
     } else { // Speed Down
         for (;playBackSpeed > number; playBackSpeed /= 2) {
-            playerSpeed   *= 2;
-            cameraSpeed   *= 2;
+//            playerSpeed   *= 2;
+//            cameraSpeed   *= 2;
         }
     }
 }
 
 void changePlayBack(bool inc) {
+
     double changeRate = 1.8;
     if (inc && (playBackSpeed < MAX_PLAY_BACK)) {
         if (playBackSpeed <= 0) {
             playBackSpeed = 1;
-            playerSpeed   *= 2;
-            cameraSpeed   *= 8;
+//            playerSpeed   *= 2;
+//            cameraSpeed   *= 8;
             return;
         }
         playBackSpeed *= 2;
-        playerSpeed   /= changeRate;
-        cameraSpeed   /= changeRate;
+//        playerSpeed   /= changeRate;
+//        cameraSpeed   /= changeRate;
     }
     else if (!inc) {
         if (playBackSpeed == 1) {
             playBackSpeed = 0;
-            playerSpeed   /= 2;
-            cameraSpeed   /= 8;
+//            playerSpeed   /= 2;
+//            cameraSpeed   /= 8;
             return;
         }
         playBackSpeed /= 2;
-        playerSpeed   *= changeRate;
-        cameraSpeed   *= changeRate;
+//        playerSpeed   *= changeRate;
+//        cameraSpeed   *= changeRate;
     }
     return;
 }
+
 /* Setting change functions */
 void toggleFullScreen() {
     if (fullscreen) glutReshapeWindow(800, 400);
@@ -105,3 +107,25 @@ void resetCamera() {
     cameraAng = zero();
     return;
 }
+
+#include "ErrorHandle/error.h"
+/* Input Functions */
+void nullFunc() {
+    return;
+}
+
+void normalExit() {
+    quit(NORMAL_EXIT);
+    return;
+}
+
+void toggleCreatureGraph() {
+    globalData[creatureFitnessE].g.display ^= true;
+    return;
+}
+
+void toggleGenerationGraph() {
+    globalData[generationFitnessE].g.display ^= true;
+    return;
+}
+

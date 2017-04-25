@@ -45,9 +45,8 @@ static bool errorCheck(creature * current) {
     }
     return false;
 }
+#include <stdio.h>
 
-
-#include "Functional/neuralNet.h"
 bool updateStickBall(creature * current, int * time) {
     if (errorCheck(current)) quit(CREATURE_ERROR);
     int nodeLen   = current->genome->iData[nod];
@@ -63,53 +62,6 @@ bool updateStickBall(creature * current, int * time) {
         (*force)     = zero();
         (*force).z   = -G * components->nodes[i].mass / 1500.0;
     }
-
-//    static double * inputs = NULL;
-//    static double *** weights = NULL;
-//    if (simTime == 0) {
-//        /* Get length change */
-//        inputs = (double*) malloc(sizeof(double) * muscleLen);
-//        weights = (double***) malloc(sizeof(double**) * 2);
-//        for (int i = 0; i < 2; i++) {
-//            weights[i] = (double**) malloc(sizeof(double*) * 100);
-//            for (int j = 0; j < 100; j++) {
-//                weights[i][j] = (double*) malloc(sizeof(double) * 100);
-//            }
-//        }
-//
-//        for (int i = 0; i < numAxons; i++) {
-//             numAxons is probably wrong
-//            int a      = components->axons[i].a;
-//            int b      = components->axons[i].b;
-//            int layer  = components->axons[i].layer;
-//            int weight = components->axons[i].weight;
-//            if (layer > 1) exit(__LINE__);
-//            if (a > 100) exit(__LINE__);
-//            if (b > 100) exit(__LINE__);
-//            if (fabs(weight > 1000)) exit(__LINE__);
-//
-//            weights[layer][a][b] = weight;
-//        }
-//    }
-//
-//
-//
-//    for (int i = 0; i < muscleLen; i++) {
-//        inputs[i] = specimen[id].muscles[i].currLength / specimen[id].muscles[i].origLength - 1;
-//        inputs[i] /= 1.5 / 100.0;
-//    }
-//    double * outputs = runNetwork(inputs, weights, muscleLen); // crashes here
-//
-//    if (simTime == 9000) {
-//        free(inputs);
-//        for (int i = 0; i < 2; i++) {
-//            for (int j = 0; j < 100; j++) {
-//               free(weights[i][j]);
-//            }
-//            free(weights[i]);
-//        }
-//        free(weights);
-//    }
 
 
     /* Get Muscle Forces : Find force needed to get to this frames length */
@@ -180,6 +132,53 @@ bool updateStickBall(creature * current, int * time) {
             return true;
         }
     }
+
+    /* Graphing Creature Fitness */
+    if ((*time) == 0) { // Clear Graph
+        globalData[creatureFitnessE].g.numEntries = 0;
+        if (globalData[creatureFitnessE].g.points != NULL) {
+            free(globalData[creatureFitnessE].g.points);
+            globalData[creatureFitnessE].g.points = NULL;
+        }
+    }
+    if ((*time) % 10 == 0 && (*time) > 100) { // Add Data Point
+        int numEntries = globalData[creatureFitnessE].g.numEntries;
+        globalData[creatureFitnessE].g.points = (double*) realloc(globalData[creatureFitnessE].g.points, sizeof(double) * (1+numEntries));
+        globalData[creatureFitnessE].g.points[numEntries] = euc2D(zero(), getCom(*current));
+        globalData[creatureFitnessE].g.numEntries++;
+    }
+
+    (*time)++;
     return false;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

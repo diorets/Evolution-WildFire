@@ -26,19 +26,44 @@ creature * initPop(creature * population, int genSize, int allocationSize) {
 void initPsuedoGlobal() {
     static bool initializing = true;
     if (initializing) {
-        globalData = (generic*) malloc(sizeof(generic) * 10); // Increment me!
+        globalData = (generic*) malloc(sizeof(generic) * 13); // Increment me!
         if (globalData == NULL) quit(MALLOC_ERROR);
         globalData[skipE].b          = false;
         globalData[debugE].b         = false;
         globalData[instructionsE].b  = false; // Controls
-        globalData[graphE].b         = false;
+        globalData[graphE].i         = 0;
         globalData[howToE].i         = 0; //1 for intro
         globalData[goThroughGenE].b  = false;
         globalData[simPositionE].i   = 0; // 0 Sim, 1 Mut
         globalData[timeGenScreenE].b = false;
         globalData[displaySkinE].b   = false;
         globalData[quickGenE].i      = 0;
+        globalData[creatureFitnessE].g.points = NULL;
+        globalData[creatureFitnessE].g.numEntries = 0;
+        globalData[creatureFitnessE].g.display = false;
+
+        globalData[generationFitnessE].g.points = NULL;
+        globalData[generationFitnessE].g.numEntries = 0;
+        globalData[generationFitnessE].g.display = false;
+
+        // Dont forget to increment the allocated memory!
         initializing = false;
     }
     return;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

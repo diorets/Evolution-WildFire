@@ -96,7 +96,6 @@ double writeParagraph(const char * str1, int x, int y, double letterHeight) {
     return y + i * letterHeight;
 }
 
-
 int drawText(const char *str, float x, float y, bool center) { // centers
     int width = 0;
     if (center) {
@@ -107,6 +106,7 @@ int drawText(const char *str, float x, float y, bool center) { // centers
     }
     glRasterPos2f(x, y);
     for (const char *c = str; *c != '\0'; c++) {
+        x += glutBitmapWidth(GLUT_BITMAP_HELVETICA_18, *c);
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
     }
     return x;

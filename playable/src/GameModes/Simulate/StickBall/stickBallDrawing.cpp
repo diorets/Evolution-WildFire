@@ -10,7 +10,10 @@
 #include <stdio.h>
 #include "GameModes/Simulate/General/drawing.h"
 
+#include "Functional/buttons.h"
+#include "Functional/graph.h"
 void drawStickBall(creature individual);
+static void createMenu();
 
 void stickBallSystem(creature input, int genSize, int gen, int id, int simTime, int maxTime) {
     /* Clear, Reset, Camera */
@@ -24,9 +27,83 @@ void stickBallSystem(creature input, int genSize, int gen, int id, int simTime, 
 
     /* 2D drawing */
     enable2D();
+    bool twoG = globalData[creatureFitnessE].g.display && globalData[generationFitnessE].g.display;
+    drawGraph(globalData[creatureFitnessE].g, 0, 0.5 * wx * (1.0 + !twoG));
+    drawGraph(globalData[generationFitnessE].g, 0.5 * wx * twoG, wx);
+
+    createMenu();
     drawDetails(genSize, gen, id, simTime, maxTime);
-    //drawDisGraph(false, false);
+
+
     glutSwapBuffers(); // Make it all visible
+}
+
+static void assignCords(button * b) {
+    switch (b->group) {
+        case 0:
+            {
+            int numButtons = 2;//getNumButtons(buttons);
+            double width = (wx - 5) / (double) numButtons;
+            b->x = b->id * width + 5;
+            b->y = wy - 45;
+            b->w = (b->id+1) * width;
+            b->h = wy - 5;
+            }
+            break;
+        case 1:
+            b->x = wx * 0.90;
+            b->y = 45 * (b->id - 1) - 45;
+            b->w = wx;
+            b->h = 45 * (b->id - 1);
+        break;
+        default: return;
+    }
+    return;
+}
+#include "GameModes/inputFunctions.h"
+void createMenu() {
+    /* Create Buttons */
+    if (buttons == NULL) {
+        const char *names[]  = {"Fitness Graph",
+                                "Generation Graph",
+                                "Exit", "Fullscreen",
+                                "Back",
+                                "Creature Info",
+                                "Generation Info",
+                                "Mutation Info",
+                                "Selection Info"};
+        void (*callbacks[])() = {toggleCreatureGraph,
+                                 toggleGenerationGraph,
+                                 normalExit,
+                                 toggleFullScreen,
+                                 nullFunc,
+                                 nullFunc,
+                                 nullFunc,
+                                 nullFunc,
+                                 nullFunc};
+        if (NUMELEMS(names) != NUMELEMS(callbacks)) quit(UNSPECIFIC_ERROR);
+
+        buttons = clearButtons(buttons);
+        for (int i = 0; i < 2; i++) {
+            buttons = createButton(names[i], (*callbacks[i]), assignCords, i, 0);
+        }
+        for (int i = 2; i < (int) NUMELEMS(names); i++) {
+            buttons = createButton(names[i], (*callbacks[i]), assignCords, i, 1);
+        }
+
+    }
+
+    /* Draw Background */
+    glColor3f(BLACK);
+    drawSquare(0, wy, wx, wy-50);
+
+    /* Highlighting */
+    for (button * b = buttons; b != NULL; b = b->next) {
+        b->highlighted = hoveringOver(b);
+    }
+
+    drawButtons();
+    return;
 }
 
 void drawStickBall(creature individual) {
@@ -64,13 +141,12 @@ void drawStickBall(creature individual) {
 
         posi locA = components->nodes[a].loc;
         posi locB = components->nodes[b].loc;
-        float expansivity = components->muscles[i].origLength / euc(locA, locB);
-        expansivity -= 1;
-        expansivity *= 5;
-
+        double minV = -1.3 * components->muscles[i].origLength;
+        double maxV =  1.3 * components->muscles[i].origLength;
+        double expansivity = 8 * euc(locA, locB) / (maxV - minV) * euc(locA, locB) / (maxV - minV); // not sure why 8 works
         drawCylinder(locA.x, locA.y, locA.z,
                       locB.x, locB.y + 0.1, locB.z,
-                       thickness * (1 + expansivity),     5);
+                       thickness * expansivity,     5);
     }
 
     /* COMs / Origins */
@@ -85,172 +161,10 @@ void drawStickBall(creature individual) {
 }
 
 
-static void traceLines(double * entries, double maxEntry, int numEntriesI, double r, double g, double b){
-    glColor3f(r, g, b);
-    glBegin(GL_LINES);
-    double numEntries = (double) numEntriesI;
-    for (int i = 1; i < numEntries; i++) {
-        double x = (i + -1) / (double) (numEntries);
-        double X = (i + 0) / (double) (numEntries);
-        double y = 5 * (entries[i + 0]);
-        double Y = 5 * (entries[i + 1]);
-        glVertex2f(wx * x, 0.1 * wy * (-0.2*y/maxEntry + 9));
-        glVertex2f(wx * X, 0.1 * wy * (-0.2*Y/maxEntry + 9));
-    }
-    glEnd();
-    return;
-}
-
-void drawDisGraph(bool reset, bool adding) {
-    /* Initialize */
-    static int num = 0;
-    static double *dis = NULL;
-    static double *vel = NULL;
-    static double *acc = NULL;
-    static double maxDis = 0.0;
-    static double maxVel = 0.0;
-    static double maxAcc = 0.0;
-
-    /* Initial Memory Allocation */
-    if (!dis) dis = (double*) malloc(sizeof(double));
-    if (!vel) vel = (double*) malloc(sizeof(double));
-    if (!acc) acc = (double*) malloc(sizeof(double));
-    if (!dis||!vel||!acc) quit(MALLOC_ERROR);
-
-    if (reset) {
-        if (dis != NULL) free(dis);
-        if (vel != NULL) free(vel);
-        if (acc != NULL) free(acc);
-        dis = (double*) malloc(sizeof(double));
-        vel = (double*) malloc(sizeof(double));
-        acc = (double*) malloc(sizeof(double));
-        if (!dis||!vel||!acc) quit(MALLOC_ERROR);
-        maxDis = 0.0;
-        maxVel = 0.0;
-        maxAcc = 0.0;
-        num = 0;
-        return;
-    }
-
-    if (adding) {
-        num++;
-        /* Reallocating for New Data */
-        dis = (double*) realloc(dis, sizeof(double) * (num + 1));
-        vel = (double*) realloc(vel, sizeof(double) * (num + 1));
-        acc = (double*) realloc(acc, sizeof(double) * (num + 1));
-
-        if (!dis||!vel||!acc) quit(MALLOC_ERROR);
-
-
-        /* Get Averages per Node */
-//        dis[num] = euc2D(       getCom(specimen[id]), specimen[id].origin);
-//        vel[num] = euc2D(getAvgNodeVel(specimen[id]), specimen[id].origin);
-//        acc[num] = euc2D(getAvgNodeVel(specimen[id]), specimen[id].origin); // Fix ME
-
-        /* Get Maximums (for scaling) */
-        if (fabs(dis[num]) > maxDis) maxDis = fabs(dis[num]);
-        if (fabs(vel[num]) > maxVel) maxVel = fabs(vel[num]);
-        if (fabs(acc[num]) > maxAcc) maxAcc = fabs(acc[num]);
-    } else {
-        /** Drawing **/
-        if (globalData[graphE].b) {
-            /* Draw Background */
-            glColor3f(BLACK);
-            drawSquare(wx, wy, 0, wy * 0.8);
-            glColor3f(WHITE);
-            drawText("The sudden jump in the graph is the Center Of Mass (COM) being reset after they have time to fall and get stable",
-                      0, wy * 0.95, false);
-
-            /* Zero Line */
-            glBegin(GL_LINES);
-                glVertex2f(0,        0.9 * wy);
-                glVertex2f(wx, 0.9 * wy);
-            glEnd();
-
-            /* Draw Data */
-            traceLines(dis, maxDis, num, WHITE);
-    //        traceLines(vel, maxVel, num, GREEN);
-        //    traceLines(acc, maxAcc, num, BLUE);
-
-            /* Measures */
-            glColor3f(WHITE);
-            char str[20];
-            int numDiv = 8;
-            for (int i = 0; i <= numDiv; i++) {
-//                sprintf(str, "%d(%d%%)", simTime * i / numDiv, 100 *  i / numDiv);
-                drawText(str, 0.95 * wx * i / numDiv, wy * 0.92, false);
-            }
-            sprintf(str, "Max Dis: %0.2f-", maxDis);
-            drawText(str, 0.5, wy * 0.815, false);
-        }
-    }
-    return;
-}
 
 
 
-void genDisGraph(double avg, bool adding) {
-    int gen = 500; // TEMPORARY
-    /* Initialize */
-    static double *dis = NULL;
-    static double maxDis = 0.0;
-    if (dis == NULL) {
-        dis  = (double*) malloc(sizeof(double));
-    } else if (adding) {
-        dis  = (double*) realloc(dis, sizeof(double) * (gen + 1));
-    }
-    if (dis == NULL) quit(MALLOC_ERROR);
 
-    /* Get Max */
-    if (adding) {
-        dis[gen] = avg;
-        if (fabs(dis[gen]) > maxDis) {
-            maxDis = fabs(dis[gen]);
-        }
-    } else {
 
-        /* Draw Background */
-        glColor3f(BLACK);
-        drawSquare(0, wy * 0.79, wx, wy);
 
-        /* Draw Lines */
-        char str[20];
-        glColor3f(WHITE);
-        glBegin(GL_LINES);
-        glVertex2f(0, 0.9 * wy);
-        glVertex2f(wx, 0.9 * wy);
 
-        for (int i = 0; i < gen; i++) {
-            if (gen == 1) {
-                double x = 0;
-                double X = 1;
-                double y = 5 * dis[0];
-                double Y = 5 * dis[0];
-                glVertex2f(wx * x, 0.1 * wy * (-0.2*y/maxDis + 9));
-                glVertex2f(wx * X, 0.1 * wy * (-0.2*Y/maxDis + 9));
-            } else {
-                double x = (i + 0) / (double) (gen - 1);
-                double X = (i + 1) / (double) (gen - 1);
-                double y = 5 * dis[i + 0];
-                double Y = 5 * dis[i + 1];
-                glVertex2f(wx * x, 0.1 * wy * (-0.2*y/maxDis + 9));
-                glVertex2f(wx * X, 0.1 * wy * (-0.2*Y/maxDis + 9));
-            }
-        }
-        glEnd();
-
-        /* Measures */
-        int numDiv = 8;
-        for (int i = 0; i <= numDiv; i++) {
-            sprintf(str, "%d(%d%%)", gen * i / numDiv, 100 *  i / numDiv);
-            drawText(str, 0.95 * wx * i / numDiv, wy * 0.92, false);
-        }
-        glColor3f(BLACK);
-        drawText("Distance vs Generation Graph", 0.5, wy * 0.78, false);
-        glColor3f(WHITE);
-        sprintf(str, "Max Dis: %0.2f", maxDis);
-        drawText(str, 0.5, wy * 0.818, false);
-    }
-
-    return;
-}

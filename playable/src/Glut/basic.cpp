@@ -24,13 +24,33 @@ void passiveMouse(int mx, int my) {
     return;
 }
 
-void callMouse(int button, int state, int mx, int my) {
-    void (*mouseFunc)(int, int, int, int) = getMouseFunct(true);
-    (mouseFunc)(button, state, mx, my);
+
+#include <stdio.h>
+#include "Functional/buttons.h"
+void callMouse(int buttonPressed, int state, int mx, int my) {
+    if (buttonPressed != GLUT_LEFT_BUTTON) return;
+//    void (*mouseFunc)(int, int, int, int) = getMouseFunct(true);
+//    (mouseFunc)(buttonPressed, state, mx, my);
+
+    if (state == GLUT_DOWN) {
+        for (button * b = buttons; b != NULL; b = b->next) {
+            b->highlighted = hoveringOver(b);
+            if (b->highlighted) {
+                b->callbackFunction();
+                b->state = true;
+                b->countDown = HIGHLIGHT_DURATION;
+            }
+        }
+    } else {
+        for (button * b = buttons; b != NULL; b = b->next) {
+            b->state = false;
+            b->highlighted = hoveringOver(b);
+        }
+    }
     return;
 }
 
-
+#include <stdio.h>
 void changeSize(int w, int h) {
     int drawDistance = 1000.0;
 	double ratio =  ((double) w) / ((double) h); // window aspect ratio
@@ -39,32 +59,43 @@ void changeSize(int w, int h) {
 	gluPerspective(45.0, ratio, 0.1, drawDistance); // perspective transformation
 	glMatrixMode(GL_MODELVIEW); // return to modelview mode
 	glViewport(0, 0, w, h); // set viewport (drawing area) to entire window
+	return;
 }
+
+#include "GameModes/Simulate/StickBall/stickBallDrawing.h"
 
 void update(void) {
     glutPostRedisplay(); // redisplay everything
     wx = glutGet(GLUT_WINDOW_WIDTH);
     wy = glutGet(GLUT_WINDOW_HEIGHT);
+
+    for (button * b = buttons; b != NULL; b = b->next) {
+        b->drawing(b);
+    }
+
     double zero = 1e-10;
     if (!display) return;
 
-    // Update Position
+    /* Update Position */// Note: Not in orthogonal directions
+    // Move 'Forward / Backwards'
 	if (cameraMov.x > zero || cameraMov.x < -zero) {
 		cameraPos.x += cameraMov.x * cameraDir.x;
 		cameraPos.y += cameraMov.x * cameraDir.y;
-		if (cameraPos.z + cameraMov.x * cameraDir.z > 0) {
+		//if (cameraPos.z + cameraMov.x * cameraDir.z > 0) { // prevent going under z=0
             cameraPos.z += cameraMov.x * cameraDir.z;
-		}
+		//}
 	}
+	// Move 'Left / Right'
 	if (cameraMov.y > zero || cameraMov.y < -zero) { // Cross product with Up vector
         cameraPos.x += cameraMov.y * cameraDir.y;
 		cameraPos.y -= cameraMov.y * cameraDir.x;
 	}
+	// Move 'Up / Down'
 	if (cameraMov.z > zero || cameraMov.z < -zero) { // Simply move Up
         cameraPos.z += cameraMov.z;
 	}
 
-//     Update Viewing Angle
+    /* Update Viewing Angle */
 	if (cameraDel.x > zero || cameraDel.x < -zero) // Should rename to phi and theta
     {
         cameraAng.x += cameraDel.x;

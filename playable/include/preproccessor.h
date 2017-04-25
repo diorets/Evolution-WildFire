@@ -20,10 +20,12 @@
 /* Macros */
 #define FOR_ALL(head, type) for (gene * current = head; current != NULL; current = current->next) if (current->start == type)
 #define FOR_ALL_GENES(head) for (gene * current = head; current != NULL; current = current->next)
+#define NUMELEMS(x)  (sizeof(x) / sizeof((x)[0]))
 
 /* Enums */
 enum simMode {skipE, debugE, instructionsE, graphE, howToE, goThroughGenE,
- simPositionE, timeGenScreenE, displaySkinE, quickGenE, selectionPowerE};
+ simPositionE, timeGenScreenE, displaySkinE, quickGenE, selectionPowerE,
+ creatureFitnessE, generationFitnessE};
 
 enum {tot, nod, bon, mus, neu};
 
@@ -33,11 +35,38 @@ enum {connectionA, connectionB, layerE, weightE = 0};
 enum {startMode, simMode, editMode, mutMode};
 enum {black, darkBlue, darkGreen, darkAqua, darkRed, darkPurple, darkYellow, grey, darkGrey, blue, green, aqua, red, purple, yellow, white};
 
+typedef struct graph_struct {
+    bool display;
+    double * points;
+    int numEntries;
+} graph;
+
+typedef void (*callback)();
+typedef struct button_struct {
+    int x;
+    int y;
+    int w;
+    int h;
+    int id;
+    int group; // distinguish sets of buttons
+
+    bool state;
+    int countDown; // keep button lit up longer on press
+    bool highlighted;
+    char * label;
+
+    callback callbackFunction;
+    void (*drawing)(struct button_struct*);
+
+    struct button_struct* next;
+} button;
+
 typedef union generic_unions {
     int i;
     bool b;
     char c;
     double f;
+    graph g;
 } generic;
 
 /* Structs */

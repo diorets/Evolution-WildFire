@@ -27,9 +27,19 @@ void drawSystem(int system, creature input, int genSize, int gen, int id, int si
 
 
 void drawDetails(int genSize, int gen, int id, int simTime, int maxTime) {
+    char str[50];
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
+    sprintf(str, "Creature ID: %d / %d (%.2f%%)", id, genSize, 100 * id / (double) genSize);
+    int deltaX = drawText(str, 6, -100, false);
+    glColor4f(WHITE, 0.6);
+    drawSquare(0, 0, deltaX + 5, 20 * 5);
+
     /* General Stats */
     glColor3f(BLACK);
-    char str[50];
+
     sprintf(str, "Generation:  %d", gen);
     int height = 0;
     drawText(str, 2, height += 20, false);
@@ -43,5 +53,34 @@ void drawDetails(int genSize, int gen, int id, int simTime, int maxTime) {
     drawText(str, 5, height += 20, false);
     sprintf(str, "Playback Speed: %dx", playBackSpeed);
     drawText(str, 5, height += 20, false);
+
+
+
+
     return;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

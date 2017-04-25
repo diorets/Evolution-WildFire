@@ -29,7 +29,7 @@ static double getAngle(double v, double targetX, double * coeff, int numTerms) {
     //printf("%f\n", angle);
    // return 0.02 * 180 / 3.14159;
    printf("%f, %f\n", 50.0, RADtoDEG *RADtoDEG*0.5 * asin(9.8 * 50 / (v*v*v)));
-    return RADtoDEG*0.5 * asin(9.8 * 50 / (v*v*v)); // outputs radians, input = ??
+    return RADtoDEG * 0.5 * asin(9.8 * 50 / (v*v*v)); // outputs radians, input = ??
 }
 
 #include "Math/myMath.h"

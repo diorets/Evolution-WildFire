@@ -7,17 +7,45 @@
 
 void SIMULATION_MODE();
 
+#include "Glut/myGlut.h"
+#include <stdio.h>
+
+void mainLoop() {
+callKeyboard('\0', true);
+        switch (gameMode) {
+            case startMode:
+                startUpMode();
+                break;
+            case simMode:
+                SIMULATION_MODE();
+                break;
+            default: break;
+        }
+        return;
+
+}
 void renderScene(void) {
-    callKeyboard('\0', true);
-    switch (gameMode) {
-        case startMode:
-            startUpMode();
-            return;
-        case simMode:
-            SIMULATION_MODE();
-            return;
-        default : return;
+    if (!display) {
+        mainLoop();
+    } else {
+        const int msPerFrame = 1000 / 60;
+        int init = glutGet(GLUT_ELAPSED_TIME);
+
+        mainLoop();
+
+        int total = glutGet(GLUT_ELAPSED_TIME);
+        while (total - init < msPerFrame) {
+            mainLoop();
+            total = glutGet(GLUT_ELAPSED_TIME);
+        }
+        // this last call resets init to the current number of elapsed miliseconds.
+        //init = glutGet(GLUT_ELAPSED_TIME);
     }
+
+
+
+
+    return;
 }
 
 
@@ -99,6 +127,18 @@ static void applyGeneticOperators(int system, creature * population, int id, int
     if (id == genSize) {
         srand(time(NULL));
         puts("New Generation");
+
+        double avg = 0.0;
+        for (int i = 0; i < genSize; i++) {
+            avg += population[i].fitness;
+        }
+        avg /= genSize;
+
+        int numEntries = globalData[generationFitnessE].g.numEntries;
+        globalData[generationFitnessE].g.points = (double*) realloc(globalData[generationFitnessE].g.points, sizeof(double) * (1+numEntries));
+        globalData[generationFitnessE].g.points[numEntries] = avg;
+        globalData[generationFitnessE].g.numEntries++;
+
         /* Selection Function */
         int * ordered = orderedDist(population, genSize);
         pruneAndFill(ordered, population, genSize);
@@ -121,6 +161,7 @@ static void generationIteration(int genSize, int * id, int * gen) {
             globalData[goThroughGenE].b = false;
             setPlayBackSpeed(2);
         }
+
         (*id) = 0;
         (*gen)++;
     }
@@ -128,15 +169,15 @@ static void generationIteration(int genSize, int * id, int * gen) {
 }
 
 void SIMULATION_MODE() {
-    const int genSize = 100;
-    const int maxTime = 1000;
+    static const int genSize = 300;
+    static const int maxTime = 9000;
     static creature * population = NULL;
     static int id = 0;
     static int gen = 0;
     static int simTime = 0;
 
     static const unsigned int creatureSizes[] = {sizeof(stickball), sizeof(turbine), sizeof(cannon)};
-    static const int system = cannonE;
+    static const int system = stickballE;
 
     population = initializePop(population, creatureSizes, system, genSize);
     graphics(system, population[id], genSize, gen, id, simTime, maxTime);

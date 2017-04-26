@@ -11,24 +11,24 @@ void SIMULATION_MODE();
 #include <stdio.h>
 
 void mainLoop() {
-callKeyboard('\0', true);
-        switch (gameMode) {
-            case startMode:
-                startUpMode();
-                break;
-            case simMode:
-                SIMULATION_MODE();
-                break;
-            default: break;
-        }
-        return;
-
+    callKeyboard('\0', true);
+    switch (gameMode) {
+        case startMode:
+            startUpMode();
+            break;
+        case simMode:
+            SIMULATION_MODE();
+            break;
+        default: break;
+    }
+    return;
 }
+
 void renderScene(void) {
     if (!display) {
         mainLoop();
     } else {
-        const int msPerFrame = 1000 / 60;
+        const int msPerFrame = 1000.0 / 60.0;
         int init = glutGet(GLUT_ELAPSED_TIME);
 
         mainLoop();
@@ -41,10 +41,6 @@ void renderScene(void) {
         // this last call resets init to the current number of elapsed miliseconds.
         //init = glutGet(GLUT_ELAPSED_TIME);
     }
-
-
-
-
     return;
 }
 
@@ -88,18 +84,18 @@ static creature * initializePop(creature * population, const unsigned int * size
     return population;
 }
 
-static void graphics(int system, creature individual, int genSize, int gen, int id, int simTime, int maxTime) {
+static void graphics(int system, creature * pop, int genSize, int gen, int id, int simTime, int maxTime) {
     if (playBackSpeed <= 0) {
         if (playBackSpeed-- == -10) {
             playBackSpeed = 0;
-            drawSystem(system, individual, genSize, gen, id, simTime, maxTime);
+            drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
         }
         return;
     }
     //if ((simTime % 5 == 0) && !globalData[skipE].b && globalData[graphE].b) drawDisGraph(simTime == 0, true);
     if (display && !globalData[skipE].b) {
         if (!(simTime % playBackSpeed)) {
-            drawSystem(system, individual, genSize, gen, id, simTime, maxTime);
+            drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
         }
     }
     return;
@@ -180,7 +176,7 @@ void SIMULATION_MODE() {
     static const int system = stickballE;
 
     population = initializePop(population, creatureSizes, system, genSize);
-    graphics(system, population[id], genSize, gen, id, simTime, maxTime);
+    graphics(system, population, genSize, gen, id, simTime, maxTime);
 
     if (playBackSpeed <= 0) return;
 

@@ -3,6 +3,6 @@
 
 #include "preproccessor.h"
 
-void stickBallSystem(creature input, int genSize, int gen, int id, int simTime, int maxTime);
+void stickBallSystem(creature * pop, int genSize, int gen, int id, int simTime, int maxTime);
 
 #endif // STICKBALLDRAWING_CPP_INCLUDED

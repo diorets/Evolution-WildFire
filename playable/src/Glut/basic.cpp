@@ -37,13 +37,16 @@ void callMouse(int buttonPressed, int state, int mx, int my) {
             b->highlighted = hoveringOver(b);
             if (b->highlighted) {
                 b->callbackFunction();
-                b->state = true;
+                b->clicked = true;
+                if (b->togglable) {
+                    b->toggled ^= true;
+                }
                 b->countDown = HIGHLIGHT_DURATION;
             }
         }
     } else {
         for (button * b = buttons; b != NULL; b = b->next) {
-            b->state = false;
+            b->clicked = false;
             b->highlighted = hoveringOver(b);
         }
     }
@@ -121,15 +124,16 @@ void update(void) {
 }
 
 /* Keyboard Presses */
+#include <ctype.h>
 void keyPressed (unsigned char key, int x, int y) {
     if (key & x * y){}
-    keyStates[key] = true; // Set the state of the current key to pressed for holding
+    keyStates[tolower(key)] = true; // Set the state of the current key to pressed for holding
     callKeyboard(key, false);
 }
 
 void keyUp (unsigned char key, int x, int y) {
     if (key & x * y){}
-    keyStates[key] = false; // Set the state of the current key to not pressed for holding
+    keyStates[tolower(key)] = false; // Set the state of the current key to not pressed for holding
 }
 
 void processNormalKeys(unsigned char key, int xx, int yy) {

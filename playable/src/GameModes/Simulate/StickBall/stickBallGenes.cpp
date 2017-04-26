@@ -405,22 +405,6 @@ gene * addBone(int numNodes, int a) {
 }
 
 
-gene * addAxon(int a, int b, int l) {
-    gene * newAxon = (gene*) malloc(sizeof(gene));
-    if (newAxon == NULL) quit(MALLOC_ERROR);
-
-    newAxon->start = 'a';
-    newAxon->iData[connectionA] = a;
-    newAxon->iData[connectionB] = b;
-    newAxon->iData[layerE]      = l;
-    newAxon->fData[weightE]     = pmRandf(1.0);
-    newAxon->endof = '\0';
-    newAxon->next = NULL;
-    return newAxon;
-}
-
-
-
 /* Printing */
 void printGenome(int index, bool connection, bool location) {
     if (index || connection || location) return; //silence warning

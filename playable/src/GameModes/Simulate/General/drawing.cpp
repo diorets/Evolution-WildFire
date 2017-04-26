@@ -15,11 +15,11 @@
 //#include "GameModes/Simulate/drawing.h"        // Drawing Objects
 #include "GameModes/Simulate/General/drawing.h"
 #include "ErrorHandle/error.h"
-void drawSystem(int system, creature input, int genSize, int gen, int id, int simTime, int maxTime) {
+void drawSystem(int system, creature * pop, int genSize, int gen, int id, int simTime, int maxTime) {
     switch(system) {
-        case stickballE: stickBallSystem(input, genSize, gen, id, simTime, maxTime); break;
-        case turbineE: turbineSystem(input, genSize, gen, id, simTime, maxTime); break;
-        case cannonE: cannonSystem(input, genSize, gen, id, simTime, maxTime); break;
+        case stickballE: stickBallSystem(pop, genSize, gen, id, simTime, maxTime); break;
+        case turbineE: turbineSystem(pop, genSize, gen, id, simTime, maxTime); break;
+        case cannonE: cannonSystem(pop, genSize, gen, id, simTime, maxTime); break;
         default: quit(INPUT_ERROR);
     }
     return;
@@ -31,9 +31,9 @@ void drawDetails(int genSize, int gen, int id, int simTime, int maxTime) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-
+    /* Draw Square to Cover Width of Text */
     sprintf(str, "Creature ID: %d / %d (%.2f%%)", id, genSize, 100 * id / (double) genSize);
-    int deltaX = drawText(str, 6, -100, false);
+    int deltaX = drawText(str, 6, -100, false, false);
     glColor4f(WHITE, 0.6);
     drawSquare(0, 0, deltaX + 5, 20 * 5);
 
@@ -42,21 +42,17 @@ void drawDetails(int genSize, int gen, int id, int simTime, int maxTime) {
 
     sprintf(str, "Generation:  %d", gen);
     int height = 0;
-    drawText(str, 2, height += 20, false);
+    drawText(str, 2, height += 20, false, false);
     sprintf(str, "Creature ID: %d / %d (%.2f%%)", id, genSize, 100 * id / (double) genSize);
-    drawText(str, 5, height += 20, false);
+    drawText(str, 5, height += 20, false, false);
     if (simTime < 1000000) {
         sprintf(str, "Time: %d / %d (%.2f%%)", simTime, maxTime, 100 * simTime / (double) maxTime);
     } else {
         sprintf(str, "Time: Error, value too large.");
     }
-    drawText(str, 5, height += 20, false);
+    drawText(str, 5, height += 20, false, false);
     sprintf(str, "Playback Speed: %dx", playBackSpeed);
-    drawText(str, 5, height += 20, false);
-
-
-
-
+    drawText(str, 5, height += 20, false, false);
     return;
 }
 

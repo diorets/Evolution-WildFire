@@ -58,9 +58,9 @@
 		<Unit filename="assets/genomes.txt" />
 		<Unit filename="include/ErrorHandle/error.h" />
 		<Unit filename="include/Functional/buttons.h" />
+		<Unit filename="include/Functional/graph.h" />
 		<Unit filename="include/Functional/list.h" />
 		<Unit filename="include/Functional/music.h" />
-		<Unit filename="include/Functional/neuralNet.h" />
 		<Unit filename="include/Functional/sleep.h" />
 		<Unit filename="include/GameModes/MainMenu/menu.h" />
 		<Unit filename="include/GameModes/MainMenu/menuInputFuncts.h" />
@@ -98,9 +98,9 @@
 		<Unit filename="include/preproccessor.h" />
 		<Unit filename="src/ErrorHandle/error.cpp" />
 		<Unit filename="src/Functional/buttons.cpp" />
+		<Unit filename="src/Functional/graph.cpp" />
 		<Unit filename="src/Functional/list.cpp" />
 		<Unit filename="src/Functional/music.cpp" />
-		<Unit filename="src/Functional/neuralNet.cpp" />
 		<Unit filename="src/Functional/sleep.cpp" />
 		<Unit filename="src/GameModes/MainMenu/menu.cpp" />
 		<Unit filename="src/GameModes/MainMenu/menuInputFuncts.cpp" />

@@ -73,7 +73,7 @@ static void startText() {
     drawHeader("EVOLUTION WILDFIRE!", wx * 0.47, wy * 0.12);
 
     glColor3f(ORANGE);
-    drawText("What can you evolve, given the hand of God?", wx * 0.6, wy * 0.17, true);
+    drawText("What can you evolve, given the hand of God?", wx * 0.6, wy * 0.17, true, false);
 
     glColor3f(BLACK);
 //    drawText("*Creatures are 2D only for display (faster evolution)", wx * 0.87, wy * 0.05, true);

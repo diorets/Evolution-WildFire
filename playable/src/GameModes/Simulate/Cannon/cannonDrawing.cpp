@@ -8,7 +8,8 @@ void drawCannon(creature individual);
 void writeCoeff(creature ind);
 
 #include "Functional/sleep.h"
-void cannonSystem(creature input, int genSize, int gen, int id, int simTime, int maxTime) {
+void cannonSystem(creature * pop, int genSize, int gen, int id, int simTime, int maxTime) {
+    creature input = pop[id];
     /* Clear, Reset, Camera */
     glutDrawing();
 

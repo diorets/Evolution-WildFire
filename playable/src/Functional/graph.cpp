@@ -20,7 +20,7 @@ void drawGraph(graph g, double xMin, double xMax) {
     /* Determine Graphability of Data */
     int numPoints = g.numEntries;
     if ((g.points == NULL) || (numPoints < 2)) {
-        drawText("Not Enough Points", xMin + (xMax-xMin) / 2.0, yMin+0.5*(yMax-yMin), true);
+        drawText("Not Enough Points", xMin + (xMax-xMin) / 2.0, yMin+0.5*(yMax-yMin), true, false);
         return;
     }
 
@@ -39,10 +39,10 @@ void drawGraph(graph g, double xMin, double xMax) {
     /* Write Extreme Points on Axis */
     char str[10];
     sprintf(str, "%.2f", peak);
-    drawText(str, xMin + indent / 2.0, yMax+15, true);
+    drawText(str, xMin + indent / 2.0, yMax+15, true, false);
 
     sprintf(str, "%.2f", trough);
-    drawText(str, xMin + indent / 2.0, yMin-5, true);
+    drawText(str, xMin + indent / 2.0, yMin-5, true, false);
 
     /* Graphing Line Plot */
     for (int i = 0; i < numPoints - 1; i++) {

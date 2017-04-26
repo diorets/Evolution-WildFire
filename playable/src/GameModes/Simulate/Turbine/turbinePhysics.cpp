@@ -18,7 +18,7 @@ static bool error(creature * current) {
 
 #include "Visual/basic.h"
 bool updateTurbine(creature * current, int * time) {
-    if (time == 0) {srand(0);}
+    if ((*time) == 0) {srand(0);}
 	if (error(current)) quit(CREATURE_ERROR);
     turbine * components = ((turbine*) current->components);
     int numBlocks = current->genome->iData[TE::numBlocks];
@@ -108,7 +108,7 @@ bool updateTurbine(creature * current, int * time) {
         }
 
     }
-
+    (*time)++;
 	return false;
 }
 

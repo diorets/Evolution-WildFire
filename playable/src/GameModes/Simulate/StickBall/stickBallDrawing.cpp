@@ -14,8 +14,11 @@
 #include "Functional/graph.h"
 void drawStickBall(creature individual);
 static void createMenu();
+void displaySystemInfo(creature * pop, int genSize, int id);
 
-void stickBallSystem(creature input, int genSize, int gen, int id, int simTime, int maxTime) {
+void stickBallSystem(creature * pop, int genSize, int gen, int id, int simTime, int maxTime) {
+    creature input = pop[id];
+
     /* Clear, Reset, Camera */
     glutDrawing();
 
@@ -32,6 +35,14 @@ void stickBallSystem(creature input, int genSize, int gen, int id, int simTime, 
     drawGraph(globalData[generationFitnessE].g, 0.5 * wx * twoG, wx);
 
     createMenu();
+
+    for (button * b = buttons; b != NULL; b = b->next) {
+        if (!strcmp("System Info", b->label)) {
+            if (b->toggled) {
+                displaySystemInfo(pop, genSize, id);
+            }
+        }
+    }
     drawDetails(genSize, gen, id, simTime, maxTime);
 
 
@@ -42,7 +53,7 @@ static void assignCords(button * b) {
     switch (b->group) {
         case 0:
             {
-            int numButtons = 2;//getNumButtons(buttons);
+            int numButtons = getNumButtons(buttons, b->group);
             double width = (wx - 5) / (double) numButtons;
             b->x = b->id * width + 5;
             b->y = wy - 45;
@@ -52,45 +63,71 @@ static void assignCords(button * b) {
             break;
         case 1:
             b->x = wx * 0.90;
-            b->y = 45 * (b->id - 1) - 45;
+            b->y = 45 * (b->id);
             b->w = wx;
-            b->h = 45 * (b->id - 1);
+            b->h = 45 * (b->id + 1);
         break;
         default: return;
     }
     return;
 }
+
+void displaySystemInfo(creature * pop, int genSize, int id) {
+    int yTop = 5 * 20;
+    int yBottom = 5 * 20 + 20 * 14 + 20; // 50 % of screen
+    drawSquare(0, yBottom, 220, yTop);
+    glColor3f(WHITE);
+    int height = yTop;
+    char str[100];
+    sprintf(str, "Creature Genes"); drawText(str, 0, height += 20, false, false);
+    sprintf(str, "Total: %d",   pop[id].genome->iData[tot]); drawText(str, 20, height += 20, false, false);
+    sprintf(str, "Nodes: %d",   pop[id].genome->iData[nod]); drawText(str, 20, height += 20, false, false);
+    sprintf(str, "Bones: %d",   pop[id].genome->iData[bon]); drawText(str, 20, height += 20, false, false);
+    sprintf(str, "Muscles: %d", pop[id].genome->iData[mus]); drawText(str, 20, height += 20, false, false);
+    height+=20;
+    double popStats[] = {0, 0, 0, 0, 0};
+    for (int i = 0; i < genSize; i++) {
+        popStats[0] += pop[i].genome->iData[tot];
+        popStats[1] += pop[i].genome->iData[nod];
+        popStats[2] += pop[i].genome->iData[bon];
+        popStats[3] += pop[i].genome->iData[mus];
+        popStats[4] += pop[i].fitness; // Only works because fitness for pop[i > id] = 0
+    }
+    double oneOverGenSize = 1.0 / (double) genSize;
+    popStats[0] *= oneOverGenSize;
+    popStats[1] *= oneOverGenSize;
+    popStats[2] *= oneOverGenSize;
+    popStats[3] *= oneOverGenSize;
+    popStats[4] *= id == 0 ? 0 : 1.0 / (double) id;
+
+    sprintf(str, "Population Genes"); drawText(str, 0, height += 20, false, false);
+    sprintf(str, "Total: %.2f",   popStats[0]); drawText(str, 20, height += 20, false, false);
+    sprintf(str, "Nodes: %.2f",   popStats[1]); drawText(str, 20, height += 20, false, false);
+    sprintf(str, "Bones: %.2f",   popStats[2]); drawText(str, 20, height += 20, false, false);
+    sprintf(str, "Muscles: %.2f", popStats[3]); drawText(str, 20, height += 20, false, false);
+    height+=20;
+
+    sprintf(str, "Population Fitness"); drawText(str, 0, height += 20, false, false);
+    sprintf(str, "Current Average: %.2f",   popStats[4]); drawText(str, 20, height += 20, false, false);
+
+
+}
+
 #include "GameModes/inputFunctions.h"
 void createMenu() {
     /* Create Buttons */
     if (buttons == NULL) {
-        const char *names[]  = {"Fitness Graph",
-                                "Generation Graph",
-                                "Exit", "Fullscreen",
-                                "Back",
-                                "Creature Info",
-                                "Generation Info",
-                                "Mutation Info",
-                                "Selection Info"};
-        void (*callbacks[])() = {toggleCreatureGraph,
-                                 toggleGenerationGraph,
-                                 normalExit,
-                                 toggleFullScreen,
-                                 nullFunc,
-                                 nullFunc,
-                                 nullFunc,
-                                 nullFunc,
-                                 nullFunc};
-        if (NUMELEMS(names) != NUMELEMS(callbacks)) quit(UNSPECIFIC_ERROR);
-
-        buttons = clearButtons(buttons);
-        for (int i = 0; i < 2; i++) {
-            buttons = createButton(names[i], (*callbacks[i]), assignCords, i, 0);
-        }
-        for (int i = 2; i < (int) NUMELEMS(names); i++) {
-            buttons = createButton(names[i], (*callbacks[i]), assignCords, i, 1);
-        }
-
+        int i = 0;
+        int j = 0;
+        buttons = createButton("Fitness Graph"   , toggleCreatureGraph  , assignCords, j++    , 0, true , false);
+        buttons = createButton("Generation Graph", toggleGenerationGraph, assignCords, j++    , 0, true , false);
+        buttons = createButton("Exit"            , normalExit           , assignCords, i++    , 1, false, false);
+        buttons = createButton("Back to Menu"    , nullFunc             , assignCords, i++    , 1, false, false);
+        buttons = createButton("Full Screen"     , toggleFullScreen     , assignCords, i++    , 1, true , true );
+        buttons = createButton("System Info"     , nullFunc             , assignCords, j++    , 0, true , false);
+        buttons = createButton("Mutations"       , nullFunc             , assignCords, j++    , 0, true , false);
+        buttons = createButton("Selection"       , nullFunc             , assignCords, j++    , 0, true , false);
+        buttons = createButton("Save Genome"     , nullFunc             , assignCords, (++i)++, 1, false , false);
     }
 
     /* Draw Background */

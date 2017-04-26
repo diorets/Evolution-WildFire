@@ -41,51 +41,6 @@ void mutateStickball(creature * toMutate) {
     return;
 }
 
-void addAxons(gene * head, int attachTo) {
-    int hiddenLayerSize = HIDDEN_LAYER_SIZE;
-    for (int j = 0; j < hiddenLayerSize; j++) {
-        head = addToBack(head, addAxon(attachTo, j, 0));
-        head = addToBack(head, addAxon(j, attachTo, 1));
-        head->iData[tot] += 2;
-        head->iData[neu] += 2;
-    }
-    return;
-}
-
-void reduceAxons(gene * head, int muscleRemoved) {
-    /* Decrement input and output layers to account for removed muscle */
-    FOR_ALL(head, 'a') {
-        int layer = current->iData[layerE];
-        int * connA = &current->iData[connectionA];
-        int * connB = &current->iData[connectionB];
-
-        switch(layer) {
-            case 0:
-                if ((*connA) == muscleRemoved) {       // Remove
-                    removeItem(head, current);
-                    head->iData[neu]--;
-                    head->iData[tot]--;
-                } else if ((*connA) > muscleRemoved) { // Adjust
-                    (*connA)--;
-                }
-                break;
-            case 1:
-                if ((*connB) == muscleRemoved) {       // Remove
-                    removeItem(head, current);
-                    head->iData[neu]--;
-                    head->iData[tot]--;
-                } else if ((*connB) > muscleRemoved) { // Adjust
-                    (*connB)--;
-                }
-                break;
-            default:
-                break;
-        }
-    }
-    return;
-}
-
-
 void shiftNodes(gene * head, double shiftChance, double amount) {
     FOR_ALL(head, 'n') if (chance(shiftChance)) {
         double x = current->fData[xposi];
@@ -124,7 +79,6 @@ void addNode(gene * head, double nodeChance, double muscleChance, double boneCha
             // Function can be improved to make it more evenly random
             if (chance(muscleChance)) {
                 if (head->iData[mus] >= MAX_ELEMENTS) continue;
-                addAxons(head, head->iData[mus]);
                 addToBack(head, muscleGene(counter, head->iData[nod] - 1));
                 head->iData[tot]++;
                 head->iData[mus]++;
@@ -171,7 +125,6 @@ void removeNodeByIndex(gene * head, int toRemove) {
     int muscleNum = 0;
     FOR_ALL(head, 'm') {
         if (current->iData[0] == toRemove || current->iData[1] == toRemove) {
-            reduceAxons(head, muscleNum--);
             removeItem(head, current);
             head->iData[tot]--;
             head->iData[mus]--;
@@ -209,7 +162,6 @@ void addConnection(gene * head, double addChance) {
         conn connection = goodConnection(head);
         if (chance(50)) {
             if (head->iData[mus] >= MAX_ELEMENTS) return;
-            //addAxons(head, head->iData[mus]);
             addToBack(head, muscleGene(connection.a, connection.b));
             head->iData[tot]++;
             head->iData[mus]++;
@@ -253,7 +205,6 @@ void removeConnection(gene * head, double addChance) {
             int muscleNum = 0;
             FOR_ALL(head, 'm') {
                 if (muscleNum == toRemove) {
-                    //reduceAxons(head, muscleNum--);
                     removeItem(head, current);
                     head->iData[tot]--;
                     head->iData[mus]--;
@@ -270,7 +221,6 @@ void removeConnection(gene * head, double addChance) {
             int muscleNum = 0;
             FOR_ALL(head, 'm') {
                 if (muscleNum == toRemove) {
-                    reduceAxons(head, muscleNum--);
                     removeItem(head, current);
                     head->iData[tot]--;
                     head->iData[mus]--;
@@ -366,9 +316,10 @@ void verifyGenome(gene * head) {
     int numAxons   = head->iData[neu];
 
     /* Number Errors */
-    if (numNodes    > MAX_ELEMENTS || numNodes   <= 0) quit(GENOME_ERROR);
-    if (numMuscles  > MAX_ELEMENTS || numMuscles <  0) quit(GENOME_ERROR);
-    if (numBones    > MAX_ELEMENTS || numBones   <  0) quit(GENOME_ERROR);
+    if (numNodes   > MAX_ELEMENTS || numNodes   <= 0) quit(GENOME_ERROR);
+    if (numMuscles > MAX_ELEMENTS || numMuscles <  0) quit(GENOME_ERROR);
+    if (numBones   > MAX_ELEMENTS || numBones   <  0) quit(GENOME_ERROR);
+    if (numAxons   > 0) quit(GENOME_ERROR);
 
     if (numNodes + numMuscles + numBones + numAxons + 1 != numGenes) quit(GENOME_ERROR);
 

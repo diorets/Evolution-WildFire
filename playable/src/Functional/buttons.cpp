@@ -18,13 +18,13 @@ static button * getLastButton(button * head) {
     }
 }
 
-int getNumButtons(button * head) {
+int getNumButtons(button * head, int group) {
     int i = 0;
-    for (button * b = head; b != NULL; b = b->next) i++;
+    for (button * b = head; b != NULL; b = b->next) if (b->group == group) i++;
     return i;
 }
 
-button * createButton(const char * label, callback cb, void (*f)(button*), int id, int group) {
+button * createButton(const char * label, callback cb, void (*f)(button*), int id, int group, bool togglable, bool defaultToggle) {
 	button * p = (button*)malloc( sizeof(button) );
 	memset(p,0,sizeof(button));
 	p->x = 0;
@@ -34,7 +34,9 @@ button * createButton(const char * label, callback cb, void (*f)(button*), int i
 	p->id = id;
 	p->group = group;
 
-	p->state = false;
+	p->togglable = togglable;
+	p->toggled = defaultToggle;
+	p->clicked = false;
 	p->callbackFunction = cb;
 	p->label = (char*)malloc( strlen(label)+1 );
 	if(p->label) {
@@ -63,6 +65,7 @@ button * addToBack1(button * head, button * toBeAdded) {
     return head;
 }
 
+#include "Glut/myGlut.h"
 #define in_ 0.2
 #define out_ 0.9
 
@@ -75,11 +78,11 @@ void drawButtons() {
             glVertex2f(b->x,b->y);
             glVertex2f(b->x,b->h);
 
-            if (b->state) {
+            if (b->clicked) {
                 b->countDown = HIGHLIGHT_DURATION;
             }
 
-            if (b->countDown > 0) {
+            if (b->toggled || (!b->togglable && b->countDown > 0)) {
                 b->countDown--;
                 glColor3f(0, 0.81, 0.98);
             } else {
@@ -118,7 +121,7 @@ void drawButtons() {
         glEnd();
 
         glColor3f(BLACK);
-        drawText(b->label, 0.5 * (b->x + b->w), 0.5 * (b->y + b->h), true);
+        drawText(b->label, 0.5 * (b->x + b->w), 0.5 * (b->y + b->h), true, true);
     }
 }
 

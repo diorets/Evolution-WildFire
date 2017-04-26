@@ -50,13 +50,16 @@ typedef struct button_struct {
     int id;
     int group; // distinguish sets of buttons
 
-    bool state;
-    int countDown; // keep button lit up longer on press
+    bool togglable;
+
+    bool clicked;
+    bool toggled;
+    int  countDown; // keep button lit up longer on press
     bool highlighted;
     char * label;
 
     callback callbackFunction;
-    void (*drawing)(struct button_struct*);
+    void (*drawing)(struct button_struct*); // getcords function (resizing)
 
     struct button_struct* next;
 } button;

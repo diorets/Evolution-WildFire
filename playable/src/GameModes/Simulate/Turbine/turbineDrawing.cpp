@@ -8,7 +8,8 @@ void drawTurbine(creature individual);
 void drawParticles(creature individual);
 
 #include <stdio.h>
-void turbineSystem(creature input, int genSize, int gen, int id, int simTime, int maxTime) {
+void turbineSystem(creature * pop, int genSize, int gen, int id, int simTime, int maxTime) {
+    creature input = pop[id];
     /* Clear, Reset, Camera */
     glutDrawing();
 

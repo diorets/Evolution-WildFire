@@ -10,4 +10,6 @@ void copyGene(gene * popCurr, gene * dupCurr);
 void pruneAndFill(int *, creature *, int genSize);
 int * orderedDist(creature*, int genSize);
 
+void saveGenome(creature * population, int gen, int index);
+
 #endif // GENETICS_H_INCLUDED

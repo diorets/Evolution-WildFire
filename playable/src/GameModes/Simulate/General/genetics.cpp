@@ -236,7 +236,38 @@ int * orderedDist(creature * group, int genSize) {
 }
 
 
-
+void saveGenome(creature * population, int gen, int index) {
+    FILE * fptr = fopen("../assets/genomes.txt", "a");
+    fprintf(fptr, "%d:", gen);
+    fprintf(fptr, "F:%f>", population[index].fitness);
+    for (gene * current = population[index].genome; current != NULL; current = current->next) {
+        fprintf(fptr, "<%c|", current->start);
+        switch (current->start) {
+            case 'i':
+                for (int i = nod; i <= tot; i++) {
+                    fprintf(fptr, "%d,", current->iData[i]);
+                }
+                break;
+            case 'n':
+                for (int i = 0; i < 5; i++) {
+                    fprintf(fptr, "%f,", current->fData[i]);
+                }
+                break;
+            case 'm':
+                fprintf(fptr, "%d,%d,", current->iData[0], current->iData[1]);
+                break;
+            case 'b':
+                fprintf(fptr, "%d,%d,", current->iData[0], current->iData[1]);
+                break;
+            default:
+                quit(GENOME_ERROR);
+                break;
+        }
+    }
+    fprintf(fptr, "<\n");
+    fclose(fptr);
+    return;
+}
 
 
 

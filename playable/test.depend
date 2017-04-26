@@ -1551,7 +1551,7 @@
 	<math.h>
 	<stdlib.h>
 
-1493163150 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\errorhandle\error.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\errorhandle\error.cpp
 	<stdio.h>
 	"ErrorHandle/error.h"
 	"Visual/basic.h"
@@ -1559,7 +1559,7 @@
 	"Functional/sleep.h"
 	"global.h"
 
-1492628952 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\functional\list.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\functional\list.cpp
 	"Functional/list.h"
 	<stdlib.h>
 	"ErrorHandle/error.h"
@@ -1594,7 +1594,7 @@
 	"Functional/list.h"
 	"Visual/objects.h"
 
-1493163004 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\mainmenu\menu.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\mainmenu\menu.cpp
 	"GameModes/MainMenu/menu.h"
 	<math.h>
 	<stdio.h>
@@ -1606,7 +1606,7 @@
 	"Visual/objects.h"
 	"Functional/music.h"
 
-1492137438 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\mainmenu\menuinputfuncts.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\mainmenu\menuinputfuncts.cpp
 	"GameModes/MainMenu/menuInputFuncts.h"
 	"GameModes/mice.h"
 	"preproccessor.h"
@@ -1614,7 +1614,7 @@
 	"ErrorHandle/error.h"
 	"global.h"
 
-1493055716 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\mice.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\mice.cpp
 	"GameModes/mice.h"
 	"global.h"
 	"Glut/MyGlut.h"
@@ -1657,7 +1657,7 @@
 	"GameModes/Simulate/drawing.h"
 	<float.h>
 
-1492187321 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\siminputfuncts.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\siminputfuncts.cpp
 	"preproccessor.h"
 	"global.h"
 	"GameModes/mice.h"
@@ -1689,7 +1689,7 @@
 	"global.h"
 	<stdio.h>
 
-1493167702 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\glut\basic.cpp
+1493181148 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\glut\basic.cpp
 	"Glut/basic.h"
 	<math.h>
 	"global.h"
@@ -1703,12 +1703,12 @@
 	"GameModes/Simulate/StickBall/stickBallDrawing.h"
 	<ctype.h>
 
-1492387409 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\math\distribution.cpp
+1493180714 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\math\distribution.cpp
 	<stdio.h>
 	<math.h>
 	<stdlib.h>
 
-1492579715 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\math\mymath.cpp
+1493180714 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\math\mymath.cpp
 	<math.h>
 	"Math/myMath.h"
 
@@ -1720,7 +1720,7 @@
 	"global.h"
 	"Functional/neuralNet.h"
 
-1492528737 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\visual\basic.cpp
+1493180714 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\visual\basic.cpp
 	"Visual/basic.h"
 	<math.h>
 	"Glut/myGlut.h"
@@ -1729,7 +1729,7 @@
 	"Math/myMath.h"
 	<stdio.h>
 
-1492998448 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\visual\objects.cpp
+1493180714 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\visual\objects.cpp
 	"Visual/basic.h"
 	"Glut/myGlut.h"
 	"global.h"
@@ -1737,7 +1737,7 @@
 	"Math/myMath.h"
 	"ErrorHandle/error.h"
 
-1493163373 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\visual\text.cpp
+1493180714 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\visual\text.cpp
 	<stdarg.h>
 	<stdio.h>
 	"Visual/basic.h"
@@ -1749,7 +1749,7 @@
 	"global.h"
 	"GameModes/mice.h"
 
-1493165714 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\gamemodes.cpp
+1493182761 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\gamemodes.cpp
 	"GameModes/gameModes.h"
 	"Glut/basic.h"
 	"global.h"
@@ -1771,8 +1771,9 @@
 	<stdio.h>
 	<time.h>
 	"Visual/objects.h"
+	"GameModes/Simulate/General/genetics.h"
 
-1493157454 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\inputfunctions.cpp
+1493180781 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\inputfunctions.cpp
 	"global.h"
 	"Glut/myGlut.h"
 	"GameModes/inputFunctions.h"
@@ -1783,13 +1784,13 @@
 	"Functional/music.h"
 	"ErrorHandle/error.h"
 
-1492137256 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\keyboards.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\keyboards.cpp
 	"GameModes/keyboards.h"
 	"global.h"
 	"GameModes/inputFunctions.h"
 	"ErrorHandle/error.h"
 
-1493153779 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\glut\initialize.cpp
+1493180714 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\glut\initialize.cpp
 	"Glut/initialize.h"
 	<time.h>
 	"preproccessor.h"
@@ -1799,7 +1800,7 @@
 	"GameModes/gameModes.h"
 	"ErrorHandle/error.h"
 
-1493155771 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\main.cpp
+1493180714 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\main.cpp
 	<stdlib.h>
 	<stdio.h>
 	"Glut/initialize.h"
@@ -1809,7 +1810,7 @@
 	"Math/myMath.h"
 	"Math/distribution.h"
 
-1493165562 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\general\drawing.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\general\drawing.cpp
 	"GameModes/Simulate/General/drawing.h"
 	<stdio.h>
 	"global.h"
@@ -1824,7 +1825,7 @@
 	"GameModes/Simulate/General/drawing.h"
 	"ErrorHandle/error.h"
 
-1492633106 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\general\genetics.cpp
+1493181426 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\general\genetics.cpp
 	"GameModes/Simulate/General/genetics.h"
 	"GameModes/Simulate/StickBall/stickBallGenes.h"
 	"GameModes/Simulate/Turbine/turbineGenes.h"
@@ -1843,7 +1844,7 @@
 	"ErrorHandle/error.h"
 	"Math/distribution.h"
 
-1493068583 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\general\initialize.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\general\initialize.cpp
 	"GameModes/Simulate/General/initialize.h"
 	"ErrorHandle/error.h"
 	"Functional/list.h"
@@ -1908,7 +1909,7 @@
 	"global.h"
 	"Functional/neuralNet.h"
 
-1492998192 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\general\physics.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\general\physics.cpp
 	"GameModes/Simulate/General/physics.h"
 	"GameModes/Simulate/StickBall/stickBallPhysics.h"
 	"GameModes/Simulate/Turbine/turbinePhysics.h"
@@ -1945,7 +1946,7 @@
 	"global.h"
 	<stdio.h>
 
-1493179264 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\stickball\stickballdrawing.cpp
+1493182499 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\stickball\stickballdrawing.cpp
 	"GameModes/Simulate/StickBall/stickBallDrawing.h"
 	"Glut/myGlut.h"
 	"Visual/basic.h"
@@ -1960,7 +1961,7 @@
 	"Functional/graph.h"
 	"GameModes/inputFunctions.h"
 
-1493176942 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\stickball\stickballgenes.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\stickball\stickballgenes.cpp
 	"GameModes/Simulate/StickBall/stickBallGenes.h"
 	<math.h>
 	<stdio.h>
@@ -1971,7 +1972,7 @@
 	"Functional/list.h"
 	"GameModes/Simulate/StickBall/stickBallMutations.h"
 
-1493176924 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\stickball\stickballmutations.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\stickball\stickballmutations.cpp
 	"GameModes/Simulate/StickBall/stickBallMutations.h"
 	<math.h>
 	"Math/myMath.h"
@@ -1981,7 +1982,7 @@
 	"global.h"
 	<stdio.h>
 
-1493093494 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\stickball\stickballphysics.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\stickball\stickballphysics.cpp
 	"GameModes/Simulate/StickBall/stickBallPhysics.h"
 	<math.h>
 	"Math/myMath.h"
@@ -1989,7 +1990,7 @@
 	"global.h"
 	<stdio.h>
 
-1493165626 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\turbine\turbinedrawing.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\turbine\turbinedrawing.cpp
 	"GameModes/Simulate/Turbine/turbineDrawing.h"
 	"Glut/myGlut.h"
 	"Visual/basic.h"
@@ -1997,7 +1998,7 @@
 	"GameModes/Simulate/General/drawing.h"
 	<stdio.h>
 
-1492628001 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\turbine\turbinegenes.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\turbine\turbinegenes.cpp
 	"GameModes/Simulate/Turbine/turbineGenes.h"
 	"GameModes/Simulate/Turbine/turbineMutations.h"
 	"ErrorHandle/error.h"
@@ -2008,11 +2009,11 @@
 	<float.h>
 	<math.h>
 
-1492633252 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\turbine\turbinemutations.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\turbine\turbinemutations.cpp
 	"GameModes/Simulate/Turbine/turbineMutations.h"
 	"GameModes/Simulate/Turbine/turbineGenes.h"
 
-1493157230 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\turbine\turbinephysics.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\turbine\turbinephysics.cpp
 	"GameModes/Simulate/Turbine/turbinePhysics.h"
 	"ErrorHandle/error.h"
 	"Math/myMath.h"
@@ -2021,7 +2022,7 @@
 	<stdio.h>
 	"Visual/basic.h"
 
-1493165605 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\cannon\cannondrawing.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\cannon\cannondrawing.cpp
 	"GameModes/Simulate/Cannon/cannonDrawing.h"
 	"Glut/myGlut.h"
 	"Visual/basic.h"
@@ -2032,26 +2033,26 @@
 	"global.h"
 	<math.h>
 
-1492707683 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\cannon\cannongenes.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\cannon\cannongenes.cpp
 	"GameModes/Simulate/Cannon/cannonGenes.h"
 	"GameModes/Simulate/Cannon/cannonMutations.h"
 	"ErrorHandle/error.h"
 	<Math/myMath.h>
 	"Functional/list.h"
 
-1492653391 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\cannon\cannonmutations.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\cannon\cannonmutations.cpp
 	"GameModes/Simulate/Cannon/cannonMutations.h"
 	"GameModes/Simulate/Cannon/cannonGenes.h"
 	"Math/myMath.h"
 
-1492971875 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\cannon\cannonphysics.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\gamemodes\simulate\cannon\cannonphysics.cpp
 	"GameModes/Simulate/Cannon/cannonPhysics.h"
 	"ErrorHandle/error.h"
 	<stdio.h>
 	<math.h>
 	"Math/myMath.h"
 
-1493167518 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\functional\buttons.cpp
+1493181148 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\functional\buttons.cpp
 	"Functional/buttons.h"
 	<stdlib.h>
 	"Glut/myGlut.h"
@@ -2061,7 +2062,7 @@
 	"Errorhandle/error.h"
 	"Glut/myGlut.h"
 
-1493162997 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\functional\graph.cpp
+1493180713 source:c:\users\nisma\documents\github\evolution-wildfire\playable\src\functional\graph.cpp
 	"Functional/graph.h"
 	"global.h"
 	"Glut/myGlut.h"

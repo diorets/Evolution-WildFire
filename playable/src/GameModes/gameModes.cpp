@@ -164,6 +164,9 @@ static void generationIteration(int genSize, int * id, int * gen) {
     return;
 }
 
+#include "GameModes/Simulate/General/genetics.h"
+
+
 void SIMULATION_MODE() {
     static const int genSize = 300;
     static const int maxTime = 9000;
@@ -181,6 +184,20 @@ void SIMULATION_MODE() {
     if (playBackSpeed <= 0) return;
 
     creatureIteration(updateSystem(system, &population[id], &simTime), &population[id], system, &simTime, &id, maxTime);
+
+    static int record = -1;
+    for (button * b = buttons; b != NULL; b = b->next) {
+        if ((record == -1) && (b->countDown == 29) && !strcmp("Save Genome", b->label)) {
+            printf("Trying to save ID: %d\n", id);
+            record = id;
+        }
+    }
+    if ((record != -1) && (record + 1 == id)) {
+        puts("Saved");
+        saveGenome(population, gen, record);
+        record = -1;
+    }
+
     applyGeneticOperators(system, population, id, genSize);
     generationIteration(genSize, &id, &gen);
     return;

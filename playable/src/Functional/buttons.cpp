@@ -78,12 +78,14 @@ void drawButtons() {
             glVertex2f(b->x,b->y);
             glVertex2f(b->x,b->h);
 
-            if (b->clicked) {
+            if (!b->togglable && b->clicked) {
                 b->countDown = HIGHLIGHT_DURATION;
             }
 
             if (b->toggled || (!b->togglable && b->countDown > 0)) {
-                b->countDown--;
+                if (b->countDown > 0) {
+                    b->countDown--;
+                }
                 glColor3f(0, 0.81, 0.98);
             } else {
                 glColor3f(OUTSIDE);

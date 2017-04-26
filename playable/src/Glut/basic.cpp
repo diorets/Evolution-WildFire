@@ -40,8 +40,9 @@ void callMouse(int buttonPressed, int state, int mx, int my) {
                 b->clicked = true;
                 if (b->togglable) {
                     b->toggled ^= true;
+                } else {
+                    b->countDown = HIGHLIGHT_DURATION;
                 }
-                b->countDown = HIGHLIGHT_DURATION;
             }
         }
     } else {

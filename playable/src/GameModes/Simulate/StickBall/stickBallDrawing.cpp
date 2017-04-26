@@ -37,10 +37,8 @@ void stickBallSystem(creature * pop, int genSize, int gen, int id, int simTime, 
     createMenu();
 
     for (button * b = buttons; b != NULL; b = b->next) {
-        if (!strcmp("System Info", b->label)) {
-            if (b->toggled) {
-                displaySystemInfo(pop, genSize, id);
-            }
+        if (b->toggled && !strcmp("System Info", b->label)) {
+            displaySystemInfo(pop, genSize, id);
         }
     }
     drawDetails(genSize, gen, id, simTime, maxTime);

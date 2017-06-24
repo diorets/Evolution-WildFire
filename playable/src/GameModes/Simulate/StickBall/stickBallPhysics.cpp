@@ -8,13 +8,13 @@
 #define PI 3.141592653589793
 #define G  9.8066500
 
-#define dt 1
+#define dt 0.5
 
-#define MUSCLEMACRO(i) 1.3 * sinf((float) ((*time) * (10 - i)) * 0.005)
+#define MUSCLEMACRO(i) 2 * sinf((float) ((*time) * (10 - i)) * 0.005)
 
 #define bounceBack 0.00
-#define drag       0.99
-#define constant   0.4 // Should be 0.5 I think lowering it makes muscles strechy
+#define drag       0.95
+#define constant   0.40 // Should be 0.5 I think lowering it makes muscles strechy
 #define friction   0.25
 #define friction2  0.01
 
@@ -47,15 +47,21 @@ static bool errorCheck(creature * current) {
 }
 #include <stdio.h>
 
+double g(posi r) {
+    return 3 * sin(0.25 * r.x) * cos(0.25 * r.y);
+}
+
+
+
 bool updateStickBall(creature * current, int * time) {
     if (errorCheck(current)) quit(CREATURE_ERROR);
     int nodeLen   = current->genome->iData[nod];
     int muscleLen = current->genome->iData[mus];
     int boneLen   = current->genome->iData[bon];
-//    int numAxons  = current->genome->iData[neu];
 
     double groundAngle = environment[0];
     stickball * components = ((stickball*) current->components);
+
     /* Node Initializtion */
     for (int i = 0; i < nodeLen; i++) {
         posi * force = &components->nodes[i].force;
@@ -69,8 +75,10 @@ bool updateStickBall(creature * current, int * time) {
         int a = components->muscles[i].a;
         int b = components->muscles[i].b;
         double * currLength = &components->muscles[i].currLength;
+        double orgiLength = components->muscles[i].origLength;
         *currLength = euc(components->nodes[a].loc, components->nodes[b].loc);
         *currLength += MUSCLEMACRO(i);
+
         double deviation = components->muscles[i].origLength - *currLength;
         posi radVector = sub(components->nodes[a].loc, components->nodes[b].loc);
         //if (mag(radVector) < 0.01) continue; // idk if I need this
@@ -103,18 +111,16 @@ bool updateStickBall(creature * current, int * time) {
         posi * loc   = &components->nodes[i].loc;
         double recipMass = 1.0 / components->nodes[i].mass;
 
-        double groundHeight = - (tanf(groundAngle)) * (*loc).x;
-        if     ((*loc).z <= RADIUS + groundHeight) {
-            if ((*loc).z <  RADIUS + groundHeight) {
-                (*vel).z *= -bounceBack * sinf(groundAngle);
-                (*vel).x *= -bounceBack * cosf(groundAngle);
-                (*loc).z = RADIUS + groundHeight;
+        double groundHeight = g(*loc);
+        if ((*loc).z <=  RADIUS + groundHeight) {
+            posi N = normal(g, *loc);
+            (*vel) = sub(*vel, scale(N, 0.9 * 2 * dot(N, *vel)));
 
-                (*vel).x *= friction;
-                (*vel).y *= friction;
-            }
+            (*loc).z = RADIUS + groundHeight;
+
+            (*vel).x *= friction;
+            (*vel).y *= friction;
         }
-
         (*vel).x += (*force).x * dt * recipMass;
         (*vel).y += (*force).y * dt * recipMass;
         (*vel).z += (*force).z * dt * recipMass;
@@ -122,7 +128,6 @@ bool updateStickBall(creature * current, int * time) {
         (*vel).x *= drag;
         (*vel).y *= drag;
         (*vel).z *= drag;
-
 
         (*loc).x += (*vel).x * dt;
         (*loc).y += (*vel).y * dt;

@@ -9,10 +9,10 @@
 #define WINDOW_SIZE WINDOW_X,WINDOW_Y
 #define WINDOW_POSITITION 600,100
 
-#define RADIUS 0.6
+#define RADIUS 0.5
 
 /* Bounds */
-#define CAGESIZE 20
+#define CAGESIZE 30
 #define MIN_NODE_DISTANCE 1.5
 #define MAX_ELEMENTS 100
 #define HIDDEN_LAYER_SIZE 6
@@ -157,13 +157,20 @@ typedef struct turbine_struct {
 } turbine;
 
 typedef struct cannon_struct {
-    double coeff[10];
-    double target[1000];
-    int targetNum;
-    double vInit;
+    node ball;
     double angle;
-    node ball; // it would be better to launch all balls
+    int targetNum;
+    int target[100];
+    double coeff[10];
+    double vInit;
 } cannon;
+
+
+typedef struct cube_struct {
+    node * blocks;
+    muscle * springs;
+    posi origin;
+} cube;
 
 class TE{ // Turbine Enums
     public: enum{xlow = -6, xhigh = 6, ylow = -6, yhigh = 6, zlow = 15, zhigh = 25};
@@ -173,11 +180,15 @@ class TE{ // Turbine Enums
 };
 
 class CE { // Cannon Enums
-    public: enum{numGenes, numCannons, numPara};
-    public: enum{h = 0};
+    public: enum{numGenes, numCube, numCannons};
+    public: enum{numPara, h};
 };
 
-enum creatureTypes {stickballE, turbineE, cannonE};
+class CUE { // Cube Enums
+    public: enum{numSprings};
+};
+
+enum creatureTypes {stickballE, turbineE, cannonE, cubeE};
 
 
 

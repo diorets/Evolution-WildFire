@@ -20,6 +20,13 @@ posi vec(double x, double y, double z) {
 }
 
     /* Basic Operations */
+double der(double (*f)(posi), posi a, int i) { // f(x + h, y, z) - f(x - h, y, z) / h
+    double h = 0.01;
+    posi lp = vec(a.x + (i==0)*h, a.y + (i==1)*h, a.z + (i==2)*h); // add/sub h to proper component
+    posi lm = vec(a.x - (i==0)*h, a.y - (i==1)*h, a.z - (i==2)*h);
+    return (f(lp) - f(lm)) / (2*h);
+}
+
 double euc(posi a, posi b) {
     double x = (a.x - b.x);
     double y = (a.y - b.y);
@@ -58,6 +65,10 @@ posi add(posi vec, double k) {
     return vec;
 }
 
+posi compMul(posi a, posi b) {
+    return vec(a.x * b.x, a.y * b.y, a.z * b.z);
+}
+
 posi scale(posi a, double scale) {
     a.x *= scale;
     a.y *= scale;
@@ -65,8 +76,20 @@ posi scale(posi a, double scale) {
     return a;
 }
 
+posi normalize(posi a) {
+    return scale(a, mag(a));
+}
+
+posi normal(double (*surface)(posi), posi r) {
+    return vec(der((*surface), vec(r.x, r.y, r.z), 0), der((*surface), vec(r.x, r.y, r.z), 1), -1.0);
+}
+
 bool equals(posi a, posi b, double eps) {
     return euc(a, b) < eps;
+}
+
+bool equals(double a, double b, double eps) {
+    return fabs(a - b) < eps;
 }
 
 double mag(posi a) {

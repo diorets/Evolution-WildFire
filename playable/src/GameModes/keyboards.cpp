@@ -15,8 +15,13 @@ void (*getKeyboardFunct(bool hold))(unsigned char) {
     }
 }
 
+#include <stdio.h>
 void simKeyPress(unsigned char key) {
+
     switch(key) {
+        case 'w': case 's': case 'a': case 'd': case 'e': case 'z': case 'q': // Allows usage on my second keyboard (Because using it presses f23 and causes issues
+                keyStates[key] = true; simKeyHold(key); return;
+
         case ESC: quit(NORMAL_EXIT);                  return;
         case 'f': toggleFullScreen();                 return;
         case 'i': toggleDisplay();                    return;
@@ -39,8 +44,10 @@ void simKeyPress(unsigned char key) {
     }
 }
 
+
 void simKeyHold(unsigned char key) {
-    if (key != '\0') quit(INPUT_ERROR);
+//    printf("%c, %d", key, key);
+    //if (key != '\0') quit(INPUT_ERROR);
     if (keyStates['w']) cameraMov.x =  playerSpeed;
     if (keyStates['s']) cameraMov.x = -playerSpeed;
 
@@ -53,10 +60,11 @@ void simKeyHold(unsigned char key) {
     return;
 }
 
+
 void menuKeyPress(unsigned char key) {
     switch(key) {
         case ESC: quit(NORMAL_EXIT);  return;
-        case 'b': newGameMode(simMode);  return;
+        case 13: newGameMode(simMode); return; // enter
         case 'f': toggleFullScreen(); return;
         case 'l': toggleLights();     return;
 

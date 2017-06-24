@@ -68,6 +68,10 @@
 		<Unit filename="include/GameModes/Simulate/Cannon/cannonGenes.h" />
 		<Unit filename="include/GameModes/Simulate/Cannon/cannonMutations.h" />
 		<Unit filename="include/GameModes/Simulate/Cannon/cannonPhysics.h" />
+		<Unit filename="include/GameModes/Simulate/Cube/cubeDrawing.h" />
+		<Unit filename="include/GameModes/Simulate/Cube/cubeGenes.h" />
+		<Unit filename="include/GameModes/Simulate/Cube/cubeMutations.h" />
+		<Unit filename="include/GameModes/Simulate/Cube/cubePhysics.h" />
 		<Unit filename="include/GameModes/Simulate/General/drawing.h" />
 		<Unit filename="include/GameModes/Simulate/General/genetics.h" />
 		<Unit filename="include/GameModes/Simulate/General/initialize.h" />
@@ -108,6 +112,10 @@
 		<Unit filename="src/GameModes/Simulate/Cannon/cannonGenes.cpp" />
 		<Unit filename="src/GameModes/Simulate/Cannon/cannonMutations.cpp" />
 		<Unit filename="src/GameModes/Simulate/Cannon/cannonPhysics.cpp" />
+		<Unit filename="src/GameModes/Simulate/Cube/cubeDrawing.cpp" />
+		<Unit filename="src/GameModes/Simulate/Cube/cubeGenes.cpp" />
+		<Unit filename="src/GameModes/Simulate/Cube/cubeMutations.cpp" />
+		<Unit filename="src/GameModes/Simulate/Cube/cubePhysics.cpp" />
 		<Unit filename="src/GameModes/Simulate/General/drawing.cpp" />
 		<Unit filename="src/GameModes/Simulate/General/genetics.cpp" />
 		<Unit filename="src/GameModes/Simulate/General/initialize.cpp" />

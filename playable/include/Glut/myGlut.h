@@ -14,6 +14,7 @@
 #define WHITE 1,1,1
 #define RED   1,0,0
 #define GREEN  0,1,0
+#define DARKGREEN 0.3, 0.7, 0.3
 #define BLUE 0,0,1
 #define YELLOW 1,1,0
 #define ORANGE 1,0.3,0

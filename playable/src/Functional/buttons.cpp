@@ -25,7 +25,7 @@ int getNumButtons(button * head, int group) {
 }
 
 button * createButton(const char * label, callback cb, void (*f)(button*), int id, int group, bool togglable, bool defaultToggle) {
-	button * p = (button*)malloc( sizeof(button) );
+	button * p = (button*) malloc( sizeof(button) );
 	memset(p,0,sizeof(button));
 	p->x = 0;
 	p->y = 0;

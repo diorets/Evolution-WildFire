@@ -3,6 +3,7 @@
 #include "Functional/list.h"
 #include "global.h"
 
+#include <stdio.h>
 creature * initPop(creature * population, int genSize, int allocationSize) {
     if (population == NULL) {
         population = (creature*) malloc(sizeof(creature) * genSize);

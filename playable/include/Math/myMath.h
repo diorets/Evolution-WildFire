@@ -10,12 +10,17 @@ bool chance(double x);
 bool chance(int x);
 double randf(double number);
 double pmRandf(double number);
+posi normalize(posi a);
+posi normal(double (*surface)(posi), posi r);
 
+bool equals(double a, double b, double eps);
 double euc(posi a, posi b);
 double euc2D(posi a, posi b);
 posi sub(posi a, posi b);
 posi add(posi a, posi b);
 posi add(posi a, double k);
+posi compMul(posi a, posi b);
+double der(double (*f)(posi), posi a, int i);
 bool equals(posi a, posi b, double eps);
 posi radForce(posi a, posi b, double force);
 double mag(posi a);

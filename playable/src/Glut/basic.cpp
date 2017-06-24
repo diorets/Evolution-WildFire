@@ -145,7 +145,7 @@ void pressSpecialKey(int key, int kxx, int kyy) {
     if (key & kxx * kyy){}
 
     switch (key) {
-		case GLUT_KEY_LEFT  : cameraDel.x =  cameraSpeed; break;
+        case GLUT_KEY_LEFT  : cameraDel.x =  cameraSpeed; break;
 		case GLUT_KEY_RIGHT : cameraDel.x = -cameraSpeed; break;
 		case GLUT_KEY_UP    : cameraDel.z =  cameraSpeed; break;
 		case GLUT_KEY_DOWN  : cameraDel.z = -cameraSpeed; break;

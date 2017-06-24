@@ -2,10 +2,12 @@
 #include "GameModes/Simulate/StickBall/stickBallGenes.h"
 #include "GameModes/Simulate/Turbine/turbineGenes.h"
 #include "GameModes/Simulate/Cannon/cannonGenes.h"
+#include "GameModes/Simulate/Cube/cubeGenes.h"
 
 #include "GameModes/Simulate/StickBall/stickBallMutations.h"
 #include "GameModes/Simulate/Turbine/turbineMutations.h"
 #include "GameModes/Simulate/Cannon/cannonMutations.h"
+#include "GameModes/Simulate/Cube/cubeMutations.h"
 
 #include <math.h>  // Fabs
 #include <stdio.h> // Sprintf
@@ -25,6 +27,7 @@ gene * createSystemGenome(int system, gene * genome) {
         case stickballE: return createStickBallGenome(genome);
         case turbineE  : return createTurbineGenome(genome);
         case cannonE   : return createCannonGenome(genome);
+        case cubeE   : return createCubeGenome(genome);
         default: quit(GENOME_ERROR); return NULL;
     }
 }
@@ -34,6 +37,7 @@ void createSystemCreature(int system, creature * individual) {
         case stickballE: createStickBallCreature(individual); return;
         case turbineE  : createTurbineCreature(individual); return;
         case cannonE   : createCannonCreature(individual); return;
+        case cubeE   : createCubeCreature(individual); return;
         default: quit(CREATURE_ERROR); return;
     }
 }
@@ -43,6 +47,7 @@ void mutateGenome(int system, creature * toMutate) {
         case stickballE: mutateStickball(toMutate); return;
         case turbineE  : mutateTurbine(toMutate); return;
         case cannonE   : mutateCannon(toMutate); return;
+        case cubeE     : mutateCube(toMutate); return;
         default: quit(CREATURE_ERROR); return;
     }
 }

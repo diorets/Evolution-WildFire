@@ -9,6 +9,7 @@
 #include "GameModes/Simulate/StickBall/stickBallDrawing.h"
 #include "GameModes/Simulate/Turbine/turbineDrawing.h"
 #include "GameModes/Simulate/Cannon/cannonDrawing.h"
+#include "GameModes/Simulate/Cube/cubeDrawing.h"
 
 #include "Visual/basic.h"          // 2D, 3D, Various Shapes & Text
 #include "Visual/objects.h"        // Drawing Objects
@@ -18,8 +19,9 @@
 void drawSystem(int system, creature * pop, int genSize, int gen, int id, int simTime, int maxTime) {
     switch(system) {
         case stickballE: stickBallSystem(pop, genSize, gen, id, simTime, maxTime); break;
-        case turbineE: turbineSystem(pop, genSize, gen, id, simTime, maxTime); break;
-        case cannonE: cannonSystem(pop, genSize, gen, id, simTime, maxTime); break;
+        case turbineE:   turbineSystem(pop, genSize, gen, id, simTime, maxTime); break;
+        case cannonE:    cannonSystem(pop, genSize, gen, id, simTime, maxTime); break;
+        case cubeE:      cubeSystem(pop, genSize, gen, id, simTime, maxTime); break;
         default: quit(INPUT_ERROR);
     }
     return;

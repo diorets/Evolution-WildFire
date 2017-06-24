@@ -8,7 +8,7 @@
 #include "Glut/basic.h"
 #include "Math/myMath.h"
 #include "Functional/music.h"
-
+#include "Functional/buttons.h"
 /* Functions that can be called in any game mode */
 void newGameMode(int mode) {
     gameMode = mode;
@@ -17,6 +17,7 @@ void newGameMode(int mode) {
             endSong("menuSong");
             keyPressed('o', 0, 0);
             keyStates['o'] = false;
+            buttons = clearButtons(buttons);
 //            playBackSpeed = 2;
             //simTime = 0;
             //gen = 0;

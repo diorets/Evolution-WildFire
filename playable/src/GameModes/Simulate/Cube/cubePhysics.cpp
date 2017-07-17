@@ -11,7 +11,7 @@ double getCubeFitness(creature individual) {
 }
 
 static bool error(creature * current) {
-
+    if (current == NULL)  return false; // WS
 	return false;
 }
 

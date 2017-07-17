@@ -111,24 +111,26 @@ void drawGround(int groundSize, double horAxis, double zAxis) {
     drawGrass(groundSize, O);
     drawGrid(groundSize, O);
 
+
     // Rocks
     double greyness = 0.5;
     double height1 = -1.5;
     double bigness = 3;
+    double treeRange = 5;
     glColor3f(greyness, greyness, greyness);
     drawSphere(-14, 14, height1, bigness, 6, 6);
 
     // Trees
-    #define numTrees 9
+    #define numTrees 50
     //for (int i = 0; i < 123; i++) rand();
 
     static double random[numTrees * 4] = {0};
     if (fabs(random[0] - 0) < 1) {
         for (int i = 0; i < numTrees * 2; i++) {
-            random[i] = randf(2 * groundSize) - groundSize; // size
+            random[i] = randf(2 * treeRange * groundSize) - treeRange * groundSize; // x & y
         }
         for (int i = numTrees * 2; i < numTrees * 4; i++) {
-            random[i] = randf(2) + 1;
+            random[i] = randf(2) + 1;                       // h * s
         }
     }
 

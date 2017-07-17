@@ -2,259 +2,19 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="src\GameModes\MainMenu\menu.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
+	<File name="src\Math\myMath.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1562" topLine="40" />
-		</Cursor>
-	</File>
-	<File name="assets\fitnesses.txt" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Glut\initialize.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2069" topLine="28" />
-		</Cursor>
-	</File>
-	<File name="src\Functional\list.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="67" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="assets\genomes.txt" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="93665" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Math\distribution.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="0" />
+			<Cursor1 position="1540" topLine="14" />
 		</Cursor>
 	</File>
 	<File name="include\GameModes\Simulate\StickBall\stickBallGenes.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="154" topLine="0" />
+			<Cursor1 position="102" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src\GameModes\Simulate\Cannon\cannonDrawing.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\Visual\basic.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1688" topLine="43" />
-		</Cursor>
-	</File>
-	<File name="src\Glut\basic.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4541" topLine="121" />
-		</Cursor>
-	</File>
-	<File name="include\GameModes\Simulate\StickBall\stickBallDrawing.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="247" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\Cube\cubePhysics.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="471" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="src\Math\myMath.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-6" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="664" topLine="10" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\General\initialize.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="819" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Visual\objects.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4648" topLine="76" />
-		</Cursor>
-	</File>
-	<File name="include\Functional\buttons.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="121" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Visual\text.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3001" topLine="88" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\General\genetics.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-6" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1049" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\GameModes\Simulate\Cube\cubeDrawing.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="202" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\GameModes\keyboards.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="98" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\Cannon\cannonMutations.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="668" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\General\physics.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-6" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="257" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\Glut\basic.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="54" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\StickBall\stickBallDrawing.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3315" topLine="88" />
-		</Cursor>
-	</File>
-	<File name="src\Visual\basic.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5840" topLine="30" />
-		</Cursor>
-	</File>
-	<File name="include\GameModes\Simulate\Cube\cubeMutations.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="155" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Functional\music.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="479" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\Glut\myGlut.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="374" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\StickBall\stickBallGenes.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="530" topLine="40" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\Turbine\turbineDrawing.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-7" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1710" topLine="30" />
-		</Cursor>
-	</File>
-	<File name="include\GameModes\inputFunctions.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="296" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\MainMenu\menuInputFuncts.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="340" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\Math\myMath.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="473" topLine="12" />
-		</Cursor>
-	</File>
-	<File name="include\Visual\basic.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="570" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\preproccessor.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2946" topLine="113" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\Cube\cubeMutations.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-7" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="193" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\GameModes\Simulate\Cube\cubePhysics.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="114" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Functional\buttons.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3257" topLine="120" />
-		</Cursor>
-	</File>
-	<File name="include\Math\distribution.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="133" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\gameModes.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5066" topLine="200" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\Cube\cubeGenes.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="813" topLine="10" />
-		</Cursor>
-	</File>
-	<File name="include\global.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="659" topLine="2" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\General\drawing.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-9" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1122" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="src\ErrorHandle\error.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1551" topLine="35" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\inputFunctions.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="621" topLine="20" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\keyboards.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1728" topLine="20" />
-		</Cursor>
-	</File>
-	<File name="include\ErrorHandle\error.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="143" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\simInputFuncts.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4170" topLine="108" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\Turbine\turbineGenes.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="10" />
-		</Cursor>
-	</File>
-	<File name="src\main.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="947" topLine="17" />
-		</Cursor>
-	</File>
-	<File name="include\GameModes\Simulate\Cube\cubeGenes.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="194" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\GameModes\Simulate\StickBall\stickBallPhysics.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-6" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1549" topLine="39" />
+			<Cursor1 position="751" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="include\Functional\music.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -262,7 +22,277 @@
 			<Cursor1 position="109" topLine="0" />
 		</Cursor>
 	</File>
+	<File name="src\GameModes\Simulate\Turbine\turbineGenes.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3617" topLine="115" />
+		</Cursor>
+	</File>
+	<File name="include\GameModes\Simulate\Cube\cubeGenes.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="194" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\keyboards.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2200" topLine="36" />
+		</Cursor>
+	</File>
+	<File name="include\ErrorHandle\error.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="56" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\simInputFuncts.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4170" topLine="108" />
+		</Cursor>
+	</File>
+	<File name="src\Visual\objects.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3501" topLine="83" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\gameModes.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-8" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5352" topLine="167" />
+		</Cursor>
+	</File>
+	<File name="assets\fitnesses.txt" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\GameModes\Simulate\StickBall\stickBallMutations.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="642" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\global.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="659" topLine="2" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\General\physics.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-6" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="257" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\Functional\buttons.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3257" topLine="120" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\Turbine\turbineDrawing.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-7" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1710" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="assets\genomes.txt" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\General\initialize.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="819" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\Cube\cubeGenes.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2145" topLine="40" />
+		</Cursor>
+	</File>
+	<File name="include\GameModes\inputFunctions.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="296" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\Glut\basic.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="54" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\MainMenu\menuInputFuncts.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="340" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\GameModes\Simulate\StickBall\stickBallPhysics.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="237" topLine="0" />
+		</Cursor>
+	</File>
 	<File name="include\Glut\initialize.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\Cube\cubeMutations.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="298" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\Math\myMath.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="18" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\Cannon\cannonPhysics.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="570" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\Visual\text.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3001" topLine="90" />
+		</Cursor>
+	</File>
+	<File name="include\Functional\buttons.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="121" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\Functional\list.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="67" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\StickBall\stickBallGenes.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1413" topLine="31" />
+		</Cursor>
+	</File>
+	<File name="include\GameModes\Simulate\Cube\cubeDrawing.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="202" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\Functional\music.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="479" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\Glut\initialize.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1352" topLine="22" />
+		</Cursor>
+	</File>
+	<File name="include\GameModes\Simulate\Cube\cubePhysics.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="114" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\Functional\sleep.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="45" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\Cube\cubePhysics.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="426" topLine="6" />
+		</Cursor>
+	</File>
+	<File name="include\preproccessor.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="293" topLine="4" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\General\drawing.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-9" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1122" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="include\Glut\myGlut.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="614" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\Cannon\cannonDrawing.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1065" topLine="27" />
+		</Cursor>
+	</File>
+	<File name="include\GameModes\keyboards.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="98" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\Visual\basic.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="240" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\Cube\cubeDrawing.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="549" topLine="10" />
+		</Cursor>
+	</File>
+	<File name="include\Math\distribution.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="133" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\Turbine\turbinePhysics.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2338" topLine="56" />
+		</Cursor>
+	</File>
+	<File name="include\GameModes\Simulate\Cube\cubeMutations.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="155" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\main.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="951" topLine="9" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\StickBall\stickBallDrawing.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-9" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8947" topLine="257" />
+		</Cursor>
+	</File>
+	<File name="src\ErrorHandle\error.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2167" topLine="48" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\Turbine\turbineMutations.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="342" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\MainMenu\menu.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="553" topLine="6" />
+		</Cursor>
+	</File>
+	<File name="include\Functional\sleep.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="54" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\Cannon\cannonMutations.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="54" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\Simulate\StickBall\stickBallPhysics.cpp" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5387" topLine="128" />
+		</Cursor>
+	</File>
+	<File name="src\Glut\basic.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1649" topLine="35" />
+		</Cursor>
+	</File>
+	<File name="src\GameModes\inputFunctions.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="160" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\Math\distribution.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="0" topLine="0" />
 		</Cursor>
@@ -272,19 +302,19 @@
 			<Cursor1 position="1860" topLine="47" />
 		</Cursor>
 	</File>
-	<File name="src\GameModes\Simulate\Cube\cubeDrawing.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-10" zoom_2="0">
+	<File name="src\GameModes\Simulate\StickBall\stickBallMutations.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-9" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="549" topLine="0" />
+			<Cursor1 position="2009" topLine="55" />
 		</Cursor>
 	</File>
-	<File name="src\Functional\sleep.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\GameModes\Simulate\StickBall\stickBallDrawing.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="45" topLine="0" />
+			<Cursor1 position="247" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include\Functional\sleep.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\GameModes\Simulate\General\genetics.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="54" topLine="0" />
+			<Cursor1 position="3050" topLine="49" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

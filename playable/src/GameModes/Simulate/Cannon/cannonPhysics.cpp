@@ -12,11 +12,12 @@ double getCannonFitness(creature individual) {
 }
 
 static bool error(creature * current) {
-
+    if (current != NULL) return false; // WS
 	return false;
 }
 
 static double getAngle(double v, double targetX, double * coeff, int numTerms) {
+    if (numTerms == 1000000) return 0.0;// WS
     double angle = coeff[0];
     double x = targetX;
     //puts("------\n");

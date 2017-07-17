@@ -11,7 +11,7 @@ double getTurbineFitness(creature individual) {
 }
 
 static bool error(creature * current) {
-
+    if (current == NULL) return false;
 	return false;
 }
 
@@ -35,7 +35,7 @@ bool updateTurbine(creature * current, int * time) {
 	const double Bmass = Bdensity * 4 * 3.1415926 * R * R * 0.001;
 	const double Pmass = Pdensity * 4 / 3 * 3.1415926 * r * r * r;
 	const double recipPMass = 1.0 / Pmass;
-	const double recipBMass = 1.0 / Bmass;
+//	const double recipBMass = 1.0 / Bmass;
 	const double dt = 0.01;
 
 
@@ -66,7 +66,7 @@ bool updateTurbine(creature * current, int * time) {
     inertia *= Bmass;
 
     for (int i = 0; i < numBlocks; i++) {
-        double * torque     = &components->blocks[i].torque;
+//        double * torque     = &components->blocks[i].torque;
         double * angSpeed   = &components->blocks[i].angSpeed;
         //double * angle      = &components->blocks[i].angle;
         posi   * loc        = &components->blocks[i].loc;

@@ -14,20 +14,63 @@ void modifyWeights(gene * head, double modifyChance) {
     }
     return;
 }
+void removeNodeByIndex(gene * head, int toRemove);
+void removeNodes(gene * head, double removeChance) {
+    if (!chance(removeChance)) return;
+    /* Pick a Random Node */
+    int counter = 0;
+    FOR_ALL(head, 'n') {
+        counter++;
+    }
+    if (counter < 2) return;
+    int toRemove = rand() % counter;
+
+    removeNodeByIndex(head, toRemove);
+    return;
+}
+
+void moveNodes(gene * head, double moveChance) {
+    while (chance(moveChance)) {
+        removeNodes(head, 100);
+
+        /* Add a New One */
+        head = addToBack(head, nodeGene(head));
+        head->iData[tot]++;
+        head->iData[nod]++;
+    }
+    return;
+}
+
+void addNodes(gene * head, double addChance) {
+    if (chance(addChance)) {
+        head = addToBack(head, nodeGene(head));
+        head->iData[tot]++;
+        head->iData[nod]++;
+    }
+}
 
 
 #include "global.h"
 #include <stdio.h>
-void mutateStickball(creature * toMutate) {
+void mutateStickball(creature * toMutate) { // Move node, addconnection, remove connection
+//    moveNodes(toMutate->genome, 30);
+//    addNodes(toMutate->genome, 50);
+//    removeNodes(toMutate->genome, 8);
+//
+//    removeStrandedNodes(toMutate->genome);
+//    /* Varification */
+//    verifyGenome    (toMutate->genome);
+//
+//    return;
     /* Nodes Mods */
     relocateNodes(toMutate->genome, toMutate->genome->fData[0]); // These assume a valid location exists
-    shiftNodes   (toMutate->genome, toMutate->genome->fData[1], 0.1);
+    shiftNodes   (toMutate->genome, toMutate->genome->fData[1], 0.5);
     addNode      (toMutate->genome, toMutate->genome->fData[2], 15,  15);
     removeNode   (toMutate->genome, toMutate->genome->fData[3]);
 //    changeStats     (toMutate->genome, chance); // Least important
 
     /* Connections */
-    //changeConnection(toMutate->genome, chance); // goto diferent muscles
+//    changeConnection(toMutate->genome, chance); // goto diferent muscles
     addConnection   (toMutate->genome, toMutate->genome->fData[4]);
     removeConnection(toMutate->genome, toMutate->genome->fData[5]);
     swapConnection  (toMutate->genome, toMutate->genome->fData[6]);
@@ -122,14 +165,12 @@ void removeNodeByIndex(gene * head, int toRemove) {
     }
 
     /* Remove Connected Muscles */
-    int muscleNum = 0;
     FOR_ALL(head, 'm') {
         if (current->iData[0] == toRemove || current->iData[1] == toRemove) {
             removeItem(head, current);
             head->iData[tot]--;
             head->iData[mus]--;
         }
-        muscleNum++;
     }
 
     /* Remove Connected Bones */
@@ -387,7 +428,10 @@ void verifyGenome(gene * head) {
                 fabs(z1 - z2) < MIN_NODE_DISTANCE ){
                 error = true;
             }
-            if (error) quit(GENOME_ERROR);
+            if (error) {
+                printf("%f\n", euc(vec(x1,y1,z1), vec(x2, y2,z2)));
+                quit(GENOME_ERROR);
+            }
 
             /* Overlap  & Proximit*/
             if (euc(vec(x1, y1, z1), vec(x2, y2, z2)) < MIN_NODE_DISTANCE) quit(GENOME_ERROR);

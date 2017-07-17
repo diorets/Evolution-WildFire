@@ -2,7 +2,7 @@
 #include "GameModes/Simulate/Cannon/cannonGenes.h"  // Various Genes
 
 static void verifyGenome(gene * head) {
-
+    if (head == NULL) return; // warning supression
 	return;
 }
 
@@ -18,5 +18,6 @@ void mutateCannon(creature * toMutate) {
             }
         }
     }
+    verifyGenome(toMutate->genome);
 	return;
 }

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "Glut/myGlut.h"                // Glut functions and definitions
 #include "GameModes/inputFunctions.h"
-#define MAX_PLAY_BACK 8192
+#define MAX_PLAY_BACK 16384
 
 #include "Functional/list.h"
 #include "Glut/initialize.h"

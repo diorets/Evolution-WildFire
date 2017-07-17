@@ -87,7 +87,7 @@ static gene * blockGene(gene * head, int currNum) { // Does check valid location
 }
 
 #include <math.h>
-static gene * blockGene(gene * head, posi loc) { // Does check valid location
+static gene * blockGene(posi loc) { // Does check valid location
     gene * blockG = (gene*) malloc(sizeof(gene));
     if (blockG == NULL) quit(MALLOC_ERROR);;
     blockG->start = 'b';
@@ -101,7 +101,7 @@ static gene * blockGene(gene * head, posi loc) { // Does check valid location
     return blockG;
 }
 
-static gene * particleGene(gene * head) {
+static gene * particleGene() {
     gene * particle = (gene*) malloc(sizeof(gene));
     if (particle == NULL) quit(MALLOC_ERROR);
     particle->start = 'p';
@@ -128,12 +128,12 @@ gene * createTurbineGenome(gene * head) {
 	int p = 1000;
     head = infoGene(n, p);
 
-    head = addToBack(head, blockGene(head, vec(0.0, 0.0, 20.0)));
+    head = addToBack(head, blockGene(vec(0.0, 0.0, 20.0)));
     for (int i = 1; i < n; i++) {
         head = addToBack(head, blockGene(head, i));
     }
     for (int i = 0; i < p; i++) {
-        head = addToBack(head, particleGene(head));
+        head = addToBack(head, particleGene());
     }
 
     for (gene * i = head; i != NULL; i=i->next) {

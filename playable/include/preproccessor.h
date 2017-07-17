@@ -12,15 +12,16 @@
 #define RADIUS 0.5
 
 /* Bounds */
-#define CAGESIZE 30
-#define MIN_NODE_DISTANCE 1.5
-#define MAX_ELEMENTS 100
+#define CAGESIZE 20
+#define MIN_NODE_DISTANCE 1.0
+#define MAX_ELEMENTS 500
 #define HIDDEN_LAYER_SIZE 6
 
 /* Macros */
 #define FOR_ALL(head, type) for (gene * current = head; current != NULL; current = current->next) if (current->start == type)
 #define FOR_ALL_GENES(head) for (gene * current = head; current != NULL; current = current->next)
 #define NUMELEMS(x)  (sizeof(x) / sizeof((x)[0]))
+#define ARG(r) -r.x, -r.y, -r.z
 
 /* Enums */
 enum simMode {skipE, debugE, instructionsE, graphE, howToE, goThroughGenE,

@@ -10,29 +10,52 @@
 #include "Functional/list.h"   // Various Linked List Functions
 #include "GameModes/Simulate/StickBall/stickBallMutations.h"
 
+gene* addMuscles(gene * head);
+
 gene* createStickBallGenome(gene * head) {
     if (head != NULL) quit(GENOME_ERROR);
 
-    int n = 8;
-    int m = 4;
-    int b = 4;
-    if (m + b > comb(n)) quit(GENOME_ERROR);
 
-    /* Creating Genome */
-    head = infoGene(n, m, b, 0);
-    if (head  == NULL) quit(GENOME_ERROR);
+    if (0) {
+        int n = 30;
+        int m = 0;
+        int b = 0;
+        if (m + b > comb(n)) quit(GENOME_ERROR);
 
-    int * sizes = head->iData;
+        /* Creating Genome */
+        head = infoGene(n, b, m, 0);
+        if (head == NULL) quit(GENOME_ERROR);
 
-    for (int i = 0; i < sizes[nod]; i++) {
-        head = addToBack(head, nodeGene(head));
+        int * sizes = head->iData;
+
+        head = addToBack(head, nodeGene(vec(0, 0, 30)));
+        for (int i = 1; i < sizes[nod]; i++) {
+            head = addToBack(head, nodeGene(head));
+        }
+        head = addMuscles(head);
+    } else {
+        int n = 6;
+        int m = 5;
+        int b = 5;
+        if (m + b > comb(n)) quit(GENOME_ERROR);
+
+        /* Creating Genome */
+        head = infoGene(n, b, m, 0);
+        if (head == NULL) quit(GENOME_ERROR);
+
+        int * sizes = head->iData;
+
+        for (int i = 0; i < sizes[nod]; i++) {
+            head = addToBack(head, nodeGene(head));
+        }
+        for (int i = 0; i < sizes[bon]; i++) {
+            head = addToBack(head, boneGene(head));
+        }
+        for (int i = 0; i < sizes[mus]; i++) {
+            head = addToBack(head, muscleGene(head));
+        }
     }
-    for (int i = 0; i < sizes[bon]; i++) {
-        head = addToBack(head, boneGene(head));
-    }
-    for (int i = 0; i < sizes[mus]; i++) {
-        head = addToBack(head, muscleGene(head));
-    }
+
     head = addToBack(head, NULL); // Can likely remove
 
     removeStrandedNodes(head);
@@ -44,57 +67,43 @@ void createStickBallCreature(creature * newBorn) {
     int numNodes   = 0;
     int numBones   = 0;
     int numMuscles = 0;
-    int numAxons   = 0;
-
+//    int numAxons   = 0;
     gene * currentGenome = newBorn->genome;
     stickball * components = ((stickball*) newBorn->components);
-    while (currentGenome != NULL) {
-        int a;
-        int b;
-        switch (currentGenome->start) {
-            case 'n':
-                components->nodes[numNodes].loc.x = currentGenome->fData[xposi];
-                components->nodes[numNodes].loc.y = currentGenome->fData[yposi];
-                components->nodes[numNodes].loc.z = currentGenome->fData[zposi];
+//    puts("tes");
+    FOR_ALL(currentGenome, 'n') {
+        components->nodes[numNodes].loc.x = current->fData[xposi];
+        components->nodes[numNodes].loc.y = current->fData[yposi];
+        components->nodes[numNodes].loc.z = current->fData[zposi];
+//        printf("%d, %f, %f, %f\n", numNodes, components->nodes[numNodes].loc.x, components->nodes[numNodes].loc.y, components->nodes[numNodes].loc.z);
+        components->nodes[numNodes].vel.x = 0.0;
+        components->nodes[numNodes].vel.y = 0.0;
+        components->nodes[numNodes].vel.z = 0.0;
 
-                components->nodes[numNodes].vel.x = 0.0;
-                components->nodes[numNodes].vel.y = 0.0;
-                components->nodes[numNodes].vel.z = 0.0;
+        components->nodes[numNodes].force.x = 0.0;
+        components->nodes[numNodes].force.y = 0.0;
+        components->nodes[numNodes].force.z = 0.0;
 
-                components->nodes[numNodes].force.x = 0.0;
-                components->nodes[numNodes].force.y = 0.0;
-                components->nodes[numNodes].force.z = 0.0;
+        components->nodes[numNodes].mass     = current->fData[mass];
+        components->nodes[numNodes].friction = current->fData[fric];
 
-                components->nodes[numNodes].mass     = currentGenome->fData[mass];
-                components->nodes[numNodes].friction = currentGenome->fData[fric];
-
-                numNodes++;
-                break;
-            case 'b':
-                a = components->bones[numBones].a = currentGenome->iData[0];
-                b = components->bones[numBones].b = currentGenome->iData[1];
-                components->bones[numBones].length = euc(components->nodes[a].loc, components->nodes[b].loc);
-                numBones++;
-                break;
-            case 'm':
-                a = components->muscles[numMuscles].a = currentGenome->iData[0];
-                b = components->muscles[numMuscles].b = currentGenome->iData[1];
-                components->muscles[numMuscles].origLength = euc(components->nodes[a].loc, components->nodes[b].loc);
-                numMuscles++;
-                break;
-            case 'a':
-                break; // No axons
-                components->axons[numAxons].a      = currentGenome->iData[connectionA];
-                components->axons[numAxons].b      = currentGenome->iData[connectionB];
-                components->axons[numAxons].layer  = currentGenome->iData[layerE];
-                components->axons[numAxons].weight = currentGenome->fData[weightE];
-                numAxons++;
-                break;
-            default:
-                break;
-        }
-        currentGenome = currentGenome->next;
+        numNodes++;
     }
+
+    FOR_ALL(currentGenome, 'm') {
+        int a = components->muscles[numMuscles].a = current->iData[0];
+        int b = components->muscles[numMuscles].b = current->iData[1];
+        components->muscles[numMuscles].origLength = euc(components->nodes[a].loc, components->nodes[b].loc);
+        numMuscles++;
+    }
+
+    FOR_ALL(currentGenome, 'b') {
+        int a = components->bones[numBones].a = current->iData[0];
+        int b = components->bones[numBones].b = current->iData[1];
+        components->bones[numBones].length = euc(components->nodes[a].loc, components->nodes[b].loc);
+        numBones++;
+    }
+
     components->origin = getCom(*newBorn);
     newBorn->fitness= 0.0;
     // Add a check here for valid creature
@@ -154,6 +163,212 @@ conn goodConnection(gene * head) {
         }
     }
 }
+
+
+bool nodeAt(gene * head, posi testLoc) {
+    FOR_ALL(head, 'n') {
+        posi nodeLoc = vec(current->fData[xposi], current->fData[yposi], current->fData[zposi]);
+//        printf("(%f, %f, %f), (%f, %f, %f)\n", nodeLoc.x, nodeLoc.y, nodeLoc.z, testLoc.x, testLoc.y, testLoc.z);
+        if (equals(testLoc, nodeLoc, 0.5)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+posi dirPerturb(posi a, double h, int i) {
+    switch(i) {
+        case 0: return vec(a.x+h, a.y  , a.z);
+        case 1: return vec(a.x+h, a.y  , a.z+h);
+        case 2: return vec(a.x+h, a.y  , a.z-h);
+
+        case 3: return vec(a.x+h, a.y+h, a.z);
+//        case 4: return vec(a.x+h, a.y+h, a.z+h);
+//        case 5: return vec(a.x+h, a.y+h, a.z-h);
+
+        case 4: return vec(a.x+h, a.y-h, a.z);
+//        case 7: return vec(a.x+h, a.y-h, a.z+h);
+//        case 8: return vec(a.x+h, a.y-h, a.z-h);
+
+        case 5: return vec(a.x-h, a.y  , a.z);
+        case 6: return vec(a.x-h, a.y  , a.z+h);
+        case 7: return vec(a.x-h, a.y  , a.z-h);
+
+        case 8: return vec(a.x-h, a.y+h, a.z);
+//        case 13: return vec(a.x-h, a.y+h, a.z+h);
+//        case 14: return vec(a.x-h, a.y+h, a.z-h);
+
+        case 9: return vec(a.x-h, a.y-h, a.z);
+//        case 16: return vec(a.x-h, a.y-h, a.z+h);
+//        case 17: return vec(a.x-h, a.y-h, a.z-h);
+
+        case 10: return vec(a.x, a.y, a.z+h);
+        case 11: return vec(a.x, a.y, a.z-h);
+
+        case 12: return vec(a.x, a.y+h, a.z);
+        case 13: return vec(a.x, a.y+h, a.z+h);
+        case 14: return vec(a.x, a.y+h, a.z-h);
+
+        case 15: return vec(a.x, a.y-h, a.z);
+        case 16: return vec(a.x, a.y-h, a.z+h);
+        case 17: return vec(a.x, a.y-h, a.z-h);
+        default: exit(-1);
+    }
+}
+#define numDirs 18
+int * getNeighborhs(gene * head, posi attachNodeLoc, double nodeSeperation) {
+    int * neighborIndexs = (int*) malloc(sizeof(int)); // The first index is reserved for the length of the array
+    int numNeighbors = 1;
+    /* Check each orthogonal direction surrounding attachNodeLoc */
+    for (int i = 0; i < numDirs; i++) {
+        posi neighborLoc = dirPerturb(attachNodeLoc, nodeSeperation, i);
+        if (nodeAt(head, neighborLoc)) { // If there is a node in an adjacent direction
+            /* Find the Index */
+            int nodeNum = 0;
+            FOR_ALL(head, 'n') {
+                posi loc = vec(current->fData[xposi], current->fData[yposi], current->fData[zposi]);
+                if (equals(loc, neighborLoc, 0.1)) {
+                    neighborIndexs = (int*) realloc(neighborIndexs, sizeof(int) * (numNeighbors+1));
+                    neighborIndexs[numNeighbors] = nodeNum;
+                    numNeighbors++;
+                }
+                nodeNum++;
+            }
+        }
+    }
+    neighborIndexs[0] = numNeighbors;
+    return neighborIndexs;
+}
+
+gene* addMuscles(gene * head) {
+    int nodeNum = 0;
+    double nodeSeperation = 40 * RADIUS;
+    FOR_ALL(head, 'n') {
+        posi loc = vec(current->fData[xposi], current->fData[yposi], current->fData[zposi]);
+        int * neighbors = getNeighborhs(head, loc, nodeSeperation);
+        int arrLen = neighbors[0];
+        for (int i = 1; i < arrLen; i++) { // For each neighbor in neighbors
+            if (nodeNum == neighbors[i]) { // cant be own neighbor
+                printf("Something went wrong.\n");
+                continue;
+            }
+            if (connectionExists(head, nodeNum, neighbors[i])) continue;
+            if (chance(70)) {
+                if (chance(50)) {
+                    head = addToBack(head, muscleGene(nodeNum, neighbors[i]));
+                    (head->iData[tot])++;
+                    (head->iData[mus])++;
+                } else {
+                    head = addToBack(head, boneGene(nodeNum, neighbors[i]));
+                    (head->iData[tot])++;
+                    (head->iData[bon])++;
+                }
+            }
+        }
+        free(neighbors);
+        nodeNum++;
+    }
+    return head;
+}
+
+posi getValidPosition12(gene * head) {
+    int numNodes = 0;
+    double nodeSeperation = 40 * RADIUS;
+    /* Get Number of Nodes */
+    FOR_ALL(head, 'n') numNodes++;
+
+    for (int trial = 0; trial < 100; trial++) {
+        /* Choose a Node to Attach to */
+        int attachTo = numNodes == 1 ? 0 : rand() % numNodes;
+        int countDown = attachTo;
+        posi attachNodeLoc;
+        FOR_ALL(head, 'n') {
+            if (countDown-- == 0) {
+                attachNodeLoc = vec(current->fData[xposi], current->fData[yposi], current->fData[zposi]);
+            }
+        }
+
+        /* Choose One of the Orthogonal Directions to Attach to */
+        // which directions are available?
+        bool validDirs[numDirs];
+        for (int i = 0; i < numDirs; i++) {
+            if (nodeAt(head, dirPerturb(attachNodeLoc, nodeSeperation, i))) {
+                validDirs[i] = false;
+            } else {
+                validDirs[i] = true;
+            }
+        }
+
+        // How many directions
+        int numValidDirs = 0;
+        for (int i = 0; i < numDirs; i++) {
+            if (validDirs[i]) {
+                numValidDirs++;
+            }
+        }
+        if (numValidDirs == 0) {
+                printf("SSE12R\n");
+            // try different node
+        } else {
+            // Now pick one
+            int chosenDir = numValidDirs == 1 ? 0 : rand() % numValidDirs;
+            int actualDir = -1;
+            for (int i = 0; i < numDirs; i++) { // count down for every valid direction
+                if (validDirs[i]) {
+                    if (chosenDir-- == 0) { // after we passed choseDir valid values
+                        actualDir = i;
+                    }
+                }
+            }
+            if (!validDirs[actualDir]) {
+                exit(-1);
+            }
+
+            if (actualDir == -1) {
+                printf("The node attempted to attach to has no valid locations.\n");
+                continue;
+            } else {
+
+                posi newLoc = dirPerturb(attachNodeLoc, nodeSeperation, actualDir);
+                if (nodeAt(head, newLoc)) {
+                    printf("%d, %d\n", validDirs[actualDir], nodeAt(head, dirPerturb(attachNodeLoc, nodeSeperation, actualDir)));
+                }
+                if (equals(newLoc, attachNodeLoc, 0.5)) {
+                    exit(-1);
+                }
+                /* Connect via bone or muscle */
+                if (chance(50)) {
+                    head = addToBack(head, muscleGene(numNodes, attachTo));
+                    (head->iData[tot])++;
+                    (head->iData[mus])++;
+                } else {
+                    head = addToBack(head, boneGene(numNodes, attachTo));
+                    (head->iData[tot])++;
+                    (head->iData[bon])++;
+                }
+                return newLoc;
+            }
+        }
+    }
+    puts("ERROR, cannot find valid node location.");
+    return vec(0, 0, -10);
+}
+#undef numDirs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Returns values aleast min dist from all other nodes. Bound by CAGESIZE.
 posi getValidPosition(gene * head) {
@@ -239,10 +454,10 @@ posi getValidShift(gene * head, const double ix, const double iy, const double i
 
 bool typeConnectionExists(gene * head, char type, int a, int b) {
     FOR_ALL(head, type) {
-        if (current->iData[0] == a && current->iData[1] == b) return false;
-        if (current->iData[1] == a && current->iData[0] == b) return false;
+        if (current->iData[0] == a && current->iData[1] == b) return true;
+        if (current->iData[1] == a && current->iData[0] == b) return true;
     }
-    return true;
+    return false;
 }
 
 bool connectionExists(gene * head, int a, int b) {

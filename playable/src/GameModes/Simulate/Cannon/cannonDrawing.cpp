@@ -42,7 +42,7 @@ void writeCoeff(creature input) {
     }
     int height = wy - 100;
 
-    drawText(str, 2, height, false);
+    drawText(str, 2, height, false, false);
 
 }
 

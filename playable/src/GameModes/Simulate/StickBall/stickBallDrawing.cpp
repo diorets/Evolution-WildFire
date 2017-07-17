@@ -9,25 +9,21 @@
 #include <math.h>
 #include <stdio.h>
 #include "GameModes/Simulate/General/drawing.h"
-
+#include "GameModes/Simulate/Stickball/stickBallPhysics.h"
 #include "Functional/buttons.h"
 #include "Functional/graph.h"
-void drawStickBall(creature individual);
+
 static void createMenu();
 void displaySystemInfo(creature * pop, int genSize, int id);
 
-
-
-
-double g11(posi r) {
-    return 3 * sin(0.25 * r.x) * cos(0.25 * r.y);
-}
-
 double f(posi r) { // max range is +/- 0.5*h*len. ex: l=500, h=0.1 => x:25
+    return ground(r);
     #define len 500
-    double h = 1;
+    double h = 0.1; // precision
     static bool builtField = false;
     static double field[len][len];
+
+    /* Build Table */
     if (!builtField) {
         double x = 0.0;
         double y = 0.0;
@@ -35,14 +31,25 @@ double f(posi r) { // max range is +/- 0.5*h*len. ex: l=500, h=0.1 => x:25
             x = h * (i-0.5*len);
             for (int j = 0; j < len; j++) {
                 y = h * (j-0.5*len);
-                field[i][j] = g11(vec(x, y, 0));
+                field[i][j] = ground(vec(x, y, 0));
             }
         }
         builtField = true;
     }
-    int i_ = (int) (r.x / h + 0.5 * len);
-    int j_ = (int) (r.y / h + 0.5 * len);
-    return field[i_ % len][j_ % len]; // bandaid for out of range
+    /* Table Lookup */
+    for (int i = 0; i < len; i++) {
+        if ((r.x >= h * (i-0.5*len)) && (r.x <= h * (i+1-0.5*len))) {
+            for (int j = 0; j < len; j++) {
+                if ((r.y >= h * (j-0.5*len)) && (r.y <= h * (j+1-0.5*len))) {
+                    return field[i][j];
+                }
+            }
+        }
+    }
+    int i_ = (int) (r.x / h + 0.5 * len) % len; // bandaid for out of range
+    int j_ = (int) (r.y / h + 0.5 * len) % len;
+
+    return field[i_][j_];
     #undef len
 }
 
@@ -63,156 +70,206 @@ bool inSquare(posi p, double x, double y, double X, double Y) {
     return false;
 }
 
-//posi * addShadows(posi * shadows, int * numShadows, posi point, double x, double y, double X, double Y, double dx, double dy) {
-//    if (inSquare(point, x, y, x+dx, y+dy)) {
-//        shadows = (posi*) realloc(shadows, sizeof(posi) * (++(*numShadows)));
-//        shadows[(*numShadows)-1] = vec(x+dx/2, y+dx/2, 0);
-//    }
-//    return shadows;
-//}
-//
-//
-//
-//posi * buildShadows(posi * shadows, int * numShadows, posi point, double x, double y, double X, double Y) {
-//    if (inSquare(point, x, y, X, Y)) {
-//        // Try it in 4 squares each a quarter of the size:
-//        double dx = 0.5 * (X - x);
-//        double dy = 0.5 * (Y - y);
-//
-//        shadows = addShadows(shadows, numShadows, point, x, y, x+dx, y+dy, dx, dy);
-//        shadows = addShadows(shadows, numShadows, point, x, y+dy, x+dx, Y, dx, dy);
-//        shadows = addShadows(shadows, numShadows, point, x+dx, y, X, y+dy, dx, dy);
-//        shadows = addShadows(shadows, numShadows, point, x+dx, y+dy, X, Y, dx, dy);
-//
-//    }
-//    return shadows;
-//}
 
-void drawFunction(creature s) {
-    int numNodes = s.genome->iData[nod];
-    int numMuscle = s.genome->iData[mus];
-    int numBone = s.genome->iData[bon];
-    bool shading = false;
-    double h = 1;
-    double range = 30;
-    double shadowScale = 1;
-    int numShadows = 0;
-    posi * shadows = NULL;
+void drawTiles(posi c, double range, double h) {
+    glBindTexture(GL_TEXTURE_2D, 2);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 
-    posi c = getCom(s);
-    c = vec(round(c.x / h) * h, floor(c.y / h) * h, floor(c.z / h) * h);
-//    for (int i = 0; i < numNodes; i++) {
-//        posi loc = ((stickball*) (&s)->components)->nodes[i].loc;
-//        posi toVec = add(loc, scale(normal1(loc), 5));
-//        drawCylinder(loc.x, loc.y, f(loc),
-//                    toVec.x, toVec.y, -f(loc) - toVec.z + loc.z,
-//                    0.1, 10);
-//    }
-
-    if (shading) {
-        posi nodeShadows[numNodes];
-        for (int i = 0; i < numNodes; i++) {
-            posi m = vec(100, 100, 100); //sun (moon)
-            posi l_0 = ((stickball*) (&s)->components)->nodes[i].loc;
-            posi l = sub(m, l_0);
-            posi n = vec(0, 0, -1);
-
-            posi p = add(m, scale(l, -dot(m, n) / dot(l, n))) ;
-            nodeShadows[i] = p;
-        }
-
-
-
-        for (double x = c.x - range; x <= c.x + range; x+=shadowScale*h) {
-            for (double y = c.y- range; y <= c.y + range; y+=shadowScale*h) {
-                /* Node Shadows */
-
-    //            shadows = (int*) realloc(shadows, sizeof(int) * (numNodes + numShadows));
-    //            for (int i = 0; i < numNodes; i++) {
-    //                if (inSquare(nodeShadows[i], x, y, x+2*h, y+2*h)) {
-    //                    shadows[numShadows++] = i_;
-    //                }
-    //            }
-    /* Divide the tile into 4 peices. Check each one and see if they are shadows. Draw shadows. */
-
-                /* Muscle Shadows */
-                for (int i = 0; i < numMuscle; i++) {
-                    muscle mus = ((stickball*) (&s)->components)->muscles[i];
-                    int a = mus.a;
-                    int b = mus.b;
-                    posi shadowVec = sub(nodeShadows[b], nodeShadows[a]);
-                    double step = euc2D(nodeShadows[b], nodeShadows[a]) / h;
-                    for (double t = 0; t < 1; t += 1/step) {
-                        posi point = add(scale(shadowVec, t), nodeShadows[a]);
-                        if (inSquare(point, x-shadowScale*0.5*h, y-shadowScale*0.5*h, x+shadowScale*0.5*h, y+shadowScale*0.5*h)) {
-                            shadows = (posi*) realloc(shadows, sizeof(posi) * (++numShadows));
-                            shadows[numShadows-1] = vec(x, y, 0);
-                        }
-                        //shadows = buildShadows(shadows, &numShadows, point,
-                        //             x-shadowScale*0.5*h, y-shadowScale*0.5*h, x+shadowScale*0.5*h, y+shadowScale*0.5*h);
-                    }
-                }
-                /* Bone Shadows */
-                for (int i = 0; i < numBone; i++) {
-                    bone bon = ((stickball*) (&s)->components)->bones[i];
-                    int a = bon.a;
-                    int b = bon.b;
-                    posi shadowVec = sub(nodeShadows[b], nodeShadows[a]);
-                    double step = euc2D(nodeShadows[b], nodeShadows[a]) / h;
-                    for (double t = 0; t < 1; t += 1/step) {
-                        posi point = add(scale(shadowVec, t), nodeShadows[a]);
-                        if (inSquare(point, x-shadowScale*0.5*h, y-shadowScale*0.5*h, x+shadowScale*0.5*h, y+shadowScale*0.5*h)) {
-                            shadows = (posi*) realloc(shadows, sizeof(posi) * (++numShadows));
-                            shadows[numShadows-1] = vec(x, y, 0);
-                        }
-                        //shadows = buildShadows(shadows, &numShadows, point,
-                        //             x-shadowScale*0.5*h, y-shadowScale*0.5*h, x+shadowScale*0.5*h, y+shadowScale*0.5*h);
-                    }
-                }
-            }
-        }
-    }
-    glColor3f(BLACK);
-    glBegin(GL_LINES);
-    for (double x = c.x - range; x <= c.x + range; x+=h) {
-        for (double y = c.y- range; y <= c.y + range; y+=h) {
-            double z_x_y   = f(vec(x  , y, 0));
-            double z_xh_y  = f(vec(x+h, y, 0));
-            double z_xh_yh = f(vec(x+h, y+h, 0));
-            double z_x_yh  = f(vec(x  , y+h, 0));
-
-            glVertex3f(x  , y  , z_x_y);
-            glVertex3f(x+h, y  , z_xh_y);
-
-            glVertex3f(x+h, y  , z_xh_y);
-            glVertex3f(x+h, y+h, z_xh_yh);
-
-            glVertex3f(x+h, y+h, z_xh_yh);
-            glVertex3f(x  , y+h, z_x_yh);
-
-            glVertex3f(x  , y+h, z_x_yh);
-            glVertex3f(x  , y  , z_x_y);
-        }
-    }
-    glEnd();
+    /* Tiles */
     glColor3f(GREEN);
     glBegin(GL_QUADS);
-    for (double x = c.x - range; x <= c.x + range; x+=h) {
-        for (double y = c.y- range; y <= c.y + range; y+=h) {
-                if (shading) {
-                    for (int i = 0; i < numShadows; i++) {
-                        if (equals(shadows[i].x, x, shadowScale*h) && equals(shadows[i].y, y, shadowScale*h)) {
-                            glColor3f(DARKGREEN);
-                        }
-                    }
-                }
+        GLfloat zero[] = {0,0,0,0};
+//        GLfloat A[] = {1,1,1,1};
+        glMaterialfv(GL_FRONT, GL_SPECULAR, zero);
+        glMaterialfv(GL_FRONT, GL_AMBIENT, zero);
+        for (double x = c.x - range; x <= c.x + range; x+=h) {
+            for (double y = c.y- range; y <= c.y + range; y+=h) {
+                posi N = normal(ground, vec(x+0.5*h, y+0.5*h, 0));
+                glNormal3f(ARG(N));
                 glVertex3f(x, y, f(vec(x, y, 0)));
+
+//                N = normal(ground, vec(x+h, y, 0));
+//                glNormal3f(ARG(N));
                 glVertex3f(x+h, y, f(vec(x+h, y, 0)));
+//
+//                N = normal(ground, vec(x+h, y+h, 0));
+//                glNormal3f(ARG(N));
                 glVertex3f(x+h, y+h, f(vec(x+h, y+h, 0)));
+
+//                N = normal(ground, vec(x, y+h, 0));
+//                glNormal3f(ARG(N));
                 glVertex3f(x, y+h, f(vec(x, y+h, 0)));
+            }
+        }
+    glEnd();
+    return;
+}
+
+posi * getNodeShadows(int numNodes, creature s) {
+    /* Node Shadows */
+    posi * nodeShadows = (posi*) malloc(sizeof(posi) * numNodes);
+    GLfloat zero[] = {0,0,0,0};
+    glMaterialfv(GL_FRONT, GL_SPECULAR, zero);
+    glColor3f(DARKGREEN);
+    for (int i = 0; i < numNodes; i++) {
+        posi m = vec(300, 300, 300); //sun (moon)
+        posi l_0 = ((stickball*) (&s)->components)->nodes[i].loc;
+        l_0.z -= RADIUS; // correction to make shadow come from base of node.
+        posi l = sub(m, l_0);
+
+        posi n = vec(0,0,-1); // defaul to approximation
+        posi p = add(m, scale(l, -dot(m, n) / dot(l, n))) ; // initial guess
+
+//        posi p0 = add(scale(l, -0.2), l_0);
+//        posi pn = add(scale(l, 1.5), l_0);
+//            drawCylinder(p0.x, p0.y, p0.z, pn.x, pn.y, pn.z, 0.05, 3);
+
+
+        double searchBound = -0.2;
+        for (double t = 0; t >= searchBound; t -= 0.0001) {
+            posi p1 = add(scale(l, t), l_0);
+
+            if (p1.z < f(p1)) { // change of sign means found zero / interesection.
+                n = normal(f, p1);
+                p = p1;
+                break;
+            }
+        }
+        nodeShadows[i] = p;
+    }
+    return nodeShadows;
+}
+
+void drawGridLines(posi c, double range, double h, double hover) {
+    /* Grid Lines */
+    glLineWidth(0.5);
+    glColor3f(BLACK);
+    glBegin(GL_LINES);
+        for (double x = c.x - range; x <= c.x + range; x+=h) {
+            for (double y = c.y- range; y <= c.y + range; y+=h) {
+                double z_x_y   = 1.2*hover+f(vec(x  , y, 0));
+                double z_xh_y  = 1.2*hover+f(vec(x+h, y, 0));
+                double z_xh_yh = 1.2*hover+f(vec(x+h, y+h, 0));
+//                double z_x_yh  = 1.2*hover+f(vec(x  , y+h, 0));
+
+                glVertex3f(x  , y  , z_x_y);
+                glVertex3f(x+h, y  , z_xh_y);
+
+                glVertex3f(x+h, y  , z_xh_y);
+                glVertex3f(x+h, y+h, z_xh_yh);
+            }
+        }
+    glEnd();
+    return;
+}
+
+
+
+static void twoPointShadow(posi p1, posi p2, double wc, double ws, double hover) {
+//    posi N = normal(ground, vec(p1.x-wc, p1.y+ws, 0)); // shadowing
+//                    glNormal3f(ARG(N));
+
+//    glNormal3f(ARG(N));
+
+    glVertex3f(p1.x-wc, p1.y+ws, hover + f(vec(p1.x-wc, p1.y+ws, 0)));
+    glVertex3f(p2.x-wc, p2.y+ws, hover + f(vec(p2.x-wc, p2.y+ws, 0)));
+    glVertex3f(p2.x+wc, p2.y-ws, hover + f(vec(p2.x+wc, p2.y-ws, 0)));
+    glVertex3f(p1.x+wc, p1.y-ws, hover + f(vec(p1.x+wc, p1.y-ws, 0)));
+    return;
+}
+
+posi getPointOnLine(posi p1, posi p2, double t) { // from p1 to p2
+    posi dir = sub(p2, p1);
+    posi p = add(scale(dir, t), p1);
+//    drawSphere(p.x, p.y, p.z, 0.1);
+    return p;
+}
+
+posi findIntersection(posi p1, posi p2) {
+//    drawCylinder(p1.x, p1.y, p1.z,
+//                 p2.x, p2.y, p2.z,
+//                 0.1, 10);
+    posi dir = sub(p2, p1);
+    for (double t = 1; t < 1.5; t += 0.0003) {
+        posi trialP = add(scale(dir, t), p1);
+        if (trialP.z <= ground(trialP)) {
+            return trialP;
         }
     }
+    puts("Error, couldn't find shadow intersection.");
+    return vec(0,0,0);
+}
+
+
+void drawTwoNodeShadow(posi a, posi b, double w, double hover) {
+    posi AB_t = getPointOnLine(a, b, 0);
+    AB_t.z -= RADIUS;
+    posi p1 = findIntersection(vec(300,300,300), AB_t);
+    double step = 0.3333;
+    for (double t = 0; t < 1-step; t += step) {
+        posi AB_tdt = getPointOnLine(a, b, t+step);
+        AB_tdt.z -= RADIUS;
+        posi p2 = findIntersection(vec(300,300,300), AB_tdt);
+
+        double angle = atan2(p1.y - p2.y, p1.x - p2.x);
+
+        double ws = w * cos(angle);
+        double wc = w * sin(angle);
+
+        twoPointShadow(p1, p2, wc, ws, hover);
+
+        AB_t = AB_tdt;
+        p1 = p2;
+    }
+    return;
+}
+
+void drawConnectionShadows(creature s, double w, double hover) {
+//    int numNodes = s.genome->iData[nod];
+    int numMuscle = s.genome->iData[mus];
+    int numBone = s.genome->iData[bon];
+
+    glColor3f(DARKGREEN);
+    glBegin(GL_QUADS);
+    node * nodes = ((stickball*) (&s)->components)->nodes;
+
+    /* Muscle Shadows */
+    for (int i = 0; i < numMuscle; i++) {
+        muscle mus = ((stickball*) (&s)->components)->muscles[i];
+        drawTwoNodeShadow(nodes[mus.a].loc, nodes[mus.b].loc, w, hover);
+    }
+    /* Bone Shadows */
+    for (int i = 0; i < numBone; i++) {
+        bone bons = ((stickball*) (&s)->components)->bones[i];
+        drawTwoNodeShadow(nodes[bons.a].loc, nodes[bons.b].loc, w, hover);
+    }
     glEnd();
+    return;
+}
+
+void drawFunction(creature s) {
+    drawGround(800, 10, 10);
+
+    GLfloat light_position[] = {100.0, 100.0, 100.0, 0.0};
+//    GLfloat A[] = {.5,.5,.5, 0.0};
+    GLfloat A[] = {1,1,1, 1.0};
+
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, A);
+
+
+    bool shading = true;
+    double h = 10; // 1.5
+    double range = 400; // 50
+    double w = 0.15;
+    double hover = w / 1;
+
+    posi c = getCom(s);
+    c = vec(round(c.x / h) * h, floor(c.y / h) * h, floor(c.z / h) * h); // round c to h so grid moves in steps
+
+    drawTiles(c, range, h);
+    if (shading) drawConnectionShadows(s, w, hover);
+//    drawGridLines(c, range, h, hover);
     return;
 }
 
@@ -225,14 +282,16 @@ void stickBallSystem(creature * pop, int genSize, int gen, int id, int simTime, 
 
     /* 3D Drawing */
     reenable3D();
-    //drawGround(500, 10, 10);
+    drawGround(800, CAGESIZE, CAGESIZE);
     drawAxes(10, 10, 10);
-    drawFunction(input);
+//    drawFunction(input);
     drawSun();
     drawStickBall(input);
 
     /* 2D drawing */
     enable2D();
+
+    glLineWidth(2);
     bool twoG = globalData[creatureFitnessE].g.display && globalData[generationFitnessE].g.display;
     drawGraph(globalData[creatureFitnessE].g, 0, 0.5 * wx * (1.0 + !twoG));
     drawGraph(globalData[generationFitnessE].g, 0.5 * wx * twoG, wx);
@@ -352,7 +411,7 @@ void drawStickBall(creature individual) {
     posi com = getCom(individual);
 
     /* Nodes */
-    glColor3f(BLACK);
+    glColor3f(BEIGE);
     for (int i = 0; i < sizes[nod]; i++) {
         posi loc = components->nodes[i].loc;
         drawSphere(loc.x, loc.y, loc.z, RADIUS);
@@ -384,10 +443,10 @@ void drawStickBall(creature individual) {
         double minV = -40 / (i-10) + components->muscles[i].origLength;
         double maxV = +40 / (i-10) + components->muscles[i].origLength;
         double percent = (euc(locA, locB) - minV) / (maxV - minV);
-        double expansivity = 8 * euc(locA, locB) / (maxV - minV) * euc(locA, locB) / (maxV - minV); // not sure why 8 works
+        percent = 1;
         drawCylinder(locA.x, locA.y, locA.z,
                       locB.x, locB.y + 0.1, locB.z,
-                       RADIUS * percent,     5);
+                       0.5*RADIUS * percent,     5);
     }
 
     /* COMs / Origins */

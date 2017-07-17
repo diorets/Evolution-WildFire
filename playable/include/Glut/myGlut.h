@@ -22,5 +22,5 @@
 #define GRASS 0.0, 0.7, 0.0
 #define BROWN 0.60,0.25,0.07
 #define SKIN 1.0,0.71, 0.76
-
+#define BEIGE 245 / 255.0, 245 / 255.0, 220 /255.0
 #endif // MYGLUT_H_INCLUDED

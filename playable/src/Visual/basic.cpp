@@ -9,6 +9,7 @@
 
 /* Control Functions */
 void enable2D() {
+    glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -26,6 +27,7 @@ void reenable3D() {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
+    glEnable(GL_LIGHTING);
     return;
 }
 
@@ -181,7 +183,6 @@ void glutDrawing() {
             cameraPos.x,      cameraPos.y,      cameraPos.z,
             cameraPos.x + cameraDir.x, cameraPos.y + cameraDir.y, cameraPos.z + cameraDir.z,
             0.0,    0.0,    1.0);
-    glLineWidth(3);
     return;
 }
 

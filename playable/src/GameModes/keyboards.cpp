@@ -46,7 +46,8 @@ void simKeyPress(unsigned char key) {
 
 
 void simKeyHold(unsigned char key) {
-//    printf("%c, %d", key, key);
+    if (key && false) return;
+ //    printf("%c, %d", key, key);
     //if (key != '\0') quit(INPUT_ERROR);
     if (keyStates['w']) cameraMov.x =  playerSpeed;
     if (keyStates['s']) cameraMov.x = -playerSpeed;

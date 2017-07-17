@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <float.h>
 
-static gene * springGene(gene * head, int a, int b);
+static gene * springGene(int a, int b);
 
 static posi getValidPosition(gene * head, int currNum) {
     double radius = head->fData[TE::radius];
@@ -49,12 +49,12 @@ static posi getValidPosition(gene * head, int currNum) {
                 }
             }
             if (valid) {
-                head = addToBack(head, springGene(head, currNum, addTo));
+                head = addToBack(head, springGene(currNum, addTo));
                 (head->iData[CUE::numSprings])++;
                 for (int j = 0; j < currNum; j++) {
                     if (j == addTo) continue;
                     if (chance(10)) {
-                        head = addToBack(head, springGene(head, currNum, j));
+                        head = addToBack(head, springGene(currNum, j));
                         (head->iData[CUE::numSprings])++;
                     }
                 }
@@ -97,7 +97,7 @@ static gene * blockGene(gene * head, int currNum) { // Does check valid location
 }
 
 #include <math.h>
-static gene * blockGene(gene * head, posi loc) { // Does check valid location
+static gene * blockGene(posi loc) { // Does check valid location
     gene * blockG = (gene*) malloc(sizeof(gene));
     if (blockG == NULL) quit(MALLOC_ERROR);;
     blockG->start = 'b';
@@ -111,7 +111,7 @@ static gene * blockGene(gene * head, posi loc) { // Does check valid location
     return blockG;
 }
 
-static gene * springGene(gene * head, int a, int b) { // Does check valid location
+static gene * springGene(int a, int b) { // Does check valid location
     gene * springG = (gene*) malloc(sizeof(gene));
     if (springG == NULL) quit(MALLOC_ERROR);;
     springG->start = 's';
@@ -130,7 +130,7 @@ gene * createCubeGenome(gene * head) {
 	int n = 20;
     head = infoGene(n);
 
-    head = addToBack(head, blockGene(head, vec(0.0, 0.0, 20.0)));
+    head = addToBack(head, blockGene(vec(0.0, 0.0, 20.0)));
     for (int i = 1; i < n; i++) {
         head = addToBack(head, blockGene(head, i));
     }
@@ -152,8 +152,6 @@ void createCubeCreature(creature * newBorn) {
     cube * components = ((cube*) newBorn->components);
 
     while (currentGenome != NULL) {
-        int a;
-        int b;
         switch (currentGenome->start) {
             case 'i': // Needs to free doesnt it?
                 components->blocks = (node*) eMalloc(sizeof(node) * currentGenome->iData[TE::numBlocks]);
@@ -169,8 +167,8 @@ void createCubeCreature(creature * newBorn) {
                 numBlocks++;
                 break;
             case 's':
-                a = components->springs[numSprings].a = currentGenome->iData[0];
-                b = components->springs[numSprings].b = currentGenome->iData[1];
+                components->springs[numSprings].a = currentGenome->iData[0];
+                components->springs[numSprings].b = currentGenome->iData[1];
                 numSprings++;
                 break;
             default:

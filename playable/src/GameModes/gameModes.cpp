@@ -97,9 +97,9 @@ static void graphics(int system, creature * pop, int genSize, int gen, int id, i
     if (display && !globalData[skipE].b) {
         if (!(simTime % playBackSpeed)) {
             drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
-            drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
-            drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
-            drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
+//            drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
+//            drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
+//            drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
         }
     }
     return;
@@ -173,10 +173,9 @@ static void generationIteration(int genSize, int * id, int * gen) {
 
 
 #include "GameModes/Simulate/General/genetics.h"
-
-
+#include "GameModes/Simulate/StickBall/stickBallDrawing.h"
 void SIMULATION_MODE() {
-    static const int genSize = 300;
+    static const int genSize = 1000;
     static const int maxTime = 9000;
     static creature * population = NULL;
     static int id = 0;
@@ -187,11 +186,13 @@ void SIMULATION_MODE() {
     static const int system = 0;
 
     population = initializePop(population, creatureSizes, system, genSize);
+
     graphics(system, population, genSize, gen, id, simTime, maxTime);
 
     if (playBackSpeed <= 0) return;
 
-    creatureIteration(updateSystem(system, &population[id], &simTime), &population[id], system, &simTime, &id, maxTime);
+    bool error = updateSystem(system, &population[id], &simTime);
+    creatureIteration(error, &population[id], system, &simTime, &id, maxTime);
 
     static int record = -1;
     for (button * b = buttons; b != NULL; b = b->next) {
@@ -293,7 +294,7 @@ static void startText() {
 //                    "( B )\n"
 //                    "(ESC)\n", o.x, o.y);
 //    glColor3f(BLACK);
-    drawHeader("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Palfore Projectsh 2016 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", wx * 0.5, wy * 0.95);
+    drawHeader("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Palfore Projects 2017 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", wx * 0.5, wy * 0.95);
     return;
 }
 
@@ -336,11 +337,12 @@ void startUpMode() {
 
     /* Simulate Creatures in Background */
     glutDrawing();
-    drawGround(50, 50, 50);
+    drawGround(800, CAGESIZE, CAGESIZE);
     drawStickBall(population[id]);
     int pseudoi = i;
     creatureIteration(updateSystem(system, &population[id], &pseudoi), &population[id], system, &pseudoi, &id, 1000);
     if (i % 1000 == 0) id = (id + 1) % genSize; // Cycle through creatures
+
     /* Display Information and Menus Text */
     enable2D();
 

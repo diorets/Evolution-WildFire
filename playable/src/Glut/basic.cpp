@@ -51,6 +51,7 @@ void callMouse(int buttonPressed, int state, int mx, int my) {
             b->highlighted = hoveringOver(b);
         }
     }
+    if (mx && my) return;
     return;
 }
 
@@ -67,7 +68,7 @@ void changeSize(int w, int h) {
 }
 
 #include "GameModes/Simulate/StickBall/stickBallDrawing.h"
-
+#include "../../include/Visual/objects.h"
 void update(void) {
     glutPostRedisplay(); // redisplay everything
     wx = glutGet(GLUT_WINDOW_WIDTH);
@@ -122,6 +123,9 @@ void update(void) {
 	cameraMov.x = 0.0;
 	cameraMov.y = 0.0;
 	cameraMov.z = 0.0;
+
+
+	return;
 }
 
 /* Keyboard Presses */

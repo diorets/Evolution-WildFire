@@ -5,5 +5,5 @@
 
 bool updateStickBall(creature * specimen, int * simTime);
 double getStickBallFitness(creature individual);
-
+double ground(posi r);
 #endif // STICKBALLPHYSICS_H_INCLUDED

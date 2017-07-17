@@ -58,6 +58,7 @@ void mutateGenome(int system, creature * toMutate) {
 
 
 double skewedUnimodal(double x) {
+    return exp(-5 * x);
     return pow(1 - x, 27) * sin(PI* x);
 }
 
@@ -67,6 +68,7 @@ double selectionDistribution(int genSize) {
 
 
 int getRandomID(int * orderedPop, int genSize) {
+//    return orderedPop[0]; // return THE best creature
     int genomeID = (int) selectionDistribution(genSize);
     genomeID = genomeID >= genSize ? genSize - 1: genomeID;
     genomeID = genomeID  < 0       ?           0: genomeID;

@@ -42,6 +42,7 @@ void initiateSimulator(int* argc, char **argv, const char * title) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_COLOR_MATERIAL);
 
+
     /* Blending */
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

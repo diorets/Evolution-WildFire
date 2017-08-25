@@ -18,9 +18,12 @@ void callKeyboard(unsigned char key, bool hold) {
     return;
 }
 
+#include "stdio.h"
+#include "Math/mymath.h"
 void passiveMouse(int mx, int my) {
     mousePos.x = mx;
     mousePos.y = my;
+    cameraDel = zero(); // Prevent motion after mouse release
     return;
 }
 
@@ -78,37 +81,39 @@ void update(void) {
         b->drawing(b);
     }
 
-    double zero = 1e-10;
+    double eps = 1e-10;
     if (!display) return;
 
     /* Update Position */// Note: Not in orthogonal directions
     // Move 'Forward / Backwards'
-	if (cameraMov.x > zero || cameraMov.x < -zero) {
+	if (cameraMov.x > eps || cameraMov.x < -eps) {
 		cameraPos.x += cameraMov.x * cameraDir.x;
 		cameraPos.y += cameraMov.x * cameraDir.y;
 		//if (cameraPos.z + cameraMov.x * cameraDir.z > 0) { // prevent going under z=0
-            cameraPos.z += cameraMov.x * cameraDir.z;
+            cameraPos.z +=  cameraPos.z + cameraMov.x * cameraDir.z > 0 ? cameraMov.x * cameraDir.z : 0;
 		//}
 	}
 	// Move 'Left / Right'
-	if (cameraMov.y > zero || cameraMov.y < -zero) { // Cross product with Up vector
+	if (cameraMov.y > eps || cameraMov.y < -eps) { // Cross product with Up vector
         cameraPos.x += cameraMov.y * cameraDir.y;
 		cameraPos.y -= cameraMov.y * cameraDir.x;
 	}
+
 	// Move 'Up / Down'
-	if (cameraMov.z > zero || cameraMov.z < -zero) { // Simply move Up
-        cameraPos.z += cameraMov.z;
+	if (cameraMov.z > eps || cameraMov.z < -eps) { // Simply move Up
+        cameraPos.z += cameraPos.z + cameraMov.z > 0? cameraMov.z : 0;
 	}
 
     /* Update Viewing Angle */
-	if (cameraDel.x > zero || cameraDel.x < -zero) // Should rename to phi and theta
+	if (cameraDel.x > eps || cameraDel.x < -eps) // Should rename to phi and theta
     {
         cameraAng.x += cameraDel.x;
+//        printf(">> %f, %d\n", cameraDel.x);
         cameraDir.x = -sin(cameraAng.x);
         cameraDir.y = cos(cameraAng.x);
 
     }
-    if (cameraDel.z > zero || cameraDel.z < -zero)
+    if (cameraDel.z > eps || cameraDel.z < -eps)
     {
         // Restrict angle to PI / 2
         if (cameraAng.z + cameraDel.z < PI / 2 && cameraDel.z > 0)
@@ -120,10 +125,7 @@ void update(void) {
     }
 
 	// Reset speed
-	cameraMov.x = 0.0;
-	cameraMov.y = 0.0;
-	cameraMov.z = 0.0;
-
+	cameraMov = zero();
 
 	return;
 }
@@ -176,14 +178,8 @@ void releaseSpecialKey(int key, int kx, int ky) {
 
 
 void mouseMove(int mx, int my) {
-    if (my||mx||true) return; // remove warning
-//	if (isDragging) { // only when dragging
-//		// update the change in angle
-//		cameraDelX = (mx - xDragStart) * 0.005;
-//
-//		// camera's direction is set to angle + cameraDel
-//		lx = -sin(angleX + cameraDelX);
-//		ly = cos(angleX + cameraDelX);
-//	}
+    cameraDel.x = 0.00005 * (mousePos.x - mx); // Move camera on hold
+    cameraDel.z = 0.00005 * (mousePos.y - my);
+    return;
 }
 

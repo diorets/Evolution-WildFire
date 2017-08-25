@@ -35,6 +35,7 @@ void drawAxes(double x, double y, double z) {
     /* Draw Axis */
 
     glColor3f(BLUE); // X Axis
+    drawSphere(x, 0, 0, 1);
 	drawCylinder(x, 0, 0,
                  -x, 0, 0,
                  r, quality);
@@ -80,8 +81,7 @@ void drawGrass(double l, double O) {
 
 }
 
-void drawGrid(int fieldSize, double O) {
-    int sep = 3;
+void drawGrid(int fieldSize, double O, int sep) {
     int len, corner;
     fieldSize /= sep;
 
@@ -101,15 +101,16 @@ void drawGrid(int fieldSize, double O) {
                       len,  -temp * cosf(O), -len* tanf(O),
                        0.06, 10);
     }
-
+    return;
 }
+
 void drawGround(int groundSize, double horAxis, double zAxis) {
     double O = environment[0]; // About Y axis
 
     drawAxes(horAxis, horAxis, zAxis);
     drawCage(horAxis);
     drawGrass(groundSize, O);
-    drawGrid(groundSize, O);
+    drawGrid(groundSize, O, 3);
 
 
     // Rocks
@@ -154,7 +155,7 @@ void drawGround(int groundSize, double horAxis, double zAxis) {
 void drawSun() {
     glDisable(GL_LIGHTING);
     glColor4f(0.8,0.8,0, 0.5);
-    drawSphere(300, 300, 300, 30);
+    drawSphere(SUN, 30);
     glEnable(GL_LIGHTING);
     return;
 }

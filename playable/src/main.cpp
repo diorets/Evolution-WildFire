@@ -22,7 +22,7 @@ bool person     = false;
 bool lights     = true;
 bool display    = true;
 bool fullscreen = true;
-int  gameMode   = simMode; //startMode
+int  gameMode   = startMode; //startMode
 //int  genSize    = data[5];
 
 // window size (obtained updated during runtime)

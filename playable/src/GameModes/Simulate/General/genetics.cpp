@@ -58,6 +58,7 @@ void mutateGenome(int system, creature * toMutate) {
 
 
 double skewedUnimodal(double x) {
+//    return -x + 1;
     return exp(-5 * x);
     return pow(1 - x, 27) * sin(PI* x);
 }
@@ -210,7 +211,7 @@ int * orderedDist(creature * group, int genSize) {
 /* Record Top Half Distances into Array */
     for (int i = 0; i < genSize; i++) {
         for (int j = 0; j < genSize; j++) {
-            if ((fabs(dist[i].order - dist[j].unord) <= DBL_MIN)) {
+            if ((fabs(dist[i].order - dist[j].unord) <= 2*DBL_MIN)) {
                 /* Determine if already recorded */
                 if (beenRecorded[j]) continue;
                 else beenRecorded[j] = true;
@@ -229,7 +230,9 @@ int * orderedDist(creature * group, int genSize) {
             quit(orderedIDs[i]);
         }
         if (orderedIDs[i] < 0) {
-            quit(orderedIDs[i]);
+            orderedIDs[i] = rand() % 200;
+            puts("orderedIDs Error, a fix has been made to avoid program termination.");
+//            quit(orderedIDs[i]);
         }
     }
 

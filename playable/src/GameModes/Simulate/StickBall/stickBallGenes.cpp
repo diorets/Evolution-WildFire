@@ -1,3 +1,4 @@
+bool twoD2 = true; /// Change in both files
 #include "GameModes/Simulate/StickBall/stickBallGenes.h"
 
 #include <math.h>   // Fabs
@@ -9,15 +10,15 @@
 
 #include "Functional/list.h"   // Various Linked List Functions
 #include "GameModes/Simulate/StickBall/stickBallMutations.h"
+double spacing = 20 * RADIUS;
 
 gene* addMuscles(gene * head);
-
 gene* createStickBallGenome(gene * head) {
     if (head != NULL) quit(GENOME_ERROR);
 
 
-    if (0) {
-        int n = 30;
+    if (1) {
+        int n = 1;
         int m = 0;
         int b = 0;
         if (m + b > comb(n)) quit(GENOME_ERROR);
@@ -33,10 +34,11 @@ gene* createStickBallGenome(gene * head) {
             head = addToBack(head, nodeGene(head));
         }
         head = addMuscles(head);
+        head = addToBack(head, NULL); // Can likely remove
     } else {
-        int n = 6;
-        int m = 5;
-        int b = 5;
+        int n = 5;
+        int m = 2;
+        int b = 3;
         if (m + b > comb(n)) quit(GENOME_ERROR);
 
         /* Creating Genome */
@@ -54,11 +56,11 @@ gene* createStickBallGenome(gene * head) {
         for (int i = 0; i < sizes[mus]; i++) {
             head = addToBack(head, muscleGene(head));
         }
+        head = addToBack(head, NULL); // Can likely remove
+
+        removeStrandedNodes(head);
     }
 
-    head = addToBack(head, NULL); // Can likely remove
-
-    removeStrandedNodes(head);
     return head;
 }
 
@@ -67,15 +69,15 @@ void createStickBallCreature(creature * newBorn) {
     int numNodes   = 0;
     int numBones   = 0;
     int numMuscles = 0;
-//    int numAxons   = 0;
+
     gene * currentGenome = newBorn->genome;
     stickball * components = ((stickball*) newBorn->components);
-//    puts("tes");
+
     FOR_ALL(currentGenome, 'n') {
         components->nodes[numNodes].loc.x = current->fData[xposi];
         components->nodes[numNodes].loc.y = current->fData[yposi];
         components->nodes[numNodes].loc.z = current->fData[zposi];
-//        printf("%d, %f, %f, %f\n", numNodes, components->nodes[numNodes].loc.x, components->nodes[numNodes].loc.y, components->nodes[numNodes].loc.z);
+
         components->nodes[numNodes].vel.x = 0.0;
         components->nodes[numNodes].vel.y = 0.0;
         components->nodes[numNodes].vel.z = 0.0;
@@ -93,7 +95,12 @@ void createStickBallCreature(creature * newBorn) {
     FOR_ALL(currentGenome, 'm') {
         int a = components->muscles[numMuscles].a = current->iData[0];
         int b = components->muscles[numMuscles].b = current->iData[1];
+
         components->muscles[numMuscles].origLength = euc(components->nodes[a].loc, components->nodes[b].loc);
+
+
+        components->muscles[numMuscles].shift = current->fData[0];
+        components->muscles[numMuscles].rate  = current->fData[1];
         numMuscles++;
     }
 
@@ -242,7 +249,7 @@ int * getNeighborhs(gene * head, posi attachNodeLoc, double nodeSeperation) {
 
 gene* addMuscles(gene * head) {
     int nodeNum = 0;
-    double nodeSeperation = 40 * RADIUS;
+    double nodeSeperation = spacing;
     FOR_ALL(head, 'n') {
         posi loc = vec(current->fData[xposi], current->fData[yposi], current->fData[zposi]);
         int * neighbors = getNeighborhs(head, loc, nodeSeperation);
@@ -271,9 +278,9 @@ gene* addMuscles(gene * head) {
     return head;
 }
 
-posi getValidPosition12(gene * head) {
+posi getValidPosition(gene * head) {
     int numNodes = 0;
-    double nodeSeperation = 40 * RADIUS;
+    double nodeSeperation = spacing;
     /* Get Number of Nodes */
     FOR_ALL(head, 'n') numNodes++;
 
@@ -371,13 +378,13 @@ posi getValidPosition12(gene * head) {
 
 
 // Returns values aleast min dist from all other nodes. Bound by CAGESIZE.
-posi getValidPosition(gene * head) {
+posi getValidPosition1234567896543213465786543245678965432(gene * head) {
     while (true) {
         bool validPosition = true; // Not False
 
         /* Try a new location */
         double x = (rand() % (2 * CAGESIZE)) - CAGESIZE; //+-CageSize SWITCh TO DOUBLE
-        double y = (rand() % (2 * CAGESIZE)) - CAGESIZE;
+        double y = twoD2 ? 0 : (rand() % (2 * CAGESIZE)) - CAGESIZE;
         double z = RAND_NODE_HEIGHT;                   //[0, cageSize]
 //        y = 0.0;
 
@@ -478,14 +485,14 @@ gene* infoGene(int a, int b, int c, int d) {
     newInfo->iData[mus] = c;
     newInfo->iData[neu] = d;
 
-    newInfo->fData[0] = 2; //  mutation chances
-    newInfo->fData[1] = 2;
-    newInfo->fData[2] = 2;
-    newInfo->fData[3] = 2;
-    newInfo->fData[4] = 2;
-    newInfo->fData[5] = 2;
-    newInfo->fData[6] = 2;
-    newInfo->fData[7] = 2;
+    newInfo->fData[0] = 3; //  mutation chances
+    newInfo->fData[1] = 15;
+    newInfo->fData[2] = 3;
+    newInfo->fData[3] = 3;
+    newInfo->fData[4] = 3;
+    newInfo->fData[5] = 3;
+    newInfo->fData[6] = 3;
+    newInfo->fData[7] = 3;
 
     newInfo->iData[tot] = a + b + c + d + 1; // +1 for info gene
     newInfo->endof = '\0';
@@ -493,6 +500,14 @@ gene* infoGene(int a, int b, int c, int d) {
     return newInfo;
 }
 
+
+double rateFunction() {
+    return pmRandf(3.1415926 / 2.0);
+}
+
+double shiftFunction() {
+    return randf(5);
+}
 
 // Given two nodes to connect to
 gene* muscleGene(int a, int b) {
@@ -503,6 +518,10 @@ gene* muscleGene(int a, int b) {
 
     nodee->iData[0] = a;
     nodee->iData[1] = b;
+
+    nodee->fData[0] = rateFunction();
+    nodee->fData[1] = shiftFunction();
+
 
     nodee->endof = '\0';
     nodee->next = NULL;
@@ -519,6 +538,9 @@ gene* muscleGene(gene * genome) {
     conn valid = goodConnection(genome);
     nodee->iData[0] = valid.a;
     nodee->iData[1] = valid.b;
+
+    nodee->fData[0] = rateFunction();
+    nodee->fData[1] = shiftFunction();
 
     nodee->next = NULL;
     nodee->endof = '\0';
@@ -601,6 +623,10 @@ gene * addMuscle(int numNodes, int a) {
 
     newMuscle->iData[0] = numNodes - 1;
     newMuscle->iData[1] = a;
+
+    newMuscle->fData[0] = rateFunction();
+    newMuscle->fData[1] = shiftFunction();
+
     newMuscle->endof = '\0';
     newMuscle->next = NULL;
     return newMuscle;

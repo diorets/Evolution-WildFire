@@ -27,14 +27,15 @@ void simKeyPress(unsigned char key) {
         case 'i': toggleDisplay();                    return;
 
         case ' ': if (display) globalData[skipE].b = true;           return;
-        case  13: if (display) globalData[goThroughGenE].b = true; setPlayBackSpeed(8192); return;
+        case  13: if (display) globalData[goThroughGenE].b = true; setPlayBackSpeed(2 * 8192); return;
         case 'b': if (display) globalData[howToE].b = false;         return;
         case '1': if (display) globalData[instructionsE].b ^= true;  return;
         case '2': if (display) globalData[debugE].b ^= true;         return;
         case '3': if (display) globalData[graphE].b ^= true;         return;
 
-        case ']': processSlowDown += 3; return;
-        case '[': processSlowDown -= processSlowDown <= 0 ? 0 : 5; return;
+        case ']': playerSpeed = 1.2; return;
+        case '[': playerSpeed = 2.4; return;
+        case 'g': playerSpeed = 0.0; return;
         case '+': if (display) changePlayBack(true);  return;
         case '-': if (display) changePlayBack(false); return;
         case 'l': if (display) toggleLights();        return;

@@ -12,17 +12,16 @@
 #define RADIUS 0.5
 
 /* Bounds */
-#define CAGESIZE 20
+#define CAGESIZE 15
 #define MIN_NODE_DISTANCE 1.0
 #define MAX_ELEMENTS 500
-#define HIDDEN_LAYER_SIZE 6
 
 /* Macros */
 #define FOR_ALL(head, type) for (gene * current = head; current != NULL; current = current->next) if (current->start == type)
 #define FOR_ALL_GENES(head) for (gene * current = head; current != NULL; current = current->next)
 #define NUMELEMS(x)  (sizeof(x) / sizeof((x)[0]))
 #define ARG(r) -r.x, -r.y, -r.z
-
+#define SUN 300, -300, 300
 /* Enums */
 enum simMode {skipE, debugE, instructionsE, graphE, howToE, goThroughGenE,
  simPositionE, timeGenScreenE, displaySkinE, quickGenE, selectionPowerE,
@@ -107,6 +106,8 @@ typedef struct bone_struct {
 typedef struct muscle_struct {
     int a; // connections
     int b;
+    double rate;
+    double shift;
     double currLength;
     double prevLength;
     double origLength;
@@ -136,6 +137,7 @@ typedef struct creature_struct {
 
 typedef struct stickball_struct {
     posi   origin;
+    posi   trail[9000];
     node   nodes[MAX_ELEMENTS];
     bone   bones[MAX_ELEMENTS];
     muscle muscles[MAX_ELEMENTS];

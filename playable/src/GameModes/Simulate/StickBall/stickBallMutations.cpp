@@ -1,3 +1,4 @@
+bool twoD = true; /// Change in both files
 #include "GameModes/Simulate/StickBall/stickBallMutations.h"
 
 #include <math.h> // Fabs
@@ -49,20 +50,44 @@ void addNodes(gene * head, double addChance) {
     }
 }
 
-
 #include "global.h"
 #include <stdio.h>
+
+void alterMuscles(gene * head, double bigChange, double smallChange) {
+    FOR_ALL(head, 'm') {
+        if (chance(bigChange)) {
+            current->fData[0] = rateFunction();
+            current->fData[1] = shiftFunction();
+        }
+        if (chance(smallChange)) {
+            double change0 = pmRandf(0.2);
+            double change1 = pmRandf(0.5);
+
+            /* "If adding the change brings it out of bounds, go the other way" */
+            current->fData[0] += fabs(change0 + current->fData[0]) > (0.5*3.1415926) ? -change0 : change0;
+
+            if (change1 + current->fData[1] < 0) current->fData[1] += -change1;
+            else if (change1 + current->fData[1] > 5) current->fData[1] += -change1;
+        }
+    }
+    return;
+}
+
 void mutateStickball(creature * toMutate) { // Move node, addconnection, remove connection
-//    moveNodes(toMutate->genome, 30);
-//    addNodes(toMutate->genome, 50);
-//    removeNodes(toMutate->genome, 8);
-//
-//    removeStrandedNodes(toMutate->genome);
-//    /* Varification */
-//    verifyGenome    (toMutate->genome);
-//
-//    return;
+    moveNodes(toMutate->genome, 30);
+    addNodes(toMutate->genome, 50);
+    removeNodes(toMutate->genome, 8);
+    alterMuscles(toMutate->genome, 0, 100);
+
+    removeStrandedNodes(toMutate->genome);
+    /* Varification */
+    verifyGenome    (toMutate->genome);
+
+    return;
+
     /* Nodes Mods */
+    alterMuscles(toMutate->genome, 3, 10);
+//
     relocateNodes(toMutate->genome, toMutate->genome->fData[0]); // These assume a valid location exists
     shiftNodes   (toMutate->genome, toMutate->genome->fData[1], 0.5);
     addNode      (toMutate->genome, toMutate->genome->fData[2], 15,  15);
@@ -71,9 +96,9 @@ void mutateStickball(creature * toMutate) { // Move node, addconnection, remove 
 
     /* Connections */
 //    changeConnection(toMutate->genome, chance); // goto diferent muscles
-    addConnection   (toMutate->genome, toMutate->genome->fData[4]);
+    addConnection   (toMutate->genome, toMutate->genome->fData[4], 50, 100);
     removeConnection(toMutate->genome, toMutate->genome->fData[5]);
-    swapConnection  (toMutate->genome, toMutate->genome->fData[6]);
+//    swapConnection  (toMutate->genome, toMutate->genome->fData[6]);
 
     /* Neural Network */
     // modifyWeights(toMutate->genome, toMutate->genome->fData[6]);
@@ -91,7 +116,7 @@ void shiftNodes(gene * head, double shiftChance, double amount) {
         double z = current->fData[zposi];
         posi newPos = getValidShift(head, x, y, z, amount);
         current->fData[xposi] = newPos.x;
-        current->fData[yposi] = newPos.y;
+        current->fData[yposi] = twoD ? 0 : newPos.y;
         current->fData[zposi] = newPos.z;
     }
     return;
@@ -192,7 +217,7 @@ void removeNodeByIndex(gene * head, int toRemove) {
     return;
 }
 
-void addConnection(gene * head, double addChance) {
+void addConnection(gene * head, double addChance, double muscleChance, double boneChance) {
     int numNodes   = head->iData[nod];
     int numMuscles = head->iData[mus];
     int numBones   = head->iData[bon];
@@ -201,12 +226,12 @@ void addConnection(gene * head, double addChance) {
 
     if (chance(addChance)) {
         conn connection = goodConnection(head);
-        if (chance(50)) {
+        if (chance(muscleChance)) { // make it more balanced
             if (head->iData[mus] >= MAX_ELEMENTS) return;
             addToBack(head, muscleGene(connection.a, connection.b));
             head->iData[tot]++;
             head->iData[mus]++;
-        } else {
+        } else if (chance(boneChance)) {
             if (head->iData[bon] >= MAX_ELEMENTS) return;
             addToBack(head, boneGene(connection.a, connection.b));
             head->iData[tot]++;
@@ -340,6 +365,9 @@ void swapConnection(gene * head, double swapChance) {
             if (connectionExists(head, a, b)) {
 //                addAxons(head, /* How do I know what muscle this is */);
 
+                current->fData[0] = pmRandf(3.1415926 / 2.0);
+                current->fData[1] = randf(5);
+
                 current->start = 'm';
                 head->iData[mus]++;
                 head->iData[bon]--;
@@ -366,18 +394,35 @@ void verifyGenome(gene * head) {
 
     if (numMuscles + numBones > comb(numNodes)) quit(GENOME_ERROR);
 
-    /* Stranded Nodes */
-    int * needed = (int*) malloc(sizeof(int) * numNodes);
-    for (int i = 0; i < numNodes; i++) {
-        needed[i] = i;
-    }
-    FOR_ALL_GENES(head) if (current->start == 'm' || current->start == 'b') {
-        needed[current->iData[0]] = -1;
-        needed[current->iData[1]] = -1;
-    }
-    for (int i = 0; i < numNodes; i++) {
-        if (needed[i] != -1) {
+    /* Muscle  */
+    FOR_ALL(head, 'm') {
+        if (fabs(current->fData[0]) > (3.1415926 / 2.0 + 0.001)) {
+            printf("%f\n", current->fData[0]);
             quit(GENOME_ERROR);
+        }
+        if (current->fData[1] < 0) {
+            quit(GENOME_ERROR);
+        }
+        if (current->fData[1] > 5) {
+            quit(GENOME_ERROR);
+        }
+    }
+
+    /* Stranded Nodes */
+    if (numNodes > 1) {
+        int * needed = (int*) malloc(sizeof(int) * numNodes);
+        for (int i = 0; i < numNodes; i++) {
+            needed[i] = i;
+        }
+        FOR_ALL_GENES(head) if (current->start == 'm' || current->start == 'b') {
+            needed[current->iData[0]] = -1;
+            needed[current->iData[1]] = -1;
+        }
+        for (int i = 0; i < numNodes; i++) {
+            if (needed[i] != -1) {
+                printf("%d, %d, %d\n", numNodes, numMuscles, numBones);
+                quit(GENOME_ERROR);
+            }
         }
     }
 

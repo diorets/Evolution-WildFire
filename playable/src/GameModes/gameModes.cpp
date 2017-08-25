@@ -97,6 +97,7 @@ static void graphics(int system, creature * pop, int genSize, int gen, int id, i
     if (display && !globalData[skipE].b) {
         if (!(simTime % playBackSpeed)) {
             drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
+//            sleep_ms(30);
 //            drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
 //            drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
 //            drawSystem(system, pop, genSize, gen, id, simTime, maxTime);
@@ -174,9 +175,75 @@ static void generationIteration(int genSize, int * id, int * gen) {
 
 #include "GameModes/Simulate/General/genetics.h"
 #include "GameModes/Simulate/StickBall/stickBallDrawing.h"
+//gene * parseGenome(gene * heads) {
+//    /* Get Genome String */
+//    std::string s = \
+//"175:F:461.809197><i|7,6,3,0,17,<n|-18.043422,11.998212,6.169694,1.243904,0.561245,<n|-0.830763,8.910807,19.193227,3.405103,0.142579,<n|-13.082766,1.142906,18.102023,2.034333,0.661394,<n|-6.837053,-16.020219,5.419527,1.223151,0.648991,<n|14.935844,14.958995,18.563778,4.551988,0.458849,<b|0,2,<b|3,0,<m|2,1,<b|4,0,<b|3,2,<m|4,2,<b|3,4,<n|-19.848927,-5.083370,8.135112,4.541490,0.525697,<m|2,5,<n|-1.000000,3.000000,14.293590,4.740715,0.763546,<b|2,6,<";
+//    std::fstream myfile("../assets/genomes.txt");
+//    //for (int i = 0; (i != trials) && getline(myfile, s); i++);
+//    myfile.close();
+//
+//    //std::cout << trials << std::endl;
+//    /* Fill Genome */
+//    std::string geneDelim = "<";
+//    std::string dataDelim = ",";
+//    std::string geneStr;
+//    size_t genePos = 0;
+//    while ((genePos = s.find(geneDelim)) != std::string::npos) {
+//        geneStr = s.substr(0, genePos);
+//        s.erase(0, genePos + geneDelim.length());
+//        char geneType = geneStr[0];
+//        if (isdigit(geneType)) { // ignores first entry
+//            continue;
+//        }
+//        geneStr = geneStr.substr(2, std::string::npos);
+//        size_t dataPos = 0;
+//        std::string dataStr;
+//
+//        generic datums[10];
+//        int i = 0;
+//        while ((dataPos = geneStr.find(dataDelim)) != std::string::npos) {
+//            dataStr = geneStr.substr(0, dataPos);
+//            if (geneType == 'n') {
+//                datums[i].f = atof(dataStr.c_str());
+//            } else {
+//                datums[i].i = atoi(dataStr.c_str());
+//            }
+//            geneStr.erase(0, dataPos + dataDelim.length());
+//            i++;
+//        }
+//
+//        switch (geneType) {
+//            case 'i':
+//                head = infoGene(datums[0].i, datums[1].i, datums[2].i, datums[3].i);
+//                break;
+//            case 'n':
+//                head = addToBack(head, nodeGene(datums[0].f, datums[1].f, datums[2].f, datums[3].f, datums[4].f));
+//                break;
+//            case 'b':
+//                head = addToBack(head, boneGene(datums[0].i, datums[1].i));
+//                break;
+//            case 'm':
+//                head = addToBack(head, muscleGene(datums[0].i, datums[1].i));
+//                break;
+//            default:
+//                quit(GENOME_ERROR);
+//        }
+//    }
+//    head = addToBack(head, NULL); // Can likely remove
+//    return head;
+//}
+//
+//creature * loadGeomes() {
+//    FILE* genomes = fopen("../assets/genomes.txt", "r");
+//
+//    return pop;
+//}
+
+
 void SIMULATION_MODE() {
-    static const int genSize = 1000;
-    static const int maxTime = 9000;
+    static const int genSize = 3000;
+    static const int maxTime = 1500;
     static creature * population = NULL;
     static int id = 0;
     static int gen = 0;
@@ -188,7 +255,10 @@ void SIMULATION_MODE() {
     population = initializePop(population, creatureSizes, system, genSize);
 
     graphics(system, population, genSize, gen, id, simTime, maxTime);
-
+    if (playerSpeed < 0.0001) {
+            sleep_ms(500);
+            return;
+    }
     if (playBackSpeed <= 0) return;
 
     bool error = updateSystem(system, &population[id], &simTime);
@@ -291,7 +361,7 @@ static void startText() {
 //    drawMenu("Enter Simulation Mode\n"
 //                    "Quit\n",
 //
-//                    "( B )\n"
+//                    "( B )\n"+
 //                    "(ESC)\n", o.x, o.y);
 //    glColor3f(BLACK);
     drawHeader("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Palfore Projects 2017 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", wx * 0.5, wy * 0.95);
@@ -339,6 +409,7 @@ void startUpMode() {
     glutDrawing();
     drawGround(800, CAGESIZE, CAGESIZE);
     drawStickBall(population[id]);
+    sleep_ms(5);
     int pseudoi = i;
     creatureIteration(updateSystem(system, &population[id], &pseudoi), &population[id], system, &pseudoi, &id, 1000);
     if (i % 1000 == 0) id = (id + 1) % genSize; // Cycle through creatures

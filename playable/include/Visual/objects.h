@@ -4,7 +4,7 @@
 void drawTree(double x, double y, double height, double scale);
 void drawSight(double dist);
 void drawGround(int groundSize, double horAxis, double zAxis);
-void drawGrid(int fieldSize, double O);
+void drawGrid(int fieldSize, double O, int sep);
 void drawGrass(double l, double O);
 void drawCage(double length);
 void drawAxes(double x, double y, double z);

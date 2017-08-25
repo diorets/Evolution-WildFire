@@ -23,7 +23,7 @@ void shiftNodes(gene * head, double shiftChance, double amount); //Multiple
 void addNode(gene * head, double nodeChance, double muscleChance, double boneChance); // *
 void removeNode(gene * head, double removeChance);
 
-void addConnection(gene * head, double addChance);
+void addConnection(gene * head, double addChance, double muscleChance, double boneChance);
 void removeConnection(gene * head, double addChance);
 void swapConnection(gene * head, double swapChance);
 

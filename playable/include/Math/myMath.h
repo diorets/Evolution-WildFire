@@ -6,6 +6,8 @@
 
 double randf2(double a, double b);
 double randf2(int a, int b);
+int randi2(int a, int b);
+
 bool chance(double x);
 bool chance(int x);
 double randf(double number);

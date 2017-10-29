@@ -6,9 +6,11 @@
 #include "GameModes/Simulate/General/initialize.h"
 
 void SIMULATION_MODE();
-
+void COLLECTING_GENOMES_MODE();
+void MUTATION_IMPACT_MODE();
 #include "Glut/myGlut.h"
 #include <stdio.h>
+#include <math.h> // fabs
 
 void mainLoop() {
     callKeyboard('\0', true);
@@ -17,6 +19,8 @@ void mainLoop() {
             startUpMode();
             break;
         case simMode:
+//            MUTATION_IMPACT_MODE();
+//            COLLECTING_GENOMES_MODE();
             SIMULATION_MODE();
             break;
         default: break;
@@ -68,10 +72,31 @@ void renderScene(void) {
 #include <stdio.h>
 #include <time.h>
 #include "Visual/objects.h"
+void destroyPop(creature * pop, int genSize) {
+    for (int i = 0; i < genSize; i++) {
+        /* Free Genome */
+        pop[i].genome = clearGenome(pop[i].genome);
+        if (pop[i].genome != NULL) {
+            quit(MALLOC_ERROR);
+        }
+
+        /* Free Components */
+        if (pop[i].components != NULL) {
+            free(pop[i].components);
+            pop[i].components = NULL;
+        }
+    }
+    /* Free Population */
+    free(pop);
+    pop = NULL;
+    return;
+}
+
 static creature * initializePop(creature * population, const unsigned int * sizes, int system, int genSize) {
      /* One-Time Initializations */
     initPsuedoGlobal();
     if (population == NULL) {
+//        puts("InITASITe");
         population = initPop(population, genSize, sizes[system]);
         for (int i = 0; i < genSize; i++) {
             if (population[i].genome != NULL) quit(GENOME_ERROR);
@@ -80,7 +105,7 @@ static creature * initializePop(creature * population, const unsigned int * size
             drawGround(50, 10, 20);
             // So rand from seed(0) not affected by tree drawing
         }
-        printf("Done Initializing System %d\n", system);
+//        printf("Done Initializing System %d\n", system);
     }
     return population;
 }
@@ -127,7 +152,7 @@ static void creatureIteration(bool error, creature * individual, int system, int
 static void applyGeneticOperators(int system, creature * population, int id, int genSize) {
     if (id == genSize) {
         srand(time(NULL));
-        puts("New Generation");
+//        puts("New Generation");
 
         double avg = 0.0;
         for (int i = 0; i < genSize; i++) {
@@ -175,75 +200,271 @@ static void generationIteration(int genSize, int * id, int * gen) {
 
 #include "GameModes/Simulate/General/genetics.h"
 #include "GameModes/Simulate/StickBall/stickBallDrawing.h"
-//gene * parseGenome(gene * heads) {
-//    /* Get Genome String */
-//    std::string s = \
-//"175:F:461.809197><i|7,6,3,0,17,<n|-18.043422,11.998212,6.169694,1.243904,0.561245,<n|-0.830763,8.910807,19.193227,3.405103,0.142579,<n|-13.082766,1.142906,18.102023,2.034333,0.661394,<n|-6.837053,-16.020219,5.419527,1.223151,0.648991,<n|14.935844,14.958995,18.563778,4.551988,0.458849,<b|0,2,<b|3,0,<m|2,1,<b|4,0,<b|3,2,<m|4,2,<b|3,4,<n|-19.848927,-5.083370,8.135112,4.541490,0.525697,<m|2,5,<n|-1.000000,3.000000,14.293590,4.740715,0.763546,<b|2,6,<";
-//    std::fstream myfile("../assets/genomes.txt");
-//    //for (int i = 0; (i != trials) && getline(myfile, s); i++);
-//    myfile.close();
-//
-//    //std::cout << trials << std::endl;
-//    /* Fill Genome */
-//    std::string geneDelim = "<";
-//    std::string dataDelim = ",";
-//    std::string geneStr;
-//    size_t genePos = 0;
-//    while ((genePos = s.find(geneDelim)) != std::string::npos) {
-//        geneStr = s.substr(0, genePos);
-//        s.erase(0, genePos + geneDelim.length());
-//        char geneType = geneStr[0];
-//        if (isdigit(geneType)) { // ignores first entry
-//            continue;
-//        }
-//        geneStr = geneStr.substr(2, std::string::npos);
-//        size_t dataPos = 0;
-//        std::string dataStr;
-//
-//        generic datums[10];
-//        int i = 0;
-//        while ((dataPos = geneStr.find(dataDelim)) != std::string::npos) {
-//            dataStr = geneStr.substr(0, dataPos);
-//            if (geneType == 'n') {
-//                datums[i].f = atof(dataStr.c_str());
-//            } else {
-//                datums[i].i = atoi(dataStr.c_str());
-//            }
-//            geneStr.erase(0, dataPos + dataDelim.length());
-//            i++;
-//        }
-//
-//        switch (geneType) {
-//            case 'i':
-//                head = infoGene(datums[0].i, datums[1].i, datums[2].i, datums[3].i);
-//                break;
-//            case 'n':
-//                head = addToBack(head, nodeGene(datums[0].f, datums[1].f, datums[2].f, datums[3].f, datums[4].f));
-//                break;
-//            case 'b':
-//                head = addToBack(head, boneGene(datums[0].i, datums[1].i));
-//                break;
-//            case 'm':
-//                head = addToBack(head, muscleGene(datums[0].i, datums[1].i));
-//                break;
-//            default:
-//                quit(GENOME_ERROR);
-//        }
-//    }
-//    head = addToBack(head, NULL); // Can likely remove
-//    return head;
-//}
-//
-//creature * loadGeomes() {
-//    FILE* genomes = fopen("../assets/genomes.txt", "r");
-//
-//    return pop;
-//}
+#include <string>
+#include <iostream>
+
+#include <sstream>
+#include <fstream>
+template <typename T>
+std::string NumberToString ( T Number )
+{
+ std::ostringstream ss;
+ ss << Number;
+ return ss.str();
+}
+
+gene * parseGenome(int fileLine) {
+    /* Get Genome String */
+    std::string s = \
+"0:F:5.151742><i|6,6,4,0,<n|-7.000000,-1.000000,8.136481,4.582507,0.568740,<n|-13.000000,5.000000,11.766658,1.539567,0.509387,<n|4.000000,1.000000,7.369175,4.632313,0.847996,<n|-4.000000,12.000000,7.076550,1.070925,0.380306,<n|12.000000,-6.000000,13.589317,2.878231,0.638005,<n|-12.000000,12.000000,15.200342,2.942686,0.428355,<b|1,4,<b|2,0,<b|0,1,<b|4,5,<b|2,5,<b|0,3,<m|0,5,-0.175502,0.735801,<m|1,2,-0.044631,2.891018,<m|3,1,-0.611646,1.407514,<m|0,4,1.197356,0.998718,<"
+
+;
+    std::ifstream myfile;
+    myfile.open("../assets/genomes.txt");
+    for (int i = 0; i <= fileLine && getline(myfile, s); i++);
+    myfile.close();
+
+//    std::cout << s << std::endl;
+
+    gene * head = NULL;
+    /* Fill Genome */
+    std::string geneDelim = "<";
+    std::string dataDelim = ",";
+    std::string geneStr;
+    size_t genePos = 0;
+    while ((genePos = s.find(geneDelim)) != std::string::npos) {
+        geneStr = s.substr(0, genePos);
+        s.erase(0, genePos + geneDelim.length());
+        char geneType = geneStr[0];
+        if (isdigit(geneType)) { // ignores first entry
+            continue;
+        }
+        geneStr = geneStr.substr(2, std::string::npos);
+        size_t dataPos = 0;
+        std::string dataStr;
+
+        generic datums[10];
+        int i = 0;
+        while ((dataPos = geneStr.find(dataDelim)) != std::string::npos) {
+            dataStr = geneStr.substr(0, dataPos);
+
+            if (geneType == 'n') {
+                datums[i].f = atof(dataStr.c_str());
+            } else if (geneType == 'm') {
+                datums[i].f = atof(dataStr.c_str());
+                if (i < 2) {
+                    datums[i].i = atoi(dataStr.c_str());
+//                    printf("%d > %d\n", i, datums[i].i);
+//                    std::cout << NumberToString(i) + ">>>(i)" + dataStr<< std::endl;
+                } else {
+                    datums[i].f = atof(dataStr.c_str());
+//                    printf("%d > %f\n", i, datums[i].f);
+//                    std::cout << NumberToString(i) + ">>>(f)" + dataStr<< std::endl;
+                }
+            } else {
+                datums[i].i = atoi(dataStr.c_str());
+            }
+            geneStr.erase(0, dataPos + dataDelim.length());
+            i++;
+        }
+        switch (geneType) {
+            case 'i':
+//                printf("%d, %d, %d, %d\n", datums[0].i, datums[1].i, datums[2].i, datums[3].i);
+                head = infoGene(datums[0].i, datums[1].i, datums[2].i, datums[3].i);
+                break;
+            case 'n':
+                head = addToBack(head, nodeGene(datums[0].f, datums[1].f, datums[2].f, datums[3].f, datums[4].f));
+                break;
+            case 'b':
+                head = addToBack(head, boneGene(datums[0].i, datums[1].i));
+                break;
+            case 'm':
+                head = addToBack(head, muscleGene(datums[0].i, datums[1].i, datums[2].f, datums[3].f));
+                break;
+            default:
+                quit(GENOME_ERROR);
+        }
+    }
+    head = addToBack(head, NULL); // Can likely remove
+    return head;
+}
+
+#include "Math/myMath.h"
+void MUTATION_IMPACT_MODE() {
+    static const unsigned int creatureSizes[] = {sizeof(stickball), sizeof(turbine), sizeof(cannon), sizeof(cube)};
+    static creature * population = NULL;
+    static const int system = 0;
+
+    // MODE SPECIFIC VARIABLES
+    static int fileLine = 0;
+    static double initF = 0.0;
+
+
+    static const int genSize = 400;
+    static const int maxTime = 9000;
+    static int id = 0;
+    static int gen = 0;
+    static int simTime = 0;
+
+    /* One-Time Initializations */
+    initPsuedoGlobal();
+    if (population == NULL) {
+        population = initPop(population, genSize, creatureSizes[system]);
+        for (int i = 0; i < genSize; i++) {
+            if (population[i].genome != NULL) quit(GENOME_ERROR);
+//            printf("Parsing %d\n", i);
+            population[i].genome = parseGenome(fileLine);
+//            puts("Finished Parsing");
+            createSystemCreature(system, &population[i]);
+            drawGround(50, 10, 20); // So rand from seed(0) not affected by tree drawing
+        }
+        initF = 0.0;
+    }
+
+    graphics(system, population, genSize, gen, id, simTime, maxTime);
+    if (playerSpeed < 0.0001) {
+            sleep_ms(500);
+            return;
+    }
+    if (playBackSpeed <= 0) return;
+
+    bool error = updateSystem(system, &population[id], &simTime);
+    creatureIteration(error, &population[id], system, &simTime, &id, maxTime);
+
+
+    if ((gen == 0)  && (id == 1)) { // completed first creature
+        initF = population[0].fitness;
+        printf("%d -> %f\n", fileLine, initF);
+        for (int i = 0; i < genSize; i++) {
+            population[i].fitness = initF;
+            id = genSize;
+        }
+    }
+    if ((gen == 1) && (id == genSize)) { // about to move to third generation (1->2)
+            FILE* impacts = fopen("../assets/impacts.txt", "a");
+            double expected = 0;
+            double threshold =  0.05 + 0.08; // % below or above,  + 0.01 for subtle deviations
+
+            // Find the desiredFitness that the creatures fitness falls in
+            for (int i = 0; i < 35; i++) {
+                double desiredFitness = 5 * pow(1.25, i);
+                if ((initF > (desiredFitness - desiredFitness * threshold)) &&
+                    (initF < (desiredFitness + desiredFitness * threshold))) {
+
+                    expected = desiredFitness;
+                    break;
+                }
+            }
+
+            fprintf(impacts, "%f | %f > ", expected, initF);
+            for (int i = 0; i < genSize; i++) {
+                double impact = population[i].fitness - initF;
+
+                fprintf(impacts, "%f ", impact);
+
+            }
+            fprintf(impacts, "\n");
+            fclose(impacts);
+
+            /* restart and increment fileLine */
+            // Reset Static Variables
+            id = 0;
+            gen = 0;
+            simTime = 0;
+
+            // Reset Simulation
+            destroyPop(population, genSize);
+            population = NULL;
+            fileLine++;
+    }
+
+    applyGeneticOperators(system, population, id, genSize);
+
+    generationIteration(genSize, &id, &gen);
+    return;
+}
+
+void COLLECTING_GENOMES_MODE() {
+    static const unsigned int creatureSizes[] = {sizeof(stickball), sizeof(turbine), sizeof(cannon), sizeof(cube)};
+    static creature * population = NULL;
+    static const int system = 0;
+
+    // Fitness Collection Variables
+    static double desiredFitness = 5.0 * pow(1.25, 20);//5.0;
+    static int creaturesWithFitness = 0;
+
+
+    static const int genSize = 500;
+    static const int maxTime = 9000;
+    static int id = 0;
+    static int gen = 0;
+    static int simTime = 0;
+
+    population = initializePop(population, creatureSizes, system, genSize);
+
+    graphics(system, population, genSize, gen, id, simTime, maxTime);
+    if (playerSpeed < 0.0001) {
+            sleep_ms(500);
+            return;
+    }
+    if (playBackSpeed <= 0) return;
+
+    bool error = updateSystem(system, &population[id], &simTime);
+    creatureIteration(error, &population[id], system, &simTime, &id, maxTime);
+
+    if (id == genSize) {
+        double threshold =  0.05; // % below or above
+        for (int i = 0; i < genSize; i++) {
+            // if fitness is within desiredFitness * threshold of desired fitness
+            // if fitness is above
+            if ((population[i].fitness > (desiredFitness - desiredFitness * threshold)) &&
+                (population[i].fitness < (desiredFitness + desiredFitness * threshold))) {
+                    saveGenome(population, gen, i, "../assets/genomes.txt");
+                    creaturesWithFitness++;
+
+                    if (creaturesWithFitness == 5) { // look for 5 creatures at each fitness
+                        desiredFitness = desiredFitness * 1.25;
+                        if (desiredFitness > 600) {
+                            desiredFitness = 5;
+                        }
+                        creaturesWithFitness = 0;
+                    }
+                    printf("Looking for a creature with fitness %f\n", desiredFitness);
+
+                    // Reset Static Variables
+                    id = 0;
+                    gen = 0;
+                    simTime = 0;
+
+                    // Reset Simulation
+                    destroyPop(population, genSize);
+                    population = NULL;
+                    return;
+            }
+            if (gen > 400) { // exceeding this, means the population is stuck in a local maximum
+                // Reset Static Variables
+                id = 0;
+                gen = 0;
+                simTime = 0;
+
+                // Reset Simulation
+                destroyPop(population, genSize);
+                population = NULL;
+                puts("Could not find fitness within 50 generations");
+                return;
+            }
+        }
+    }
+
+    applyGeneticOperators(system, population, id, genSize);
+    generationIteration(genSize, &id, &gen);
+    return;
+}
 
 
 void SIMULATION_MODE() {
-    static const int genSize = 3000;
-    static const int maxTime = 1500;
+    static const int genSize = 300;
+    static const int maxTime = 9000;
     static creature * population = NULL;
     static int id = 0;
     static int gen = 0;
@@ -273,12 +494,59 @@ void SIMULATION_MODE() {
     }
     if ((record != -1) && (record + 1 == id)) {
         puts("Saved");
-        saveGenome(population, gen, record);
+        saveGenome(population, gen, record, "../assets/saved.txt");
         record = -1;
     }
 
+
+    if (id == genSize) {
+        if (gen == 0) { // GET INITIAL POP
+            FILE* f = fopen("../assets/initialGeneration.txt", "a");
+            for (int i = 0; i < genSize; i++) {
+                fprintf(f, "%f, ",population[i].fitness);
+            }
+            fclose(f);
+        }
+        double avg = 0.0;
+        for (int i = 0; i < genSize; i++) {
+            avg += population[i].fitness;
+        }
+        avg /= genSize;
+//        printf("%f\n",avg );
+//        FILE* f = fopen("../assets/saved.txt", "a");
+//        fprintf(f, "%f\n", avg);
+//        fclose(f);
+
+        if (gen > 300) {
+            // Reset Static Variables
+            id = 0;
+            gen = 0;
+            simTime = 0;
+
+            // Reset Simulation
+            destroyPop(population, genSize);
+            population = NULL;
+
+
+
+            FILE* f = fopen("../assets/saved.txt", "a");
+            fprintf(f, "%f %f ----------------------\n", environment[0], avg);
+            printf("%f %f\n", environment[0], avg);
+
+            fclose(f);
+
+            environment[0] += 5;
+            if (environment[0] >= 100) {
+                environment[0] = 5;
+            }
+            return;
+        }
+    }
     applyGeneticOperators(system, population, id, genSize);
     generationIteration(genSize, &id, &gen);
+
+
+
     return;
 }
 

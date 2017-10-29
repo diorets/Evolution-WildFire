@@ -10,7 +10,7 @@
 				<Option output="bin/Debug/test" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="bin" />
 				<Option object_output="obj/Debug/" />
-				<Option type="1" />
+				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-fexpensive-optimizations" />
@@ -46,16 +46,28 @@
 				<Option compiler="gcc" />
 			</Target>
 		</Build>
+		<Compiler>
+			<Add option="-MD" />
+			<Add directory="bin/SOIL/src" />
+		</Compiler>
 		<Linker>
+			<Add option="-lopengl32" />
+			<Add library="bin/SOIL/lib/libSOIL.a" />
 			<Add library="freeglut" />
 			<Add library="opengl32" />
 			<Add library="glu32" />
 			<Add library="winmm" />
 			<Add library="gdi32" />
+			<Add directory="bin/SOIL/projects/codeblocks/obj/Release" />
 		</Linker>
 		<Unit filename="assets/README.txt" />
 		<Unit filename="assets/fitnesses.txt" />
 		<Unit filename="assets/genomes.txt" />
+		<Unit filename="assets/impacts.txt" />
+		<Unit filename="assets/initialGeneration.txt" />
+		<Unit filename="assets/model.txt" />
+		<Unit filename="assets/mutationDatabase.txt" />
+		<Unit filename="assets/saved.txt" />
 		<Unit filename="include/ErrorHandle/error.h" />
 		<Unit filename="include/Functional/buttons.h" />
 		<Unit filename="include/Functional/graph.h" />

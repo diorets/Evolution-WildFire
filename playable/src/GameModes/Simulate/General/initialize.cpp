@@ -15,9 +15,9 @@ creature * initPop(creature * population, int genSize, int allocationSize) {
 
             population[i].components = (void*) eMalloc(allocationSize);
 
-            /* Clear Genomes from potentially previous runs */
+            /* Clear Genomes from potentially previous runs */ // This doesnt make sense, because pop has to be null...
             population[i].genome = clearGenome(population[i].genome);
-            if (population[i].genome     != NULL) quit(GENOME_ERROR);
+            if (population[i].genome != NULL) quit(GENOME_ERROR);
         }
     }
     return population;

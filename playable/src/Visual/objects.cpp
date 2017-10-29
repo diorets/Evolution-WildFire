@@ -153,10 +153,34 @@ void drawGround(int groundSize, double horAxis, double zAxis) {
 }
 
 void drawSun() {
+    GLUquadric *qobj = gluNewQuadric();
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textures[1]);
+    glColor3f(WHITE);
+
+    gluQuadricTexture(qobj,GL_TRUE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_LINEAR);
+
     glDisable(GL_LIGHTING);
-    glColor4f(0.8,0.8,0, 0.5);
-    drawSphere(SUN, 30);
+
+
+
+    glPushMatrix();
+        glTranslatef(SUN);
+        gluSphere(qobj,30,20,20);
+    glPopMatrix();
+
+    gluDeleteQuadric(qobj);
+    gluQuadricTexture(qobj,GL_FALSE);
+
     glEnable(GL_LIGHTING);
+//        GLfloat lmodel_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+//    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
+
+    glDisable(GL_TEXTURE_2D);
     return;
 }
 

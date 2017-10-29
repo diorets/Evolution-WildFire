@@ -54,23 +54,54 @@ void mutateGenome(int system, creature * toMutate) {
 
 
 
-
-
+#include"Math/myMath.h"
 
 double skewedUnimodal(double x) {
-//    return -x + 1;
-    return exp(-5 * x);
-    return pow(1 - x, 27) * sin(PI* x);
+    return pow(1 - x, environment[0]) * sin(PI* x); // environment[0] -> 27
 }
 
-double selectionDistribution(int genSize) {
-    return getDistribution(skewedUnimodal, genSize, 27);
+double boxDistribution(double x) {
+    double val = 0.0;
+    double sumAlphas = 0.0;
+    int n = 10;
+    for (int i = 0 ; i < n; i++) {
+        val += (((i / (double) n) < x) && (x < (i+1) / (double) n)) ? coeffs[i] : 0;
+        sumAlphas += coeffs[i];
+    }
+    val *= n / sumAlphas; // normalization factor
+    return val;
+}
+
+double exponential(double x) {
+    return 0.29 * exp(-4.1 * x);
+}
+
+double selectionDistribution(int genSize, bool trialSelectionFunction) {
+//    return getDistribution(exponential, genSize, 0); // used to run simulation
+
+    return getDistribution(skewedUnimodal, genSize, environment[0]);
+
+    if (!trialSelectionFunction) { // Used in testing
+        return getDistribution(skewedUnimodal, genSize, environment[0]);
+    } else {
+        return getDistribution(boxDistribution, genSize, 0);
+    }
 }
 
 
 int getRandomID(int * orderedPop, int genSize) {
+    /* Duplicate Top Half (hopefully, untested) */
+//    static int i = 0;
+//    static int firstCopy = 0;
+//
+//    int toReturn = orderedPop[i];
+//    i = (i + firstCopy) % (genSize/2);
+//    firstCopy = firstCopy == 0 ? 1 : 0;
+////    printf("%d\n", i);
+//    return orderedPop[i];
+
 //    return orderedPop[0]; // return THE best creature
-    int genomeID = (int) selectionDistribution(genSize);
+    int genomeID = (int) selectionDistribution(genSize, false); // use known
     genomeID = genomeID >= genSize ? genSize - 1: genomeID;
     genomeID = genomeID  < 0       ?           0: genomeID;
     return orderedPop[genomeID];
@@ -246,15 +277,15 @@ int * orderedDist(creature * group, int genSize) {
 }
 
 
-void saveGenome(creature * population, int gen, int index) {
-    FILE * fptr = fopen("../assets/genomes.txt", "a");
+void saveGenome(creature * population, int gen, int index, char file[256]) {
+    FILE * fptr = fopen(file, "a");
     fprintf(fptr, "%d:", gen);
     fprintf(fptr, "F:%f>", population[index].fitness);
     for (gene * current = population[index].genome; current != NULL; current = current->next) {
         fprintf(fptr, "<%c|", current->start);
         switch (current->start) {
             case 'i':
-                for (int i = nod; i <= tot; i++) {
+                for (int i = 1; i < 5; i++) { // "1" to exclude tot because its calculated manually
                     fprintf(fptr, "%d,", current->iData[i]);
                 }
                 break;
@@ -264,7 +295,7 @@ void saveGenome(creature * population, int gen, int index) {
                 }
                 break;
             case 'm':
-                fprintf(fptr, "%d,%d,", current->iData[0], current->iData[1]);
+                fprintf(fptr, "%d,%d,%f,%f,", current->iData[0], current->iData[1], current->fData[0], current->fData[1]);
                 break;
             case 'b':
                 fprintf(fptr, "%d,%d,", current->iData[0], current->iData[1]);

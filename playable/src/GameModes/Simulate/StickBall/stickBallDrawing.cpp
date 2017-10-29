@@ -13,6 +13,9 @@
 #include "Functional/buttons.h"
 #include "Functional/graph.h"
 
+
+
+#include "SOIL.h"
 static void createMenu();
 void displaySystemInfo(creature * pop, int genSize, int id);
 
@@ -33,119 +36,6 @@ bool inSquare(posi p, double x, double y, double X, double Y) {
     if (p.y <= Y)
     return true;
     return false;
-}
-
-//#include <pthread.h>
-//typedef struct thread_datum {
-//   int thread_id;
-//   posi c;
-//   double range;
-//   double h;
-//} thread_datum;
-//
-//
-//void *BusyWork(void *threadarg) {
-//    thread_datum *my_data = (thread_datum *) threadarg;
-//    int taskid = my_data->thread_id;
-//    double h = my_data->h;
-//    posi c = my_data->c;
-//    double range = my_data->range;
-////    printf("%f, %f, %f\n", c.x - range, c.x + range, h);
-//    glBegin(GL_QUADS);
-//    for (double x = c.x - range; x <= c.x + range; x+=h) {
-//        for (double y = c.y - range; y <= c.y + range; y+=h) {
-//            posi N = normal(ground, vec(x+h, y+h, 0));
-//            glNormal3f(ARG(N));
-//            glVertex3f(x, y, ground(vec(x, y, 0)));
-//
-////                N = normal(ground, vec(x+h, y, 0));
-////                glNormal3f(ARG(N));
-//            glVertex3f(x+h, y, ground(vec(x+h, y, 0)));
-////
-////                N = normal(ground, vec(x+h, y+h, 0));
-////                glNormal3f(ARG(N));
-//            glVertex3f(x+h, y+h, ground(vec(x+h, y+h, 0)));
-//
-////                N = normal(ground, vec(x, y+h, 0));
-////                glNormal3f(ARG(N));
-//            glVertex3f(x, y+h, ground(vec(x, y+h, 0)));
-//        }
-//    }
-//    glEnd();
-//   pthread_exit(NULL);
-//}
-
-void drawTiles(posi c, double range, double h) {
-    /* Tiles */
-    glColor3f(GREEN);
-    glBegin(GL_QUADS);
-        GLfloat zero[] = {0,0,0,0};
-//        GLfloat A[] = {1,1,1,1};
-        glMaterialfv(GL_FRONT, GL_SPECULAR, zero);
-        glMaterialfv(GL_FRONT, GL_AMBIENT, zero);
-
-        for (double x = c.x - range; x <= c.x + range; x+=h) {
-            for (double y = c.y - range; y <= c.y + range; y+=h) {
-                    posi N;
-
-                N = normal(ground, vec(x+h, y+h, 0));
-                N = scale(N, 1);
-                glNormal3f(ARG(N));
-                glVertex3f(x, y, ground(vec(x, y, 0)));
-
-                    N = normal(ground, vec(x+h, y, 0));
-                N = scale(N, 1);
-                    glNormal3f(ARG(N));
-                glVertex3f(x+h, y, ground(vec(x+h, y, 0)));
-    //
-                    N = normal(ground, vec(x+h, y+h, 0));
-                N = scale(N, 1);
-                    glNormal3f(ARG(N));
-                glVertex3f(x+h, y+h, ground(vec(x+h, y+h, 0)));
-
-                    N = normal(ground, vec(x, y+h, 0));
-                N = scale(N, 1);
-                    glNormal3f(ARG(N));
-                glVertex3f(x, y+h, ground(vec(x, y+h, 0)));
-            }
-        }
-//        #define NUM_THREADS 8
-//        pthread_t threads[NUM_THREADS];
-//        long taskids[NUM_THREADS];
-//        pthread_attr_t attr;
-//        void *status;
-//
-//        /* Initialize and set thread detached attribute */
-//        pthread_attr_init(&attr);
-//        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-//
-//        thread_datum * datum = (thread_datum*) malloc(sizeof(thread_datum));
-//        datum->c = c;
-//        datum[0].h = h;
-//        datum->range = range;
-//        for(int t=0;t<NUM_THREADS;t++) {
-//            taskids[t] = t;
-////            printf("Creating thread %d\n", t);
-//            (*datum).thread_id = t;
-//            int rc = pthread_create(&threads[t], NULL, BusyWork, (void *) datum);
-//            if (rc) {
-//                printf("ERROR; return code from pthread_create() is %d\n", rc);
-//                exit(-1);
-//            }
-//        }
-//
-//        /* Free attribute and wait for the other threads */
-//        pthread_attr_destroy(&attr);
-//        for(int t=0; t<NUM_THREADS; t++) {
-//            int rc = pthread_join(threads[t], &status);
-//            if (rc) {
-//                printf("ERROR; return code from pthread_join() is %d\n", rc);
-//                exit(-1);
-//            }
-////            printf("Main: completed join with thread %ld having a status of %ld\n",t,(long)status);
-//        }
-    glEnd();
-    return;
 }
 
 posi * getNodeShadows(int numNodes, creature s) {
@@ -290,19 +180,108 @@ void drawConnectionShadows(creature s, double w, double hover) {
     return;
 }
 
+double pgehrtp(posi r) {
+    return sin(r.x);
+}
+void drawTiles(posi c, double range, double h) {
+    int divisions = 10; // precision
+    double s = 20; // resolution. Lower means image is repeated in smaller units. Higher means grass is bigger
+    double d = 1.0 / (double) divisions;
+
+    range /= s;
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textures[0]);
+    glColor3f(WHITE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+
+    glDisable(GL_TEXTURE_2D);
+    glColor3f(WHITE);
+    double a = 2;
+    int l = 200;
+//    for (double y = -l; y < l; y++) {
+//        glBegin(GL_TRIANGLE_STRIP);
+//        for (double x = -l; x < l; x++) {
+//            double z1 = ground(vec(x*a, y*a, 0));
+//            posi N;
+//            N = normal(ground, vec(x*a, y*a, 0));
+//            glNormal3f(ARG(N));
+//
+//            glTexCoord2f(  x,   y); glVertex3f(x*a, y*a, z1);
+//
+//            N = normal(ground, vec(x*a, (y+1)*a, 0));
+//            glNormal3f(ARG(N));
+//
+//            glTexCoord2f(  x,   (y+1)); glVertex3f(x*a, (y+1)*a, ground(vec(x*a, (y+1)*a, 0)));
+//        }
+//        glEnd();
+//    }
+//    glColor3f(BLACK);
+//    for (double y = -l; y < l; y++) {
+//        for (double x = -l; x < l; x++) {
+//            double X = a*x;
+//            double Y = a*y;
+//            double z1 = ground(vec(X, Y, 0));
+//            posi N = normal(ground, vec(X, Y, 0));
+//            drawLine(X, Y, z1, X-N.x, Y-N.y, z1-N.z);
+//
+//        }
+//
+//    }
+
+//    return;
+    glColor3f(WHITE);
+    glEnable(GL_TEXTURE_2D);
+    glBegin(GL_QUADS);
+        for (double i = (-range); i < (range); i++) {
+            for (double j = (-range); j < (range); j++) {
+                for (double x = 0; x < (1 - !(divisions % 2) * d); x += d) {
+                    for (double y = 0; y < (1 - !(divisions % 2) * d); y+=d) {
+                        double X = s * 2*(x+i);
+                        double Y = s * 2*(y+j);
+                        double D = 2 * s * d;
+                        posi N;
+                        N = normal(ground, vec(X, Y, 0));
+                        glNormal3f(ARG(N));
+                        glTexCoord2f(  x,   y); glVertex3f(  X,   Y, ground(vec(  X,   Y, 0)));
+
+                        N = normal(ground, vec(X, Y+D, 0));
+                        glNormal3f(ARG(N));
+                        glTexCoord2f(  x, y+d); glVertex3f(  X, Y+D, ground(vec(  X, Y+D, 0)));
+
+                        N = normal(ground, vec(X+D, Y+D, 0));
+                        glNormal3f(ARG(N));
+                        glTexCoord2f(x+d, y+d); glVertex3f(X+D, Y+D, ground(vec(X+D, Y+D, 0)));
+
+                        N = normal(ground, vec(X+D, Y, 0));
+                        glNormal3f(ARG(N));
+                        glTexCoord2f(x+d,   y); glVertex3f(X+D,   Y, ground(vec(X+D,   Y, 0)));
+                    }
+                }
+            }
+        }
+
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    return;
+}
+
 void drawFunction(creature s) {
-//    GLfloat light_position[] = {100.0, 100.0, 100.0, 0.0};
-    GLfloat light_position[] = {1000.0,-1000.0,1000.0, 5.0};
-//    GLfloat A[] = {.5,.5,.5, 0.0};
-    GLfloat A[] = {1,1,1, 0.5};
+////    GLfloat light_position[] = {100.0, 100.0, 100.0, 0.0};
+//    GLfloat light_position[] = {1000.0,-1000.0,1000.0, 5.0};
+////    GLfloat A[] = {.5,.5,.5, 0.0};
+//    GLfloat A[] = {1,1,1, 0.5};
+//
+//    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+//    glLightfv(GL_LIGHT0, GL_DIFFUSE, A);
 
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, A);
 
-
-    bool shading = true;
+    bool shading = false;
     double h = 1; // 1.5
-    double range = 60; // 50
+    double range = 50; // 50
     double w = 0.15;
     double hover = w / 10;
 
@@ -311,7 +290,7 @@ void drawFunction(creature s) {
 
     drawTiles(c, range, h);
     if (shading) drawConnectionShadows(s, w, hover);
-    drawGridLines(c, range, h, hover);
+//    drawGridLines(c, range, h, hover);
     return;
 }
 
@@ -324,7 +303,110 @@ bool invalidSphere(posi * points, posi trial, int numP, double radius) {
     return false;
 }
 
+
+
+
+void LoadGLTextures() {
+    int numFiles = 9;
+    char * files[] = {"grass.jpg", "sun.jpg", "LAND2.BMP",
+                "Skybox/posx.bmp", "Skybox/posz.bmp", "Skybox/posy.bmp",
+                "Skybox/negx.bmp", "Skybox/negz.bmp", "Skybox/negy.bmp"
+                };
+
+    //https://reije081.home.xs4all.nl/skyboxes/
+    if (textures == NULL) {
+        textures = (GLuint*) malloc(sizeof(GLuint) * numFiles);
+    }
+
+
+
+    for (int i = 0; i < numFiles; i++) {
+        char fileName[100] = "../assets/";
+        strcat(fileName, files[i]);
+        textures[i] = SOIL_load_OGL_texture
+                        (
+                         fileName,
+                         SOIL_LOAD_AUTO,
+                         SOIL_CREATE_NEW_ID,
+                         SOIL_FLAG_INVERT_Y
+                         );
+        if (textures[i] == 0) exit(-1);
+    }
+//	// Typical Texture Generation Using Data From The Bitmap
+//	glBindTexture(GL_TEXTURE_2D, texture[0]);
+//	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+//	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+}
+
+void drawSkybox(double distance) {
+    double l = distance;
+    posi c = cameraPos;
+    glDisable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
+    glColor3f(WHITE);
+
+    double e = 0.001;
+    double f = 1.0-e;
+    glBindTexture(GL_TEXTURE_2D, textures[3]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(  e,   e); glVertex3f(-l+c.x,  l+c.y, -l+c.z);
+        glTexCoord2f(  e,   f); glVertex3f(-l+c.x,  l+c.y,  l+c.z);
+        glTexCoord2f(  f,   f); glVertex3f( l+c.x,  l+c.y,  l+c.z);
+        glTexCoord2f(  f,   e); glVertex3f( l+c.x,  l+c.y, -l+c.z);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, textures[4]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(  e,   e); glVertex3f( -l+c.x, -l+c.y, -l+c.z);
+        glTexCoord2f(  e,   f); glVertex3f( -l+c.x, -l+c.y,  l+c.z);
+        glTexCoord2f(  f,   f); glVertex3f( -l+c.x,  l+c.y,  l+c.z);
+        glTexCoord2f(  f,   e); glVertex3f( -l+c.x,  l+c.y, -l+c.z);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, textures[5]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(  e,   e); glVertex3f( -l+c.x,  -l+c.y, l+c.z);
+        glTexCoord2f(  f,   e); glVertex3f( -l+c.x,   l+c.y, l+c.z);
+        glTexCoord2f(  f,   f); glVertex3f( l+c.x,    l+c.y, l+c.z);
+        glTexCoord2f(  e,   f); glVertex3f( l+c.x,   -l+c.y, l+c.z);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, textures[6]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(  f,   e); glVertex3f(-l+c.x,   -l+c.y, -l+c.z);
+        glTexCoord2f(  f,   f); glVertex3f(-l+c.x,   -l+c.y,  l+c.z);
+        glTexCoord2f(  e,   f); glVertex3f( l+c.x,   -l+c.y,  l+c.z);
+        glTexCoord2f(  e,   e); glVertex3f( l+c.x,   -l+c.y, -l+c.z);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, textures[7]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(  f,   e); glVertex3f( l+c.x,  -l+c.y, -l+c.z);
+        glTexCoord2f(  f,   f); glVertex3f( l+c.x,  -l+c.y,  l+c.z);
+        glTexCoord2f(  e,   f); glVertex3f( l+c.x,   l+c.y,  l+c.z);
+        glTexCoord2f(  e,   e); glVertex3f( l+c.x,   l+c.y, -l+c.z);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, textures[8]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(  e,   f); glVertex3f( -l+c.x,  -l+c.y, -l+c.z);
+        glTexCoord2f(  f,   f); glVertex3f( -l+c.x,   l+c.y, -l+c.z);
+        glTexCoord2f(  f,   e); glVertex3f( l+c.x,    l+c.y, -l+c.z);
+        glTexCoord2f(  e,   e); glVertex3f( l+c.x,   -l+c.y, -l+c.z);
+    glEnd();
+
+
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
+}
+
 void stickBallSystem(creature * pop, int genSize, int gen, int id, int simTime, int maxTime) {
+    static bool init = true;
+    if (init) {
+        LoadGLTextures();
+        init = false;
+    }
+
     creature input = pop[id];
 
     /* Clear, Reset, Camera */
@@ -332,6 +414,20 @@ void stickBallSystem(creature * pop, int genSize, int gen, int id, int simTime, 
 
     /* 3D Drawing */
     reenable3D();
+    drawSkybox(500);
+    static double i = 0;
+GLfloat light_position[] = {1000* sin(1.5), 1000 *sin(i), 1000.0 * cos(i), 0.0};
+//i+=0.05;
+i = 1.5;
+//drawSphere(light_position[0], light_position[1], light_position[2], 10);
+glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+
+
+//    glColor3f(BLACK);
+//    drawSphere(0, 0, 10, 10);
+
+
 
 //    drawGrass(400, 0);
 //    glLineWidth(50);
@@ -340,32 +436,37 @@ void stickBallSystem(creature * pop, int genSize, int gen, int id, int simTime, 
 //    drawCylinder(-20, 0, input.fitness,
 //             20, 0, input.fitness,
 //             0.25, 10);
-    drawAxes(10, 10, 10);
     drawFunction(input);
-    drawSun();
+//    drawSun();
     drawStickBall(input);
 
-    glColor3f(BLACK);
-    for (int i = 0; i < simTime-1; i++) {
-        glLineWidth(5);
-        posi p1 = ((stickball*) input.components)->trail[i];
-        posi p2 = ((stickball*) input.components)->trail[i+1];
-        drawLine(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
-    }
-    glColor3f(RED);
+    bool trail = true;
+    bool curve = false;
 
-    posi prev = vec(0.5,0,6);
-    for (int t = 1; t < simTime-1; t++) {
-        double s = 1 / 100.0;
-//        double val = 0.5 * cos(t*s) + cos(t*s * 3) + 1.5 + 0.5*s*t;
-        double val = s*t;//2*sqrt(s*t);
-        posi path = vec(s*t, 0,  2 * sqrt(s*t));
-        path = scale(path, 3);
-
-        drawLine(prev.x, prev.y, prev.z, path.x, path.y, path.z);
-        prev = path;
+    if (trail) {
+        glColor3f(BLACK);
+        for (int i = 0; i < simTime-1; i++) {
+            glLineWidth(5);
+            posi p1 = ((stickball*) input.components)->trail[i];
+            posi p2 = ((stickball*) input.components)->trail[i+1];
+            drawLine(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+        }
     }
 
+    if (curve) {
+        glColor3f(RED);
+        posi prev = vec(0.5,0,6);
+        for (int t = 1; t < simTime-1; t++) {
+            double s = 1 / 100.0;
+    //        double val = 0.5 * cos(t*s) + cos(t*s * 3) + 1.5 + 0.5*s*t;
+            double val = s*t;//2*sqrt(s*t);
+            posi path = vec(s*t, 0,  2);
+            path = scale(path, 3);
+
+            drawLine(prev.x, prev.y, prev.z, path.x, path.y, path.z);
+            prev = path;
+        }
+    }
     /* 2D drawing */
     enable2D();
 
@@ -483,6 +584,15 @@ void createMenu() {
     return;
 }
 
+
+posi rot(posi a, double O) {
+    posi n;
+    n.y = a.y;
+    n.y =  cos(O) * a.x + sin(O) * a.z;
+    n.z = -sin(O) * a.x + cos(O) * a.z;
+    return n;
+}
+
 void drawStickBall(creature individual) {
     int * sizes = individual.genome->iData;
     stickball * components = ((stickball*) individual.components);
@@ -490,11 +600,15 @@ void drawStickBall(creature individual) {
 
     /* Nodes */
     glColor3f(BEIGE);
+
+
     for (int i = 0; i < sizes[nod]; i++) {
         posi loc = components->nodes[i].loc;
         drawSphere(loc.x, loc.y, loc.z, RADIUS);
     }
 
+    static posi C = zero();
+    static posi Z = vec(0, 0, 1);
     double thickness = RADIUS * 0.5;
     glColor3f(WHITE);
     for (int i = 0; i < sizes[bon]; i++) {
@@ -504,9 +618,22 @@ void drawStickBall(creature individual) {
         //printf("%d, %d\n", a, b);
         posi locA = components->nodes[a].loc;
         posi locB = components->nodes[b].loc;
+
+        posi BA = sub(locA, locB);
+        posi BC = sub(C, locB);
+        double X = dot(BA, BC);
+        double dTheta = acos(X/(mag(BA) * mag(BC)));
+
+        Z = rot(Z, dTheta);
+        posi P = scale(Z, 4);
+        drawCylinder(locA.x, locA.y, locA.z,
+                 locA.x+P.x, locA.y+P.y, locA.z+P.z,
+                 0.1, 5);
+
         drawCylinder(locA.x, locA.y, locA.z,
                       locB.x, locB.y - 0.1, locB.z,
                         thickness ,     5);
+        C = locB;
     }
 
     /* Muscle */

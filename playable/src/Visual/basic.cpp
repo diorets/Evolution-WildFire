@@ -173,12 +173,13 @@ void drawLine(double x, double y, double z, double X, double Y, double Z) {
     return;
 }
 
+#include "GameModes/Simulate/Stickball/stickBallPhysics.h"
 void glutDrawing() {
     // Clear, reset, camera
     glClearColor(SKY);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    if (person) cameraPos.z = 1.8; // Standing on Ground
+    if (person) cameraPos.z = ground(cameraPos) + 15; // Standing on Ground
     gluLookAt(
             cameraPos.x,      cameraPos.y,      cameraPos.z,
             cameraPos.x + cameraDir.x, cameraPos.y + cameraDir.y, cameraPos.z + cameraDir.z,

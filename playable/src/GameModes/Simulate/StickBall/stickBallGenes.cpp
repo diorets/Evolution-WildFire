@@ -17,10 +17,9 @@ gene* createStickBallGenome(gene * head) {
     if (head != NULL) quit(GENOME_ERROR);
 
 
-    if (1) {
-        int n = 1;
-        int m = 0;
-        int b = 0;
+    if (0) {
+        int n = 8;
+        int m, b = 0;
         if (m + b > comb(n)) quit(GENOME_ERROR);
 
         /* Creating Genome */
@@ -36,9 +35,9 @@ gene* createStickBallGenome(gene * head) {
         head = addMuscles(head);
         head = addToBack(head, NULL); // Can likely remove
     } else {
-        int n = 5;
-        int m = 2;
-        int b = 3;
+        int n = 2;
+        int m = 0;
+        int b = 1;
         if (m + b > comb(n)) quit(GENOME_ERROR);
 
         /* Creating Genome */
@@ -72,7 +71,7 @@ void createStickBallCreature(creature * newBorn) {
 
     gene * currentGenome = newBorn->genome;
     stickball * components = ((stickball*) newBorn->components);
-
+//    puts("Nodes");
     FOR_ALL(currentGenome, 'n') {
         components->nodes[numNodes].loc.x = current->fData[xposi];
         components->nodes[numNodes].loc.y = current->fData[yposi];
@@ -91,19 +90,18 @@ void createStickBallCreature(creature * newBorn) {
 
         numNodes++;
     }
-
+//    puts("Muscles");
     FOR_ALL(currentGenome, 'm') {
         int a = components->muscles[numMuscles].a = current->iData[0];
         int b = components->muscles[numMuscles].b = current->iData[1];
 
         components->muscles[numMuscles].origLength = euc(components->nodes[a].loc, components->nodes[b].loc);
 
-
         components->muscles[numMuscles].shift = current->fData[0];
         components->muscles[numMuscles].rate  = current->fData[1];
         numMuscles++;
     }
-
+//    puts("Bones");
     FOR_ALL(currentGenome, 'b') {
         int a = components->bones[numBones].a = current->iData[0];
         int b = components->bones[numBones].b = current->iData[1];
@@ -111,9 +109,11 @@ void createStickBallCreature(creature * newBorn) {
         numBones++;
     }
 
+
     components->origin = getCom(*newBorn);
-    newBorn->fitness= 0.0;
+    newBorn->fitness = 0.0;
     // Add a check here for valid creature
+
     return;
 }
 
@@ -278,7 +278,7 @@ gene* addMuscles(gene * head) {
     return head;
 }
 
-posi getValidPosition(gene * head) {
+posi getValidPosition123(gene * head) {
     int numNodes = 0;
     double nodeSeperation = spacing;
     /* Get Number of Nodes */
@@ -378,7 +378,7 @@ posi getValidPosition(gene * head) {
 
 
 // Returns values aleast min dist from all other nodes. Bound by CAGESIZE.
-posi getValidPosition1234567896543213465786543245678965432(gene * head) {
+posi getValidPosition(gene * head) {
     while (true) {
         bool validPosition = true; // Not False
 
@@ -528,6 +528,24 @@ gene* muscleGene(int a, int b) {
     return nodee;
 }
 
+gene* muscleGene(int a, int b, double rate, double shift) {
+    gene * nodee = (gene*) malloc(sizeof(gene));
+    if (nodee == NULL) quit(MALLOC_ERROR);;
+
+    nodee->start = 'm';
+
+    nodee->iData[0] = a;
+    nodee->iData[1] = b;
+
+    nodee->fData[0] = rate;
+    nodee->fData[1] = shift;
+
+
+    nodee->endof = '\0';
+    nodee->next = NULL;
+    return nodee;
+}
+
 // To 2 Valid nodes
 gene* muscleGene(gene * genome) {
     gene * nodee = (gene*) malloc(sizeof(gene));
@@ -588,6 +606,22 @@ gene * nodeGene(posi loc) {
     nod->fData[zposi] = loc.z;
     nod->fData[mass] =  randf(4) + 1;
     nod->fData[fric] =  randf(0.8) + 0.1;
+
+    nod->endof = '\0';
+    nod->next = NULL;
+    return nod;
+}
+
+gene * nodeGene(double x, double y, double z, double m, double f) {
+    gene * nod = (gene*) malloc(sizeof(gene));
+    if (nod == NULL) quit(MALLOC_ERROR);;
+    nod->start = 'n';
+
+    nod->fData[xposi] = x;
+    nod->fData[yposi] = y;
+    nod->fData[zposi] = z;
+    nod->fData[mass]  = m;
+    nod->fData[fric]  = f;
 
     nod->endof = '\0';
     nod->next = NULL;
@@ -702,43 +736,6 @@ void printGenome(int index, bool connection, bool location) {
 //    return;
 }
 
-void saveGenome() {
-//    FILE * fptr = fopen("genomes.txt", "a");
-//    fprintf(fptr, "Generation %d\n", gen);
-//    for (int j = 0; j < genSize; j++) {
-//        fprintf(fptr, "\t%d:", j);
-//        for (gene * current = specimen[j].genome; current != NULL; current = current->next) {
-//            fprintf(fptr, "|%c|", current->start);
-//            switch (current->start) {
-//                case 'i':
-//                    for (int i = 1; i < 6; i++) {
-//                        fprintf(fptr, "%d", current->iData[i]);
-//                        if (i != 5) {
-//                            fprintf(fptr, ",");
-//                        }
-//                    }
-//                case 'n':
-//                    for (int i = 0; i < 5; i++) {
-//                        fprintf(fptr, "%f", current->fData[i]);
-//                        if (i != 4) {
-//                            fprintf(fptr, ",");
-//                        }
-//                    }
-//                    break;
-//                case 'm':
-//                    fprintf(fptr, "(%d, %d)", current->iData[0], current->iData[1]);
-//                    break;
-//                case 'b':
-//                    fprintf(fptr, "(%d, %d)", current->iData[0], current->iData[1]);
-//                    break;
-//                default: fprintf(fptr, "ERROR");
-//            }
-//        }
-//        fprintf(fptr, "\n");
-//    }
-//    fclose(fptr);
-    return;
-}
 
 
 

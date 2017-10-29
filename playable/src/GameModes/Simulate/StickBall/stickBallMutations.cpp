@@ -74,16 +74,16 @@ void alterMuscles(gene * head, double bigChange, double smallChange) {
 }
 
 void mutateStickball(creature * toMutate) { // Move node, addconnection, remove connection
-    moveNodes(toMutate->genome, 30);
-    addNodes(toMutate->genome, 50);
-    removeNodes(toMutate->genome, 8);
-    alterMuscles(toMutate->genome, 0, 100);
-
-    removeStrandedNodes(toMutate->genome);
-    /* Varification */
-    verifyGenome    (toMutate->genome);
-
-    return;
+//    moveNodes(toMutate->genome, 30);
+//    addNodes(toMutate->genome, 50);
+//    removeNodes(toMutate->genome, 8);
+//    alterMuscles(toMutate->genome, 0, 100);
+//
+//    removeStrandedNodes(toMutate->genome);
+//    /* Varification */
+//    verifyGenome    (toMutate->genome);
+//
+//    return;
 
     /* Nodes Mods */
     alterMuscles(toMutate->genome, 3, 10);

@@ -18,11 +18,6 @@ void newGameMode(int mode) {
             keyPressed('o', 0, 0);
             keyStates['o'] = false;
             buttons = clearButtons(buttons);
-//            playBackSpeed = 2;
-            //simTime = 0;
-            //gen = 0;
-            //id = 0;
-            //initiatePopulation(data[0], data[1], data[2], data[3], false);
             break;
         case startMode:
             break;

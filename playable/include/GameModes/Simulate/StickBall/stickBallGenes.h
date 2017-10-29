@@ -16,11 +16,13 @@ conn goodConnection(gene * head, int a, int b, int numNodes);
 gene* infoGene(int a, int b, int c, int d);
 
 gene* nodeGene(posi loc);
+gene* nodeGene(double x, double y, double z, double m, double f);
 gene* nodeGene(gene * head);
 
 double rateFunction();
 double shiftFunction();
 gene* muscleGene(int a, int b);
+gene* muscleGene(int a, int b, double rate, double shift);
 gene* muscleGene(gene * genome);
 
 gene* boneGene(int numNodes);

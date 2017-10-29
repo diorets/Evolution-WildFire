@@ -9,7 +9,8 @@ void createSystemCreature(int system, creature * individual);
 void copyGene(gene * popCurr, gene * dupCurr);
 void pruneAndFill(int *, creature *, int genSize);
 int * orderedDist(creature*, int genSize);
+double selectionDistribution(int genSize, bool trialSelectionFunction);
 
-void saveGenome(creature * population, int gen, int index);
+void saveGenome(creature * population, int gen, int index, char file[256]);
 
 #endif // GENETICS_H_INCLUDED

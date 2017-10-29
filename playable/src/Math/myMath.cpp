@@ -131,6 +131,10 @@ double randf2(double a, double b) {
     return a + r;
 }
 
+int randi2(int a, int b) {
+    return (rand() % (b - a)) + a;
+}
+
 double randf2(int a, int b) {
     double random = ((double) rand()) / (double) RAND_MAX;
     double diff = b - a;
@@ -175,7 +179,6 @@ posi getCom(creature individual) {
     com.x = 0.0;
     com.y = 0.0;
     com.z = 0.0;
-
     for (int i = 0; i < numMasses; i++) {
         node toAdd = masses[i];
         com.x += toAdd.loc.x * toAdd.mass;
@@ -183,6 +186,7 @@ posi getCom(creature individual) {
         com.z += toAdd.loc.z * toAdd.mass;
         totMass += toAdd.mass;
     }
+
     com.x /= totMass;
     com.y /= totMass;
     com.z /= totMass;

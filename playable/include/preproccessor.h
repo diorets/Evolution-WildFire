@@ -131,7 +131,7 @@ typedef struct gene_struct {
 
 typedef struct creature_struct {
     double fitness;
-    gene *genome;
+    gene * genome;
     void * components;
 } creature;
 

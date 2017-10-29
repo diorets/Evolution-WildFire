@@ -2,7 +2,7 @@
 #define GLOBAL_H_INCLUDED
 
 #include "preproccessor.h"
-
+#include "Glut/myGlut.h"
 // Settings
 extern int dataCollection;
 extern int data[];
@@ -40,5 +40,6 @@ extern double * environment;
 extern generic * globalData;
 extern button * buttons;
 
-
+extern double coeffs[10];
+extern GLuint * textures;
 #endif // GLOBAL_H_INCLUDED

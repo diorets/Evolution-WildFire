@@ -1,4 +1,4 @@
-bool twoD = true; /// Change in both files
+bool twoD = false; /// Change in both files
 #include "GameModes/Simulate/StickBall/stickBallMutations.h"
 
 #include <math.h> // Fabs

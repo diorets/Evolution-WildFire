@@ -157,7 +157,7 @@ float perlin2d(float x, float y, float freq, int depth)
 
 double ground(posi r) { // max range is +/- 0.5*h*len. ex: l=500, h=0.1 => x:25
     return 0;
-    return 20 * perlin2d(fabs(r.x/2.0), fabs(r.y/2.0), 0.05, 30);
+//    return 20 * perlin2d(fabs(r.x/2.0), fabs(r.y/2.0), 0.05, 30);
 //    return 0;
     double k = 0.05;
     double val = 10*(sin(k*r.x) + sin(2*k*r.y) + 0.1 * k * r.x);

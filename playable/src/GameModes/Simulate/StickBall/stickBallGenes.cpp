@@ -1,4 +1,4 @@
-bool twoD2 = true; /// Change in both files
+bool twoD2 = false; /// Change in both files
 #include "GameModes/Simulate/StickBall/stickBallGenes.h"
 
 #include <math.h>   // Fabs
@@ -35,9 +35,9 @@ gene* createStickBallGenome(gene * head) {
         head = addMuscles(head);
         head = addToBack(head, NULL); // Can likely remove
     } else {
-        int n = 2;
-        int m = 0;
-        int b = 1;
+        int n = 5;
+        int m = 4;
+        int b = 3;
         if (m + b > comb(n)) quit(GENOME_ERROR);
 
         /* Creating Genome */

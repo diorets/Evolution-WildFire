@@ -4,7 +4,6 @@
 
 #include "ErrorHandle/error.h" // quit
 
-
 gene * getLastItem(gene * head) {
     gene * current = head;
     while (1) {
@@ -35,7 +34,7 @@ gene * clearGenome(gene * head) {
         free(curr);
         curr = temp;
     }
-   return NULL;
+    return NULL;
 }
 
 void removeItem(gene * head, gene * toRemove) {
@@ -46,7 +45,7 @@ void removeItem(gene * head, gene * toRemove) {
     }
 
     if(prev->next == NULL) { // Couldnt find item
-        quit(UNSPECIFC_ERROR); // Should never request for this
+        quit(UNSPECIFIC_ERROR); // Should never request for this
     }
     prev->next = prev->next->next; // Remove Item
     if (toRemove != NULL) free(toRemove);

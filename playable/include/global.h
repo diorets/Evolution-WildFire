@@ -2,7 +2,7 @@
 #define GLOBAL_H_INCLUDED
 
 #include "preproccessor.h"
-
+#include "Glut/myGlut.h"
 // Settings
 extern int dataCollection;
 extern int data[];
@@ -11,7 +11,6 @@ extern bool person;
 extern bool lights;
 extern bool display;
 extern int  gameMode;
-extern int  genSize;
 extern int  wx;
 extern int  wy;
 
@@ -38,11 +37,9 @@ extern bool* keyStates;
 
 // Simulator Variables
 extern double * environment;
-extern int simTime;
-extern int gen;
-extern int id;
-
-extern creature * specimen;
 extern generic * globalData;
+extern button * buttons;
 
+extern double coeffs[10];
+extern GLuint * textures;
 #endif // GLOBAL_H_INCLUDED

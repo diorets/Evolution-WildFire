@@ -10,4 +10,11 @@ void toggleDisplay();
 void resetCamera();
 void newGameMode(int mode);
 
+void normalExit();
+void toggleCreatureGraph();
+void toggleGenerationGraph();
+void nullFunc();
+
+
+
 #endif // KEYBOARDFUNCTIONS_H_INCLUDED

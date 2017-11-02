@@ -1,14 +1,14 @@
 #include "global.h"
 #include "Glut/myGlut.h"                // Glut functions and definitions
 #include "GameModes/inputFunctions.h"
-#define MAX_PLAY_BACK 8192
+#define MAX_PLAY_BACK 16384
 
 #include "Functional/list.h"
 #include "Glut/initialize.h"
 #include "Glut/basic.h"
 #include "Math/myMath.h"
 #include "Functional/music.h"
-
+#include "Functional/buttons.h"
 /* Functions that can be called in any game mode */
 void newGameMode(int mode) {
     gameMode = mode;
@@ -16,16 +16,12 @@ void newGameMode(int mode) {
         case simMode:
             endSong("menuSong");
             keyPressed('o', 0, 0);
-//            playBackSpeed = 2;
-            simTime = 0;
-            gen = 0;
-            id = 0;
-            initiatePopulation(data[0], data[1], data[2], data[3], false);
-//          initiatePopulation(5, 5, 5, 5 * HIDDEN_LAYER_SIZE * 2, false);
+            keyStates['o'] = false;
+            buttons = clearButtons(buttons);
             break;
         case startMode:
             break;
-        default: return;
+        default: break;
     }
     return;
 }
@@ -33,31 +29,30 @@ void newGameMode(int mode) {
 void setPlayBackSpeed(int number) {
     if (playBackSpeed == number) return;
     if (playBackSpeed < number) { // Speed Up
-        for (;playBackSpeed < number; playBackSpeed *= 2) {
-            playerSpeed   /= 2;
-            cameraSpeed   /= 2;
-        }
+        for (;playBackSpeed < number; playBackSpeed *= 2);
     } else { // Speed Down
-        for (;playBackSpeed > number; playBackSpeed /= 2) {
-            playerSpeed   *= 2;
-            cameraSpeed   *= 2;
-        }
+        for (;playBackSpeed > number; playBackSpeed /= 2);
     }
 }
 
 void changePlayBack(bool inc) {
     if (inc && (playBackSpeed < MAX_PLAY_BACK)) {
+        if (playBackSpeed <= 0) {
+            playBackSpeed = 1;
+            return;
+        }
         playBackSpeed *= 2;
-        playerSpeed   /= 2;
-        cameraSpeed   /= 2;
     }
-    else if (!inc && (playBackSpeed > 1)) {
+    else if (!inc) {
+        if (playBackSpeed == 1) {
+            playBackSpeed = 0;
+            return;
+        }
         playBackSpeed /= 2;
-        playerSpeed   *= 2;
-        cameraSpeed   *= 2;
     }
     return;
 }
+
 /* Setting change functions */
 void toggleFullScreen() {
     if (fullscreen) glutReshapeWindow(800, 400);
@@ -92,3 +87,25 @@ void resetCamera() {
     cameraAng = zero();
     return;
 }
+
+#include "ErrorHandle/error.h"
+/* Input Functions */
+void nullFunc() {
+    return;
+}
+
+void normalExit() {
+    quit(NORMAL_EXIT);
+    return;
+}
+
+void toggleCreatureGraph() {
+    globalData[creatureFitnessE].g.display ^= true;
+    return;
+}
+
+void toggleGenerationGraph() {
+    globalData[generationFitnessE].g.display ^= true;
+    return;
+}
+

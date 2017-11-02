@@ -3,8 +3,11 @@
 
 void drawTree(double x, double y, double height, double scale);
 void drawSight(double dist);
-void drawCreature(creature individual, bool skin);
-void drawGround();
+void drawGround(int groundSize, double horAxis, double zAxis);
+void drawGrid(int fieldSize, double O, int sep);
+void drawGrass(double l, double O);
+void drawCage(double length);
+void drawAxes(double x, double y, double z);
 void drawSun();
 
 #endif // OBJECTS_H_INCLUDED

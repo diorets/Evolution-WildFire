@@ -20,6 +20,13 @@ posi vec(double x, double y, double z) {
 }
 
     /* Basic Operations */
+double der(double (*f)(posi), posi a, int i) { // f(x + h, y, z) - f(x - h, y, z) / h
+    double h = 0.01;
+    posi lp = vec(a.x + (i==0)*h, a.y + (i==1)*h, a.z + (i==2)*h); // add/sub h to proper component
+    posi lm = vec(a.x - (i==0)*h, a.y - (i==1)*h, a.z - (i==2)*h);
+    return (f(lp) - f(lm)) / (2*h);
+}
+
 double euc(posi a, posi b) {
     double x = (a.x - b.x);
     double y = (a.y - b.y);
@@ -58,11 +65,31 @@ posi add(posi vec, double k) {
     return vec;
 }
 
+posi compMul(posi a, posi b) {
+    return vec(a.x * b.x, a.y * b.y, a.z * b.z);
+}
+
 posi scale(posi a, double scale) {
     a.x *= scale;
     a.y *= scale;
     a.z *= scale;
     return a;
+}
+
+posi normalize(posi a) {
+    return scale(a, mag(a));
+}
+
+posi normal(double (*surface)(posi), posi r) {
+    return vec(der((*surface), vec(r.x, r.y, r.z), 0), der((*surface), vec(r.x, r.y, r.z), 1), -1.0);
+}
+
+bool equals(posi a, posi b, double eps) {
+    return euc(a, b) < eps;
+}
+
+bool equals(double a, double b, double eps) {
+    return fabs(a - b) < eps;
 }
 
 double mag(posi a) {
@@ -82,7 +109,7 @@ posi cross(posi a, posi b) { // This has not been verified
 }
 
 double dot(posi a, posi b) { // This has not been verified
-    return a.x * b.x + a.y * b.y+ a.z * b.z;
+    return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
 
@@ -95,6 +122,24 @@ bool chance(int x) {
 bool chance(double x) {
     if (randf(100) < x) return true;
     return false;
+}
+
+double randf2(double a, double b) {
+    double random = ((double) rand()) / (double) RAND_MAX;
+    double diff = b - a;
+    double r = random * diff;
+    return a + r;
+}
+
+int randi2(int a, int b) {
+    return (rand() % (b - a)) + a;
+}
+
+double randf2(int a, int b) {
+    double random = ((double) rand()) / (double) RAND_MAX;
+    double diff = b - a;
+    double r = random * diff;
+    return a + r;
 }
 
 // Random float [0, number]
@@ -126,22 +171,22 @@ int sgn(double x) {
 
 /* Other */
     /* Averages */
-posi getCom(creature current) {
-    int num = current.genome->iData[nod];
-    node * nodes = current.nodes;
+posi getCom(creature individual) {
+    node * masses = ((stickball*) individual.components)->nodes;
+    int numMasses = individual.genome->iData[nod];
     double totMass = 0.0;
     posi com;
     com.x = 0.0;
     com.y = 0.0;
     com.z = 0.0;
-
-    for (int i = 0; i < num; i++) {
-        node toAdd = nodes[i];
+    for (int i = 0; i < numMasses; i++) {
+        node toAdd = masses[i];
         com.x += toAdd.loc.x * toAdd.mass;
         com.y += toAdd.loc.y * toAdd.mass;
         com.z += toAdd.loc.z * toAdd.mass;
         totMass += toAdd.mass;
     }
+
     com.x /= totMass;
     com.y /= totMass;
     com.z /= totMass;
@@ -150,7 +195,7 @@ posi getCom(creature current) {
 
 posi getAvgNodeVel(creature current) {
     int num = current.genome->iData[nod];
-    node * nodes = current.nodes;
+    node * nodes = ((stickball*) current.components)->nodes;
     posi vel;
     vel.x = 0.0;
     vel.y = 0.0;

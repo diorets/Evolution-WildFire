@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-double power = -1;
+double power = -1; // is overwritten, shouldnt this be a static variable?
 
 double uniform() { // [0, 1]
     return (double)rand()/(double)(RAND_MAX);
@@ -40,7 +40,7 @@ double squareNorm(double (*f) (double), double x, double stepSize) {
 double inverseIntegral(double desiredArea, double totSamples, double (*f) (double), double stepSize) {
     double area = 0;
     double dx = 1.0 / totSamples;
-    for (double i = 0; i < 1.0; i += dx) {
+    for (double i = 0; i < 1.0; i += dx) { // from 0 to 1
         area += squareNorm(f, i, stepSize) * dx;
         if (area >= desiredArea) {
             return i;

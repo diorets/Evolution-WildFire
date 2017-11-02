@@ -14,7 +14,7 @@ void drawTree(double x, double y, double height, double scale) {
                  scale * 0.5, 20);
     glColor3f(GREEN);
     drawSphere(x, y, scale * height - 0.01 + ground,
-               scale * 2, 4,4);
+               scale * 2, 4, 4);
 }
 
 void drawSight(double dist) {
@@ -29,120 +29,49 @@ void drawSight(double dist) {
     return;
 }
 
-#include <stdio.h>
-void drawCreature(creature individual, bool skin) {
-    int * sizes = individual.genome->iData;
-    posi com = getCom(individual);
+void drawAxes(double x, double y, double z) {
+    const int quality = 4;
+    const double r = 0.3;
+    /* Draw Axis */
 
-    /* Nodes */
-    glColor3f(RED);
-    for (int i = 0; i < sizes[nod]; i++) {
-        posi loc = individual.nodes[i].loc;
-        if (loc.z < 0.01 + 0.75) glColor3f(WHITE);
-        else glColor3f(i / 5.0, i / 5.0, i / 5.0);
-        drawSphere(loc.x, loc.y, loc.z, RADIUS);
-    }
+    glColor3f(BLUE); // X Axis
+    drawSphere(x, 0, 0, 1);
+	drawCylinder(x, 0, 0,
+                 -x, 0, 0,
+                 r, quality);
+    glColor3f(RED); // Y Axi
+	drawCylinder(0,  y, 0,
+                 0, -y, 0,
+                 r, quality);
+    glColor3f(BLACK); // Z axis
+	drawCylinder(0, 0, -z,
+                 0, 0,  z,
+                 r, quality);
 
-    /* Skin */
-    if (skin) {
-        glColor4f(BLACK, 1);
-        for (int i = 0; i < sizes[nod]; i++) {
-            posi locA = individual.nodes[i].loc;
-            for (int j = i + 1; j < sizes[nod]; j++) {
-                posi locB = individual.nodes[j].loc;
-                for (int k = j + 1; k < sizes[nod];k++) {
-                    posi locC = individual.nodes[k].loc;
-                    glBegin(GL_TRIANGLE_FAN);
-                        glVertex3f(locA.x, locA.y, locA.z);
-                        glVertex3f(locB.x, locB.y, locB.z);
-                        glVertex3f(locC.x, locC.y, locC.z);
-                    glEnd();
-                }
-            }
-        }
-    }
-
-    /* Bone */
-    double thickness = RADIUS * 0.5;
-    glColor3f(WHITE);
-    for (int i = 0; i < sizes[bon]; i++) {
-        int a = individual.bones[i].a;
-        int b = individual.bones[i].b;
-        if (a == b) quit(GENOME_ERROR); // Do I need this check?
-        posi locA = individual.nodes[a].loc;
-        posi locB = individual.nodes[b].loc;
-        drawCylinder(locA.x, locA.y, locA.z,
-                      locB.x, locB.y - 0.1, locB.z,
-                        thickness ,     5);
-    }
-
-    /* Muscle */
-    glColor3f(RED);
-    for (int i = 0; i < sizes[mus]; i++) {
-        int a = individual.muscles[i].a;
-        int b = individual.muscles[i].b;
-        if (a == b) quit(GENOME_ERROR);
-        posi locA = individual.nodes[a].loc;
-        posi locB = individual.nodes[b].loc;
-        float expansivity = individual.muscles[i].origLength / euc(locA, locB);
-        expansivity -= 1;
-        expansivity *= 5;
-
-        // Range from [0.3 * RADIUS, RADIUS]
-        //printf("%f\n", expansivity);
-        drawCylinder(locA.x, locA.y, locA.z,
-                      locB.x, locB.y + 0.1, locB.z,
-                       thickness * (1 + expansivity),     5);
-    }
-
-    /* COMs / Origins */
-    glColor3f(WHITE);
-    drawSphere(com.x, com.y, com.z, 0.1); // COM
-    drawSphere(com.x, com.y,     0, 0.1); // Ground COM
-    drawSphere(individual.origin.x, individual.origin.y, individual.origin.z, 0.1); // Origin
-    glColor3f(RED);
-    drawLine(com.x, com.y, 0.1, // Distance
-             individual.origin.x, individual.origin.y, 0.1);
-    return;
 }
 
-void drawGround() {
-    /* Draw Axis */
-    glColor3f(BLACK); // Z axis
-	drawCylinder(0, 0, -10,
-                 0, 0,  10,
-                 0.3, 10);
-    glColor3f(BLUE); // X Axis
-	drawCylinder(10, 0, 0,
-                 -10, 0, 0,
-                 0.3, 10);
-    glColor3f(RED); // Y Axi
-	drawCylinder(0,  10, 0,
-                 0, -10, 0,
-                 0.3, 10);
+void drawCage(double length) {
+    const int quality = 4;
+    const double r = 0.3;
 
-
-    /* Draw Cage */
     glColor3f(BLACK);
-    drawCylinder(CAGESIZE, -CAGESIZE, 0.3,
-                 CAGESIZE,  CAGESIZE, 0.3,
-                 0.3, 10);
-    drawCylinder(-CAGESIZE, -CAGESIZE, 0.3,
-                 -CAGESIZE, CAGESIZE, 0.3,
-                 0.3, 10);
-    drawCylinder(-CAGESIZE, CAGESIZE, 0.3,
-                 CAGESIZE,  CAGESIZE, 0.3,
-                 0.3, 10);
-    drawCylinder(-CAGESIZE, -CAGESIZE, 0.3,
-                 CAGESIZE, -CAGESIZE, 0.3,
-                 0.3, 10);
+    drawCylinder(length, -length, 0.3,
+                 length,  length, 0.3,
+                 r, quality);
+    drawCylinder(-length, -length, 0.3,
+                 -length, length, 0.3,
+                 r, quality);
+    drawCylinder(-length, length, 0.3,
+                 length,  length, 0.3,
+                 r, quality);
+    drawCylinder(-length, -length, 0.3,
+                 length, -length, 0.3,
+                 r, quality);
+}
 
-	/* Draw Ground */
+void drawGrass(double l, double O) {
 	glColor3f(GRASS);
-	double l = 500.0;
-	double O = environment[0]; // About Y axis
 
-    glColor3f(GRASS);
 	glBegin(GL_QUADS);
 		glVertex3f(-l * cos(O), -l,  l * sin(O));
 		glVertex3f(-l * cos(O),  l,  l * sin(O));
@@ -150,11 +79,15 @@ void drawGround() {
 		glVertex3f( l * cos(O), -l, -l * sin(O));
 	glEnd();
 
+}
 
-    // Grid
-    int sep = 3;
+void drawGrid(int fieldSize, double O, int sep) {
     int len, corner;
-    len = corner = 40;
+    fieldSize /= sep;
+
+
+    // Round to near multiple of sep (eg: 10 -> 12)
+    len = corner = (fieldSize % sep) > (sep / 2) ? fieldSize - (fieldSize % sep) + sep : fieldSize - (fieldSize % sep);
     len *= sep;
 
     glColor3f(0.4, 0.4, 0.4);
@@ -168,41 +101,37 @@ void drawGround() {
                       len,  -temp * cosf(O), -len* tanf(O),
                        0.06, 10);
     }
+    return;
+}
 
-//    // Pole
-//    int height = 10.0;
-//    glColor3f(0.4, 1.0, 1.0);
-//    drawCylinder(0.0, 0.0,  0.0,
-//                 0.0, 0.0, height,
-//                 0.1, 10);
-//    double length = 0.3;
-//    for (double i = 0.01; i < height + 1; i++) {
-//        glBegin(GL_QUADS);
-//            glVertex3f(-length, -length, i);
-//            glVertex3f(-length,  length, i);
-//            glVertex3f( length,  length, i);
-//            glVertex3f( length, -length, i);
-//        glEnd();
-//    }
+void drawGround(int groundSize, double horAxis, double zAxis) {
+    double O = environment[0]; // About Y axis
+
+    drawAxes(horAxis, horAxis, zAxis);
+    drawCage(horAxis);
+    drawGrass(groundSize, O);
+    drawGrid(groundSize, O, 3);
+
 
     // Rocks
     double greyness = 0.5;
     double height1 = -1.5;
     double bigness = 3;
+    double treeRange = 5;
     glColor3f(greyness, greyness, greyness);
     drawSphere(-14, 14, height1, bigness, 6, 6);
 
     // Trees
-    #define numTrees 9
-    for (int i = 0; i < 123; i++) rand();
+    #define numTrees 50
+    //for (int i = 0; i < 123; i++) rand();
 
     static double random[numTrees * 4] = {0};
     if (fabs(random[0] - 0) < 1) {
         for (int i = 0; i < numTrees * 2; i++) {
-            random[i] = randf(2 * len) - len; // size
+            random[i] = randf(2 * treeRange * groundSize) - treeRange * groundSize; // x & y
         }
         for (int i = numTrees * 2; i < numTrees * 4; i++) {
-            random[i] = randf(2) + 1;
+            random[i] = randf(2) + 1;                       // h * s
         }
     }
 
@@ -224,10 +153,34 @@ void drawGround() {
 }
 
 void drawSun() {
+    GLUquadric *qobj = gluNewQuadric();
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textures[1]);
+    glColor3f(WHITE);
+
+    gluQuadricTexture(qobj,GL_TRUE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_LINEAR);
+
     glDisable(GL_LIGHTING);
-    glColor4f(0.8,0.8,0, 0.5);
-    drawSphere(300, 300, 300, 30);
+
+
+
+    glPushMatrix();
+        glTranslatef(SUN);
+        gluSphere(qobj,30,20,20);
+    glPopMatrix();
+
+    gluDeleteQuadric(qobj);
+    gluQuadricTexture(qobj,GL_FALSE);
+
     glEnable(GL_LIGHTING);
+//        GLfloat lmodel_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+//    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
+
+    glDisable(GL_TEXTURE_2D);
     return;
 }
 

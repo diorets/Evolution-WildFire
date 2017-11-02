@@ -1,3 +1,0 @@
-2D:false
-GenerationSize:200
-InitialPopulation:6,4,3,0

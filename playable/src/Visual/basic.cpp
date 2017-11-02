@@ -9,6 +9,7 @@
 
 /* Control Functions */
 void enable2D() {
+    glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -26,10 +27,76 @@ void reenable3D() {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
+    glEnable(GL_LIGHTING);
     return;
 }
 
+#include <stdio.h>
 /* 3D Drawing Functions */
+void drawCube(double x, double y, double z, double radius, double theta) {
+    double rad = radius;
+    double r = rad + 0.00001;
+    theta *= 57.2957795130823208767;
+
+    glColor3f(BLUE);
+    glPushMatrix();
+        glTranslated(x, y, z);
+        glRotated(theta, 0.0f, 0.0f, 1.0f);
+        glBegin(GL_QUADS);        // Draw The Cube Using quads
+            glVertex3f( rad, rad,-rad);    // Top Right Of The Quad (Top)
+            glVertex3f(-rad, rad,-rad);    // Top Left Of The Quad (Top)
+            glVertex3f(-rad, rad, rad);    // Bottom Left Of The Quad (Top)
+            glVertex3f( rad, rad, rad);    // Bottom Right Of The Quad (Top)
+            glVertex3f( rad,-rad, rad);    // Top Right Of The Quad (Bottom)
+            glVertex3f(-rad,-rad, rad);    // Top Left Of The Quad (Bottom)
+            glVertex3f(-rad,-rad,-rad);    // Bottom Left Of The Quad (Bottom)
+            glVertex3f( rad,-rad,-rad);    // Bottom Right Of The Quad (Bottom)
+            glVertex3f( rad, rad, rad);    // Top Right Of The Quad (Front)
+            glVertex3f(-rad, rad, rad);    // Top Left Of The Quad (Front)
+            glVertex3f(-rad,-rad, rad);    // Bottom Left Of The Quad (Front)
+            glVertex3f( rad,-rad, rad);    // Bottom Right Of The Quad (Front)
+            glVertex3f( rad,-rad,-rad);    // Top Right Of The Quad (Back)
+            glVertex3f(-rad,-rad,-rad);    // Top Left Of The Quad (Back)
+            glVertex3f(-rad, rad,-rad);    // Bottom Left Of The Quad (Back)
+            glVertex3f( rad, rad,-rad);    // Bottom Right Of The Quad (Back)
+            glVertex3f(-rad, rad, rad);    // Top Right Of The Quad (Left)
+            glVertex3f(-rad, rad,-rad);    // Top Left Of The Quad (Left)
+            glVertex3f(-rad,-rad,-rad);    // Bottom Left Of The Quad (Left)
+            glVertex3f(-rad,-rad, rad);    // Bottom Right Of The Quad (Left)
+            glVertex3f( rad, rad,-rad);    // Top Right Of The Quad (Right)
+            glVertex3f( rad, rad, rad);    // Top Left Of The Quad (Right)
+            glVertex3f( rad,-rad, rad);    // Bottom Left Of The Quad (Right)
+            glVertex3f( rad,-rad,-rad);    // Bottom Right Of The Quad (Right)
+        glEnd();            // End Drawing The Cube - See more at: http://www.codemiles.com/c-opengl-examples/draw-3d-cube-using-opengl-t9018.html#sthash.R8kuU2ey.dpuf
+
+        glColor3f(BLACK);
+        glBegin(GL_LINE_STRIP);
+            glVertex3f(+r, +r, +r);
+            glVertex3f(+r, +r, -r);
+            glVertex3f(+r, -r, -r);
+            glVertex3f(+r, -r, +r);
+            glVertex3f(+r, +r, +r);
+
+            glVertex3f(-r, +r, +r);
+            glVertex3f(-r, +r, -r);
+            glVertex3f(-r, -r, -r);
+            glVertex3f(-r, -r, +r);
+            glVertex3f(-r, +r, +r);
+        glEnd();
+        glBegin(GL_LINES);
+            glVertex3f(+r, -r, +r);
+            glVertex3f(-r, -r, +r);
+
+            glVertex3f(+r, +r, -r);
+            glVertex3f(-r, +r, -r);
+
+            glVertex3f(+r, -r, -r);
+            glVertex3f(-r, -r, -r);
+        glEnd();
+    glPopMatrix();
+    return;
+}
+
 void drawSphere(double x, double y, double z, double radius, int qualityA, int qualityB) {
     glPushMatrix();
         glTranslated(x, y, z);
@@ -106,18 +173,18 @@ void drawLine(double x, double y, double z, double X, double Y, double Z) {
     return;
 }
 
+#include "GameModes/Simulate/Stickball/stickBallPhysics.h"
 void glutDrawing() {
     // Clear, reset, camera
     glClearColor(SKY);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    if (person) cameraPos.z = 1.8; // Standing on Ground
+    if (person) cameraPos.z = ground(cameraPos) + 15; // Standing on Ground
     gluLookAt(
             cameraPos.x,      cameraPos.y,      cameraPos.z,
             cameraPos.x + cameraDir.x, cameraPos.y + cameraDir.y, cameraPos.z + cameraDir.z,
             0.0,    0.0,    1.0);
-    glLineWidth(3);
-
+    return;
 }
 
 /* 2D Drawing Functions */

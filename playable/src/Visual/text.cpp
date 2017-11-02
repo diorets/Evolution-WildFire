@@ -14,7 +14,7 @@ void write(const char * format, int x, int y, ...) {
     va_start(args, y);
     char str[1000];
     vsnprintf(str, 1000, format, args);
-    drawText(str, x, y, true);
+    drawText(str, x, y, true, true);
     va_end(args);
 }
 
@@ -22,7 +22,7 @@ void write(const char * format, int x, int y, int len) {
     char * str = (char*) malloc(sizeof(char) * (len + 1));
     if (str == NULL) quit(MALLOC_ERROR);
     sprintf(str, format);
-    drawText(str, x, y, true);
+    drawText(str, x, y, true, true);
     free(str);
     return;
 }
@@ -36,7 +36,7 @@ posi writeParagraph1(const char * str1, int x, int y, double letterHeight) {
 
     /* walk through other tokens */
     for (;token != NULL; i++) {
-        int temp = drawText(token, x, y + letterHeight * i, true);
+        int temp = drawText(token, x, y + letterHeight * i, true, false);
         if (temp > maxX) maxX = temp;
         token = strtok(NULL, "\n");
     }
@@ -46,10 +46,9 @@ posi writeParagraph1(const char * str1, int x, int y, double letterHeight) {
 }
 
 
-void drawMenu(const char * str, const char * keys, int numOptions, int ox, int oy) {
+void drawMenu(const char * str, const char * keys, int ox, int oy) {
     int letterHeight = 30;
     posi last = writeParagraph1(str, ox, oy, letterHeight);
-//    write("%d, %f", 100, 100, last.x);
     glColor3f(BROWN);
     drawSquare(ox - last.x / 2 - 20,     oy - letterHeight ,
                ox + last.x / 2 + 55    , last.y - letterHeight / 2,
@@ -61,6 +60,13 @@ void drawMenu(const char * str, const char * keys, int numOptions, int ox, int o
     writeParagraph(keys, ox + last.x / 2 + 12 * 2.7, oy, letterHeight);
 
     glColor4f(BLUE, 0.5);
+    int numOptions = 0;
+    for (unsigned int i = 0; i < strlen(str); i++) {
+        if (str[i] == '\n') {
+            numOptions++;
+        }
+    }
+
     for (int j = 0; j < numOptions; j++) {
         int x1 = ox - last.x / 2  - 20;
         int y1 = (oy - letterHeight + (j + 1) * letterHeight - letterHeight) * 1.015;
@@ -90,17 +96,20 @@ double writeParagraph(const char * str1, int x, int y, double letterHeight) {
     return y + i * letterHeight;
 }
 
-
-int drawText(const char *str, float x, float y, bool center) { // centers
+int drawText(const char *str, float x, float y, bool centerX, bool centerY) { // centers
     int width = 0;
-    if (center) {
+    int fontHeight = 18;
+    if (centerX) {
         for (const char *c = str; *c != '\0'; c++) {
-            width += glutBitmapWidth(GLUT_BITMAP_TIMES_ROMAN_24, *c);
+            width += glutBitmapWidth(GLUT_BITMAP_HELVETICA_18, *c);
         }
         x -= width * 0.5;
     }
+    if (centerY) y += fontHeight * 0.25;
+
     glRasterPos2f(x, y);
     for (const char *c = str; *c != '\0'; c++) {
+        x += glutBitmapWidth(GLUT_BITMAP_HELVETICA_18, *c);
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
     }
     return x;
